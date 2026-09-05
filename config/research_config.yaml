@@ -1,0 +1,60 @@
+project:
+  name: DK1 Short-Term Power Market Research
+  version: mvp-v1
+  price_area: DK1
+  resolution: PT1H
+
+periods:
+  development:
+    start_date: "2022-01-01"
+    end_date_inclusive: "2024-06-30"
+  holdout:
+    start_date: "2024-07-01"
+    end_date_inclusive: "2024-12-31"
+    state: locked
+    fetch_allowed: false
+  boundary_timezone: Europe/Copenhagen
+
+target:
+  name: balancing_spread
+  formula: balancing_price_eur_mwh - day_ahead_price_eur_mwh
+  unit: EUR/MWh
+  balancing_source_field: null
+  labels:
+    up: spread > delta
+    down: spread < -delta
+    neutral: abs(spread) <= delta
+
+neutral_band:
+  primary_quantile: 0.25
+  population: nonzero_absolute_development_spreads
+  numerical_delta: null
+  quantile_method: null
+  holdout_may_influence: false
+
+point_in_time:
+  required_classes:
+    - decision_eligible
+    - diagnostic_only
+    - outcome
+  decision_cutoff: null
+
+baselines:
+  majority_class:
+    enabled: true
+    class_source: training_sample_only
+  persistence:
+    enabled: true
+    formula: predicted_label_t = observed_label_t_minus_1
+    availability_status: pending_validation
+
+hypotheses:
+  H1: residual_load_and_system_tightness
+  H2: renewable_forecast_revision
+  H3: cross_border_and_system_conditions
+  primary_mvp_hypothesis: H2
+
+claims:
+  executable_intraday_pnl: false
+  causal_effects: false
+  complete_tick_by_tick_vintages: false

@@ -1,0 +1,25 @@
+# macOS
+.DS_Store
+
+# Python
+.venv/
+__pycache__/
+*.py[cod]
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Secrets
+.env
+
+# Local research data
+data/raw/*
+!data/raw/.gitkeep
+data/processed/*
+!data/processed/.gitkeep
+
+# Reproducible generated outputs
+outputs/charts/*
+!outputs/charts/.gitkeep
+outputs/market_state_cards/*
+!outputs/market_state_cards/.gitkeep
