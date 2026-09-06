@@ -4,25 +4,30 @@ Independent, point-in-time research into whether renewable forecast revisions an
 
 ## Current Status
 
-**Level B (Interview Ready) is achieved.** All three hypotheses have been tested
-one full round, a transparent signal engine with confidence and risk framing is
-built, and a research memo is written. Level C (the locked-holdout evaluation) is
-the last MVP milestone.
+**MVP v1 Complete.** All three hypotheses were tested one full round, a
+transparent signal engine and a logistic model were built and frozen, and the
+locked holdout was evaluated once. The finding: renewable wind-forecast revisions
+carry a small, downward-side, non-deployable amount of information about DK1
+balancing pressure. The value of the project is the discipline and the honest
+result, not an edge.
 
-- Data foundation: P1–P3 complete — validated official sources, a point-in-time
-  hourly pipeline (21,887 development hours), a frozen three-class target
+- Data foundation: P1–P3 — validated official sources, a point-in-time hourly
+  pipeline (21,887 development hours), a frozen three-class target
   (`δ = 5.9956075 EUR/MWh`)
-- **H2** renewable forecast revision (primary): pre-registered, then tested and
-  conditioned — **conditionally supported** (real by permutation, weak,
-  DOWN-side only, fails at low wind, unproven out of time)
+- **H2** renewable forecast revision (primary): pre-registered, tested, conditioned
+  — **conditionally supported** (real by permutation, weak, DOWN-side only, fails
+  at low wind)
 - **H1** residual load: weak, threshold-like, diagnostic; a decision-eligible
-  proxy is registered
+  proxy is registered as a supporting input
 - **H3** cross-border: diagnostic conditioning only — no decision-eligible signal
-- **Signal engine:** a transparent rule → UP PRESSURE / DOWN PRESSURE / NO TRADE
-  with confidence and invalidation; active in 33% of hours, a modest DOWN-side edge
+- **Signal + model:** a transparent UP/DOWN/NO-TRADE rule and a calibrated
+  logistic regression, both frozen
+- **Locked holdout (2024 H2), evaluated once:** the calibrated model beats the
+  availability-safe baselines by ~2 points on balanced accuracy (0.352 vs
+  0.333 / 0.329), with **no probability skill** and far below the ex-post
+  persistence reference. Not a deployable edge.
 - Research memo: [`research/r01_research_memo.md`](research/r01_research_memo.md)
-- Level A audited (P8.1), Level B audited (P9.2); Level C not started
-- Locked holdout: unused
+- Levels A, B and C all audited; holdout closed
 
 ## Research Question
 
@@ -155,12 +160,37 @@ revision variable was crossed with any outcome
   wind**; and it did **not reproduce** on a 2024 H1 chronological hold-back.
 - **H1 and H2 are complementary.** H1 (residual load) is weak and threshold-like
   but picks up exactly in the tight, wind-poor hours where H2 fails.
-- This is not a deployable or profitable rule. The locked-holdout evaluation
-  (Level C) is the real out-of-sample test.
+- This is not a deployable or profitable rule.
 
 ![Balancing-pressure label share by wind-revision quintile](research/evidence/p4_h2_revision/p4_3_revision_label_chart_2026-09-06.png)
 
-Reproduce the full hypothesis and signal chain with:
+## Locked-Holdout Result (Level C)
+
+The specification — features, `C`, calibration, the split dates, the frozen labels
+and δ — was frozen at a git commit; prior non-use of the holdout was
+machine-verified; and after the project owner's explicit approval the frozen
+calibrated logistic regression was evaluated **once** on 2024-07-01 to
+2024-12-31 (4,331 scored hours). The holdout is now closed.
+
+| Method | Balanced accuracy | Macro-F1 |
+|---|---:|---:|
+| Logistic (calibrated) | **0.352** | **0.297** |
+| Majority (development) | 0.333 | 0.247 |
+| Hour-of-week (development) | 0.329 | 0.280 |
+| Persistence (ex-post reference) | 0.635 | 0.635 |
+
+The model beats the availability-safe baselines by about two points on balanced
+accuracy and macro-F1 — real, but within the range 4,331 hours of sampling can
+produce. It predicts `NEUTRAL` 95% of the time; on its `DOWN` calls the outcome is
+`DOWN` 49% versus a 27% base rate. It has **no probability skill** (multiclass
+Brier 0.593 vs a 0.582 climatology reference) and sits far below persistence.
+Strongest in summer, below majority in winter.
+
+**The wind-revision mechanism is real and did not vanish out of sample, but it is
+not an edge worth acting on.** Full detail:
+[`research/evidence/p10_holdout`](research/evidence/p10_holdout/README.md).
+
+Reproduce the full hypothesis, signal and model chain with:
 
 ```bash
 uv run python src/p4_revision.py       # build revisions, freeze buckets
@@ -169,7 +199,11 @@ uv run python src/p4_conditioning.py   # H2 regime / time / permutation stress t
 uv run python src/p5_residual_load.py  # H1-A mechanism + H1-B proxy
 uv run python src/p6_cross_border.py   # H3 cross-border conditioning
 uv run python src/p7_signal_engine.py  # transparent signal, cards, journal
+uv run python src/p10_model.py         # logistic regression + calibration (development)
 ```
+
+The one-shot holdout evaluation (`src/p10_holdout_eval.py`) is not re-runnable —
+the holdout is `state: evaluated`.
 
 ## Research Principles
 

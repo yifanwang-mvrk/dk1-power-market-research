@@ -1,0 +1,25 @@
+{
+  "step": "P10.4",
+  "status": "PASS",
+  "milestone": "Level C - MVP v1 Complete",
+  "verdict": "ACHIEVED",
+  "audited_at_utc": "2026-09-06T21:00:00Z",
+  "git_head_audited": "4a0623d",
+  "criteria": {
+    "C1_logistic_regression_baseline": {"verdict": "DONE", "evidence": "P10.1 / D035"},
+    "C2_holdout_unlocked_under_protocol": {"verdict": "DONE", "evidence": "P10.2 / D036 record; P10.3 / D037 owner-approved one-shot unlock; config re-locked as evaluated"},
+    "C3_out_of_sample_evaluation": {"verdict": "DONE", "evidence": "P10.3: 4,331 scored 2024 H2 hours"},
+    "C4_vs_majority_holdout": {"verdict": "DONE", "evidence": "calibrated balanced accuracy 0.352 vs majority 0.333"},
+    "C5_vs_persistence_holdout": {"verdict": "DONE", "evidence": "persistence 0.635 ex-post reference; model far below it"},
+    "C6_probability_calibration": {"verdict": "DONE", "evidence": "Platt calibrator; holdout Brier 0.593 vs 0.582 climatology; calibration chart"},
+    "C7_regime_performance_holdout": {"verdict": "DONE", "evidence": "by_season (summer 0.362, winter 0.326) and by_wind_level"},
+    "C8_limitations": {"verdict": "DONE", "evidence": "research/r01_research_memo.md section 10"},
+    "C9_full_research_memo": {"verdict": "DONE", "evidence": "research/r01_research_memo.md v1.1"},
+    "C10_polished_readme": {"verdict": "DONE", "evidence": "README.md with MVP v1 Complete status and the holdout result"}
+  },
+  "criteria_met": 10,
+  "criteria_total": 10,
+  "final_finding": "Renewable wind-forecast revisions carry a small, downward-side, non-deployable amount of information about DK1 balancing pressure; it survived the locked-holdout test only marginally (calibrated logistic ~2 points over the availability-safe baselines on balanced accuracy, no probability skill).",
+  "decision": "D038",
+  "holdout": "EVALUATED_ONCE_THEN_CLOSED"
+}

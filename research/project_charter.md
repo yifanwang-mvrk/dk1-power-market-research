@@ -2,9 +2,10 @@
 
 **Project:** DK1 Short-Term Power Market Research
 **Version:** MVP v1
-**Status:** Frozen design; Level B (Interview Ready) achieved — all three
-hypotheses tested one round, transparent signal engine and research memo
-complete; Level C (locked-holdout evaluation) next
+**Status:** **MVP v1 Complete** (2026-09-06). All three hypotheses tested one
+round; transparent signal and logistic model frozen; the locked holdout was
+evaluated once. Finding: a small, downward-side, non-deployable amount of
+information in renewable forecast revisions. Holdout closed.
 **Owner:** Yifan Wang
 
 ## Mission

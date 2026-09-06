@@ -1,6 +1,7 @@
 # Project Status / 项目进度
 
 **Project:** DK1 Short-Term Power Market Research
+**Status:** MVP v1 Complete (2026-09-06) — Levels A, B and C achieved
 **Last updated:** 2026-09-06
 **Design baseline:** Frozen MVP Blueprint v1.1
 
@@ -8,25 +9,26 @@
 
 | Item | Current Status |
 |---|---|
-| Completed phase | P10.3 — locked-holdout evaluated once (D037) |
-| Current phase | P10 — Level C |
-| Current step | P10.4 — finalise the memo, limitations and README; label MVP v1 |
-| Next step | — (MVP v1 Complete on P10.4) |
-| Current milestone | Level C — MVP Complete |
-| Milestone status | IN PROGRESS (P10.1–P10.3 done; P10.4 documentation remains) |
-| Holdout | EVALUATED ONCE (D037) — `state: evaluated`, `fetch_allowed: false`, closed |
+| Completed phase | P10.4 — **MVP v1 Complete** (D038) |
+| Current phase | — project complete |
+| Current step | — |
+| Next step | Any follow-up is a new round on fresh, later data |
+| Current milestone | Level C — MVP v1 Complete |
+| Milestone status | **ACHIEVED 2026-09-06 — 10/10 criteria audited (P10.4)** |
+| Holdout | EVALUATED ONCE (D037) — `state: evaluated`, closed |
 | Blocker | None |
 
 ## One Current Action / 当前唯一动作
 
-Do P10.4: add the P10.3 holdout result and its limitations to
-`research/r01_research_memo.md` and the README, do a final limitations pass, and
-label the project **MVP v1 Complete**. The holdout is closed; no further model or
-spec changes.
+**None — the MVP is complete.** The finding: renewable wind-forecast revisions
+carry a small, downward-side, non-deployable amount of information about DK1
+balancing pressure; it survived the locked holdout only marginally. Any next step
+(a stricter evaluation, the ENTSO-E load forecast, border-level H3, a second zone)
+is a new research round on fresh, later, unseen data.
 
-做 P10.4：把 P10.3 的 holdout 结果和局限写进 `research/r01_research_memo.md` 和
-README，做最后一轮局限梳理，把项目标为 **MVP v1 Complete**。holdout 已关闭，不再
-改模型或规格。
+**无——MVP 已完成。** 结论：可再生能源风电预报修正对 DK1 平衡压力有少量、偏下行、
+不可部署的信息；出 holdout 仅勉强站住。后续任何一步（更严评估、ENTSO-E 负荷预报、
+边界级 H3、第二个区域）都是在新的、更晚的、未见数据上的新一轮研究。
 
 ## P1.1 Completion / Forecasts_Hour 核验结论
 
@@ -477,9 +479,11 @@ mechanism attenuated but did not vanish out of sample
 | C5 | Comparison vs persistence (holdout) | DONE — persistence 0.635 (ex-post reference), reported |
 | C6 | Probability calibration + assessment | DONE — multiclass Brier 0.593 vs 0.582 climatology; calibration chart |
 | C7 | Regime performance (holdout) | DONE — by season and by wind level in P10.3 |
-| C8 | Limitations | PARTIAL — throughout; final pass in P10.4 |
-| C9 | Full research memo | PARTIAL — r01 v1.0 exists; holdout section in P10.4 |
-| C10 | Polished README | PARTIAL — final pass in P10.4 |
+| C8 | Limitations | DONE — memo v1.1 §10 |
+| C9 | Full research memo | DONE — `research/r01_research_memo.md` v1.1 (holdout result + next-round section) |
+| C10 | Polished README | DONE — MVP v1 Complete status + holdout result table |
+
+**Level C: ACHIEVED 2026-09-06 — 10/10 criteria audited (P10.4); see `research/evidence/p10_level_c/`. Project MVP v1 Complete (D038).**
 
 ## Level B Evidence Board / Level B 证据板
 
@@ -536,5 +540,6 @@ Earlier assistant-prepared P1.1 files remain outside the formal repository as re
 | 2026-09-06 | P10.1 logistic regression + Platt calibration frozen (development split at 2023-07-01 / 2024-01-01): coefficient signs correct on all 5 H1/H2 checks, but no edge on the 2024 H1 validation slice. I08 resolved. D035. Holdout still locked | Current: P10.2; Next: P10.3 (owner sign-off) |
 | 2026-09-06 | P10.2 spec frozen (commit 47577b1), holdout-unlock template filled (D036), prior non-use machine-verified (6/6). Holdout still locked; `fetch_allowed: false`. **P10.3 held for owner approval** | Current: P10.3 (blocked on approval); Next: P10.4 |
 | 2026-09-06 | **P10.3 — owner-approved locked-holdout evaluation, run once (D037).** Calibrated logistic balanced accuracy 0.352 vs majority 0.333 / hour-of-week 0.329 — a small edge, no probability skill, DOWN-side only, not deployable. Holdout closed (`state: evaluated`). Level C C2–C7 done | Current: P10.4; Next: MVP v1 Complete |
+| 2026-09-06 | **P10.4 — MVP v1 Complete (D038).** Memo v1.1 and README carry the holdout result and limitations; all ten Level C criteria audited (10/10). Final finding: a small, downward-side, non-deployable amount of information in renewable forecast revisions. Project complete | Current: —; Next: a new round needs fresh data |
 
 Update this file after every completed work session. Every DONE status requires reviewed evidence.

@@ -1,8 +1,8 @@
 # Data Dictionary
 
 **Project:** DK1 Short-Term Power Market Research
-**Status:** Level A achieved; H2 first round and H1 (P5) complete; H1-B interim
-residual-load proxy registered
+**Status:** MVP v1 Complete — target, features and eligibility classes frozen;
+the locked holdout was evaluated once (D037/D038)
 **Last updated:** 2026-09-06
 
 ## Field Registry

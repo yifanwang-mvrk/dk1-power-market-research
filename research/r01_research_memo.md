@@ -1,8 +1,8 @@
 # R01 — DK1 Short-Term Balancing Pressure: First Research Round
 
 **Project:** DK1 Short-Term Power Market Research
-**Memo version:** 1.0 — 2026-09-06
-**Status:** Level B (Interview Ready). Level C (locked-holdout evaluation) not started.
+**Memo version:** 1.1 — 2026-09-06
+**Status:** MVP v1 Complete. The locked holdout has been evaluated once and is closed.
 **Author:** Yifan Wang
 
 ---
@@ -180,39 +180,84 @@ forecast (the blind spot), renewables arriving far from forecast, or the system
 turning tight. **No Trade** is the correct output when H1 and H2 conflict, when
 neither fires, or when an input is missing — roughly two thirds of hours.
 
-## 9. Limitations
+## 9. The logistic model and the locked-holdout test
 
-- All results are **in-sample / descriptive**. The frozen δ and the buckets were
-  estimated on the whole development period; the transparent-rule thresholds are
-  pre-declared from decision-eligible distributions but still development-wide.
-- The primary effect is weak (|Spearman| ≈ 0.1) and did not reproduce on a
-  short, seasonally confounded 2024 H1 hold-back.
-- The round-1 rule-vs-baseline gate rewards a method merely for attempting all
-  three classes; a stricter gate and a proper scoring rule are needed.
-- No demand-shock, outage or realized-flow information is decision-eligible.
-- No probabilistic output or calibration yet.
-- This is not a deployable or profitable signal, and no such claim is made.
+**Development (P10.1).** A multinomial logistic regression (`C = 1.0`,
+`class_weight = balanced`) on ten decision-eligible features — the H2 revision,
+the 5h wind level, a low-wind interaction, the solar revision, the H1-B proxy and
+cyclical time — against the frozen labels, with a time-ordered
+train / calibration / validation split and Platt calibration. The coefficient
+signs matched the H1/H2 mechanisms on all five checked terms. On the 2024 H1
+development validation slice it had no edge — the calibrated argmax collapsed to
+the majority class — which was expected: 2024 H1 is exactly where the H2 gradient
+failed to reproduce (§4).
 
-## 10. What Level C will decide
+**The one holdout evaluation (P10.3, owner-approved, 2026-09-06).** The
+specification was frozen at a git commit, prior non-use of the holdout was
+machine-verified, and the frozen model was evaluated **once** on
+2024-07-01 to 2024-12-31 (4,331 scored hours). The holdout is now closed.
 
-1. Fit a logistic regression on decision-eligible features (H2 revision, H1-B
-   proxy, time context) with a time-ordered development-only train/validation
-   split and probability calibration.
-2. Freeze the specification, log the unlock, and run **one** evaluation on the
-   locked 2024 H2 holdout.
-3. Report the primary Q25 specification against both baselines, plus calibration
-   and by-regime performance.
+| Method | Balanced accuracy | Macro-F1 |
+|---|---:|---:|
+| Logistic (calibrated) | **0.352** | **0.297** |
+| Majority (development) | 0.333 | 0.247 |
+| Hour-of-week (development) | 0.329 | 0.280 |
+| Persistence (ex-post reference) | 0.635 | 0.635 |
+| P7 transparent rule | 0.348 | 0.349 |
 
-A finding of **no out-of-sample edge** completes the MVP just as validly as a
-positive one; the value of the project is the honest, reproducible process.
+- The calibrated model **beats both availability-safe baselines** on balanced
+  accuracy and macro-F1 by about two points — real, but within the range that
+  4,331 hours of sampling can produce.
+- It predicts `NEUTRAL` for 95% of hours. On the 212 hours it calls `DOWN`, the
+  outcome is `DOWN` 49% of the time versus a 27% base rate — the signal lives on
+  the downward side, as everywhere upstream.
+- **No probability skill:** multiclass Brier 0.593 versus a development-class-
+  frequency reference of 0.582.
+- Strongest in summer (balanced accuracy 0.362), below the majority baseline in
+  winter (0.326) — consistent with the development conditioning.
+- The primary Q25 specification stands (Q20 0.355, Q30 0.349).
+
+## 10. Limitations
+
+- The primary effect is weak (`|Spearman| ≈ 0.1` in development) and did not
+  reproduce on the 2024 H1 development hold-back; the ~2-point holdout edge is
+  within sampling range.
+- Development descriptive results use a δ and buckets estimated on the whole
+  development period; the holdout uses that fixed δ.
+- The model has no demand-shock, outage or realized-flow information — hourly
+  balancing outcomes are dominated by what the decision-eligible inputs cannot
+  see.
+- The round-1 rule-vs-baseline gate rewards attempting all three classes; a
+  stricter test would require beating a directional baseline or a proper scoring
+  rule.
+- Cross-border conditioning (H3) is diagnostic only; no decision-eligible signal
+  was found.
+- **This is not a deployable or profitable signal, and no such claim is made.**
+  Balancing pressure is a market-outcome proxy, not executable intraday P&L.
 
 ## 11. Bottom line
 
-Renewable forecast revisions **do** carry a small amount of directionally
-correct information about DK1 balancing pressure — concentrated on the downward
-side, present only when wind is a material factor, and not yet shown to be
-stable out of time. Residual load adds a weak, complementary tight-system
-signal. Cross-border capacity, at the day-ahead horizon, adds nothing usable. A
-transparent rule turns this into a modest DOWN-side view that abstains most of
-the time. Whether any of it survives the locked-holdout test is the open
-question Level C answers.
+Renewable wind-forecast revisions carry a small amount of directionally correct
+information about DK1 balancing pressure — concentrated on the downward side,
+present mainly when wind is a material factor, and it **survived the
+locked-holdout test only marginally**: the frozen model edges the
+availability-safe baselines by about two points on balanced accuracy, with no
+probability skill and far below the ex-post persistence reference. Residual load
+adds a weak, complementary tight-system signal exactly where the wind revision
+fails. Day-ahead cross-border capacity adds nothing usable.
+
+The mechanism is real and it did not vanish out of sample, but it is not an edge
+worth acting on. The MVP is complete on that finding — the value of the project
+is the point-in-time discipline, the pre-registration, the untouched-until-once
+holdout, and reporting the result exactly as it came out.
+
+## 12. What a next round would change
+
+- A stricter evaluation: a proper multiclass scoring rule, a directional baseline
+  to beat, and repeated time-blocked cross-validation rather than one split.
+- The ENTSO-E day-ahead load forecast to replace the interim H1-B climatology
+  proxy (external access pending).
+- Border-level cross-border flow modelling and countertrade features for a real
+  H3 test.
+- Only after fresh, later, unseen data — anything informed by this holdout is
+  now exploratory.

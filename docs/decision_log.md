@@ -61,6 +61,7 @@ Source: the complete 31-section final Blueprint response and the owner's subsequ
 | D035 | P10.1 logistic regression + calibration frozen; right signs, no dev-validation edge | IMPLEMENTATION NOTE |
 | D036 | P10.2 holdout-unlock record: spec frozen, prior non-use verified; awaiting owner approval | FROZEN — UNLOCKED at D037 |
 | D037 | P10.3 locked-holdout result: a small out-of-sample edge over the availability-safe baselines, no probability skill | RESEARCH FINDING — FINAL |
+| D038 | P10.4 MVP v1 Complete | MILESTONE — PROJECT COMPLETE |
 | E001–E003 | 执行说明 / Execution clarifications | IMPLEMENTATION NOTE |
 | I01–I08 | 字段、参数和可用性 / Fields, parameters and availability | TRACKED — see current table |
 
@@ -1067,6 +1068,51 @@ The holdout must not be used again; any follow-up needs fresh, later data.
 protocol. `config` `state: evaluated`, `fetch_allowed: false`. It is closed.
 
 **Supersedes / 替代:** None. Completes D005 / D017.
+
+## D038 · P10.4 — MVP v1 Complete
+
+**日期 / Date:** 2026-09-06
+**状态 / Status:** MILESTONE — PROJECT COMPLETE
+**Related step / 对应步骤:** P10.4
+
+**决定 / Decision:** All ten Level C criteria are audited as met against committed
+evidence at `git HEAD 4a0623d` (P10.2/P10.3 record their own docs). The research
+memo (`research/r01_research_memo.md` v1.1) and the README carry the
+locked-holdout result, the limitations and the "what a next round would change"
+section. The milestone board reads **Level C — MVP v1 Complete**.
+
+**最终结论 / Final finding:** Renewable wind-forecast revisions carry a small
+amount of directionally correct information about DK1 balancing pressure,
+concentrated on the downward side and present mainly when wind is a material
+factor. It survived the locked-holdout test only marginally — the frozen
+calibrated logistic beats the availability-safe baselines by ~2 points on
+balanced accuracy and macro-F1 (0.352 vs 0.333 / 0.329), with no probability
+skill and far below the ex-post persistence reference. **The mechanism is real
+and did not vanish out of sample, but it is not an edge worth acting on.**
+
+**理由 / Rationale:** The Blueprint (§27) says a finding of no or marginal
+out-of-sample edge completes the MVP as validly as a positive one, and that
+hiding such a finding is the only real failure. Every Level C criterion has file
+or result evidence; the primary Q25 specification was reported exactly as
+produced.
+
+**未采用 / Not done:** No retuning after the holdout. No profitable-strategy,
+deployable-edge or executable-P&L claim anywhere (D016 / D018). No second holdout
+use.
+
+**Evidence / 证据:**
+`research/evidence/p10_level_c/level_c_audit_2026-09-06.md` and `.json`;
+`research/r01_research_memo.md` v1.1; `README.md`;
+`research/evidence/p10_model/`, `p10_holdout_unlock/`, `p10_holdout/`.
+
+**Impact / 影响:** The project is MVP v1 Complete. The holdout is closed. Any
+further work (a stricter evaluation, the ENTSO-E load forecast, border-level H3,
+a second dataset or zone) is a new round on fresh, later, unseen data.
+
+**Holdout implications / 留出期:** Closed. `state: evaluated`,
+`fetch_allowed: false`. It must not be used again.
+
+**Supersedes / 替代:** None. Completes the project.
 
 ## 本次执行说明 / Operational clarifications
 
