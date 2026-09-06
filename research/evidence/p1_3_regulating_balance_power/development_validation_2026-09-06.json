@@ -1,0 +1,216 @@
+{
+  "validation_status": "CONDITIONAL PASS",
+  "balancing_outcome_feasibility": "FEASIBLE WITH ONE DOCUMENTED MISSING DELIVERY HOUR",
+  "raw_source_file": "data/raw/p1_3_validation/RegulatingBalancePowerdata_DK1_development_2022-01-01_2024-06-30.json",
+  "raw_sha256": "4ef2e3ceb5e696d86ac950f33d34fafb0ebc1da0b367ba0fc7352df8c3deac3e",
+  "metadata_source_file": "research/evidence/p1_3_regulating_balance_power/metadata_RegulatingBalancePowerdata_2026-09-06.json",
+  "metadata_sha256": "1798bca7bf3a635b5c2b3cccea34bf0fe35447537544adf65e71a7661f97795f",
+  "dataset": {
+    "dataset_id": 122,
+    "dataset_name": "RegulatingBalancePowerdata",
+    "title": "Regulating and Balance Power, Overall Data (Discontinued, please read description)",
+    "description": "This dataset has been Discontinued. Data is available in [Imbalance Price](https://www.energidataservice.dk/tso-electricity/ImbalancePrice) and [mFRR Energy Activation Market](https://www.energidataservice.dk/tso-electricity/MfrrEnergyActivationMarket).\n\nIn connection with the go-live of the new imbalance price design, the dataset [Imbalance Price](https://www.energidataservice.dk/tso-electricity/ImbalancePrice) was introduced, replacing [Regulating and Balance Power, Overall Data](https://www.energidataservice.dk/tso-electricity/RegulatingBalancePowerdata). The dataset is in 15-minute resolution and contains all the components relevant to the imbalance price, including the imbalance price, aFRR volume-weighted average price, and mFRR marginal price.\n\nmFRR activation, balance power prices and imbalance, overall data.",
+    "caution": "DKK values for Up- and Down Regulation Balance Power Price are missing.",
+    "active_api_flag": true,
+    "resolution": "1 hour (PT1H)",
+    "update_frequency": "N/A",
+    "data_from": "1999-07-01T00:00:00",
+    "last_metadata_update": "2026-03-03T12:54:19",
+    "primary_key": [
+      "HourUTC",
+      "PriceArea"
+    ],
+    "fields": [
+      {
+        "field": "HourUTC",
+        "unit": "",
+        "description": "A date and time (interval), shown in _UTC time zone_, where the values are valid. 00:00 o’clock is the first hour of a given day interval  00:00 - 00:59 and 01:00 covers the second hour (interval) of the day and so forth. Please note: The naming is based on the length of the interval of the finest grain of the resolution.",
+        "primary_key_index": 1
+      },
+      {
+        "field": "HourDK",
+        "unit": "",
+        "description": "A date and time (interval), shown in _Danish time zone_, where the values are valid. 00:00 o’clock is the first hour of a given day, interval 00:00 - 00:59, and 01:00 covers the second hour period (interval) of the day and so forth. ",
+        "primary_key_index": null
+      },
+      {
+        "field": "PriceArea",
+        "unit": "",
+        "description": "Same as bidding zone. Denmark is divided in two price areas (bidding zones) divided by the Great Belt. DK1 is west of the Great Belt and DK2 is east of the Great Belt.",
+        "primary_key_index": 2
+      },
+      {
+        "field": "ImbalancePriceEUR",
+        "unit": "EUR per MWh",
+        "description": "The imbalance price is based on the dominating direction:\\\nUp: max of aFRR component or mFRR price\\\nNone: Value of avoided activation, spot price\\\nDown: min of aFRR component or mFRR price",
+        "primary_key_index": null
+      },
+      {
+        "field": "BalancingPowerPriceUpEUR",
+        "unit": "EUR per MWh",
+        "description": "Comma (,) is used as decimal sign and 1000 separator isn’t allowed",
+        "primary_key_index": null
+      },
+      {
+        "field": "BalancingPowerPriceDownEUR",
+        "unit": "EUR per MWh",
+        "description": "Comma (,) is used as decimal sign and 1000 separator isn’t allowed",
+        "primary_key_index": null
+      },
+      {
+        "field": "ImbalanceMWh",
+        "unit": "MWh",
+        "description": "Imbalance after TSO activations of mFRR, aFRR and FCR.",
+        "primary_key_index": null
+      },
+      {
+        "field": "mFRRUpActBal",
+        "unit": "MWh",
+        "description": "mFRR activations for upward balancing (includes only Danish activations)",
+        "primary_key_index": null
+      },
+      {
+        "field": "mFRRDownActBal",
+        "unit": "MWh",
+        "description": "mFRR activations for downward balancing (includes only Danish activations)",
+        "primary_key_index": null
+      }
+    ]
+  },
+  "successor_dataset": {
+    "dataset_id": 160,
+    "dataset_name": "ImbalancePrice",
+    "title": "Imbalance Price",
+    "active_api_flag": true,
+    "resolution": "15 minutes (PT15M)",
+    "update_frequency": "PT15M",
+    "data_from": "2025-03-04T12:15:00",
+    "development_period_applicable": false
+  },
+  "scope": {
+    "development_start_local_inclusive": "2022-01-01",
+    "development_end_local_inclusive": "2024-06-30",
+    "request_end_local_exclusive": "2024-07-01",
+    "boundary_timezone": "Europe/Copenhagen",
+    "expected_delivery_hours": 21887,
+    "api_reported_total": 21886,
+    "records_returned": 21886,
+    "distinct_delivery_hours": 21886,
+    "coverage_percent": 99.995431,
+    "first_utc": "2021-12-31T23:00:00+00:00",
+    "last_utc": "2024-06-30T21:00:00+00:00",
+    "missing_hour_count": 1,
+    "missing_ranges": [
+      {
+        "start_utc": "2022-10-30T00:00:00+00:00",
+        "end_utc_inclusive": "2022-10-30T00:00:00+00:00",
+        "start_local": "2022-10-30T02:00:00+02:00",
+        "end_local_inclusive": "2022-10-30T02:00:00+02:00",
+        "hours": 1
+      }
+    ],
+    "extra_hour_count": 0,
+    "duplicate_key_rows": 0,
+    "holdout_rows": 0,
+    "price_areas": [
+      "DK1"
+    ],
+    "hour_dk_mismatch_rows": 0
+  },
+  "target_selection": {
+    "selected_field": "ImbalancePriceEUR",
+    "unit": "EUR/MWh",
+    "pit_class": "outcome",
+    "research_role": "P_Balancing,t in the balancing spread target",
+    "executable_pnl_claim": false,
+    "exact_historical_publication_delay": "not documented in legacy metadata",
+    "directional_price_relationship": {
+      "valid_imbalance_prices": 21886,
+      "matches_up_only": 5290,
+      "matches_down_only": 7900,
+      "matches_both": 8696,
+      "matches_neither": 0
+    }
+  },
+  "price_summary": {
+    "ImbalancePriceEUR": {
+      "unit": "EUR per MWh",
+      "null_count": 0,
+      "zero_count": 198,
+      "negative_count": 970,
+      "minimum": -2200.0,
+      "maximum": 4704.43,
+      "median": 94.491539
+    },
+    "BalancingPowerPriceUpEUR": {
+      "unit": "EUR per MWh",
+      "null_count": 0,
+      "zero_count": 59,
+      "negative_count": 334,
+      "minimum": -129.960007,
+      "maximum": 4704.43,
+      "median": 105.5
+    },
+    "BalancingPowerPriceDownEUR": {
+      "unit": "EUR per MWh",
+      "null_count": 0,
+      "zero_count": 221,
+      "negative_count": 1137,
+      "minimum": -2200.0,
+      "maximum": 871.0,
+      "median": 88.669998
+    }
+  },
+  "dst_checks": [
+    {
+      "local_date": "2022-03-27",
+      "expected_hours": 23,
+      "rows": 23,
+      "unique_hour_utc": 23,
+      "unique_hour_dk": 23
+    },
+    {
+      "local_date": "2022-10-30",
+      "expected_hours": 25,
+      "rows": 24,
+      "unique_hour_utc": 24,
+      "unique_hour_dk": 24
+    },
+    {
+      "local_date": "2023-03-26",
+      "expected_hours": 23,
+      "rows": 23,
+      "unique_hour_utc": 23,
+      "unique_hour_dk": 23
+    },
+    {
+      "local_date": "2023-10-29",
+      "expected_hours": 25,
+      "rows": 25,
+      "unique_hour_utc": 25,
+      "unique_hour_dk": 24
+    },
+    {
+      "local_date": "2024-03-31",
+      "expected_hours": 23,
+      "rows": 23,
+      "unique_hour_utc": 23,
+      "unique_hour_dk": 23
+    }
+  ],
+  "historical_rule": {
+    "single_price_go_live": "2021-11-01T00:00:00+01:00",
+    "development_period_entirely_after_go_live": true,
+    "official_source": "https://nordicbalancingmodel.net/confirmation-of-go-live-of-single-price-and-single-position-on-1-november-2021/",
+    "interpretation": "One imbalance price applies to the imbalance settlement period; the legacy field selects the official price according to the dominating direction."
+  },
+  "handling_rules": [
+    "Use HourUTC + PriceArea as the canonical join key.",
+    "Use HourDK only for local interpretation and DST checks.",
+    "Do not create or zero-fill the missing 2022-10-30 00:00 UTC row.",
+    "Preserve zero, negative and extreme prices as observations with quality flags.",
+    "Use ImbalancePriceEUR as the outcome; retain direction prices for audit.",
+    "Do not infer the official dominating direction from the sign of ImbalanceMWh.",
+    "Do not present the outcome as executable trading P&L."
+  ]
+}

@@ -148,8 +148,8 @@ UP / DOWN / NEUTRAL 是结果分类；Bullish / Bearish / No Trade 是研究决�
 
 ### 我们现在在哪？
 
-**P0 已完成；P1.1 `Forecasts_Hour` 有条件通过，P1.2 `Elspotprices` 正式通过。当前执行 P1.3：核验 DK1 balancing price。** 数据测试尚未开始，Level A/B/C 均未达到。
+**P0 已完成；P1.1 `Forecasts_Hour` 有条件通过，P1.2 `Elspotprices` 正式通过，P1.3 `RegulatingBalancePowerdata` 有条件通过。当前执行 P1.4：核验 fundamentals 和 system sources。** 假设测试尚未开始，Level A/B/C 均未达到。
 
-P1.1 已确认同一交割小时的 5h→1h revision 在结构上可实施；P1.2 已把同小时 DK1 `SpotPriceEUR` 锁定为 EUR/MWh 日前参考价，并确认完整开发期覆盖。当前继续确认哪一个 balancing 字段是真正的事后目标。核心原则仍是：**先确认每个字段的市场含义、时间与单位，再构造 spread。**
+P1.1 已确认同一交割小时的 5h→1h revision 在结构上可实施；P1.2 已把同小时 DK1 `SpotPriceEUR` 锁定为 EUR/MWh 日前参考价；P1.3 已把 `ImbalancePriceEUR` 锁定为 EUR/MWh 事后 balancing outcome。官方 balancing 历史源缺少 2022 年夏令时回拨日的一个完整小时，该小时必须保持缺失。当前继续核验 H1/H3 所需的 fundamentals 和 system sources。核心原则仍是：**先确认每个字段的市场含义、时间与单位，再构造 spread 和特征。**
 
 阅读自检：你能用自己的话解释为什么比较同一小时的新旧预报、为什么 actual 不自动等于可用信息、为什么要保留 holdout 吗？这三点讲清楚，就可以开始第一步了。

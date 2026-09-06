@@ -10,8 +10,8 @@
 |---|---|
 | Completed phase | P0 — Project Control & Environment |
 | Current phase | P1 — Data Source Validation |
-| Current step | P1.3 — Validate DK1 balancing price |
-| Next step | P1.4 — Validate fundamentals and system sources |
+| Current step | P1.4 — Validate fundamentals and system sources |
+| Next step | P2.1 — Implement reproducible development-data acquisition |
 | Current milestone | Level A — CV-safe |
 | Milestone status | NOT ACHIEVED |
 | Holdout | LOCKED and unused |
@@ -19,10 +19,10 @@
 
 ## One Current Action / 当前唯一动作
 
-Validate the official historical DK1 balancing-price dataset, target field,
-unit, delivery-hour mapping and publication limitations.
+Validate candidate demand, generation, cross-border and system-condition
+sources, including field meaning and point-in-time eligibility.
 
-核验 DK1 历史 balancing price 的官方数据集、目标字段、单位、交付小时映射和发布时间限制。
+核验需求、发电、跨境和系统条件候选来源，包括字段含义和 point-in-time 资格。
 
 ## P1.1 Completion / Forecasts_Hour 核验结论
 
@@ -55,6 +55,24 @@ unit, delivery-hour mapping and publication limitations.
 - Exact row-level publication timestamps are unavailable and remain in P2.3
 - Future data after 2025-09-30 requires the successor `DayAheadPrices` dataset
 
+## P1.3 Completion / DK1 Balancing Outcome 核验结论
+
+**Status:** CONDITIONAL PASS — completed 2026-09-06
+
+- Official legacy dataset `RegulatingBalancePowerdata` (ID 122) registered
+- `ImbalancePriceEUR` selected as `P_Balancing,t` in EUR/MWh
+- Target classified as an ex-post `outcome`, never a decision-time feature
+- All 21,886 returned development rows contain the selected target price
+- Every target value matches the official Up price, Down price or both
+- One of 21,887 expected hours is absent: `2022-10-30T00:00:00Z`
+- A separate bounded official API request confirmed the same DST fall-back gap
+- Zero duplicate-key rows, zero extra rows and zero holdout rows
+- Missing row must remain missing; zero, negative and extreme prices are retained
+- Nordic single-price go-live on 2021-11-01 precedes the whole development period
+- Active 15-minute `ImbalancePrice` successor starts in 2025 and is not mixed in
+- Exact historical publication delay is undocumented and remains under I03/P2.3
+- Outcome is a balancing-pressure proxy, not executable trading P&L
+
 ## Completed Setup / 已完成搭建
 
 - [x] Formal local Git repository created
@@ -83,8 +101,8 @@ unit, delivery-hour mapping and publication limitations.
 | A2 | Professional README | DONE |
 | A3 | Project Charter | DONE |
 | A4 | Target, development and holdout config | DONE |
-| A5 | Forecast, day-ahead and balancing data | IN PROGRESS — forecast and day-ahead sources validated |
-| A6 | Data Dictionary and PIT classification | IN PROGRESS — forecast and day-ahead fields registered |
+| A5 | Forecast, day-ahead and balancing data | DONE — all three core sources validated with documented conditions |
+| A6 | Data Dictionary and PIT classification | DONE — core forecast, reference and outcome fields registered |
 | A7 | H2 revision variables | NOT STARTED |
 | A8 | At least one completed hypothesis test | NOT STARTED |
 | A9 | At least one meaningful chart | NOT STARTED |
@@ -116,5 +134,6 @@ Earlier assistant-prepared P1.1 files remain outside the formal repository as re
 | 2026-09-05 | P0 repository and environment setup completed | Current: P1.1; Next: P1.2 |
 | 2026-09-06 | P1.1 `Forecasts_Hour` completed with a conditional pass | Current: P1.2; Next: P1.3 |
 | 2026-09-06 | P1.2 `Elspotprices` completed with a pass | Current: P1.3; Next: P1.4 |
+| 2026-09-06 | P1.3 `RegulatingBalancePowerdata` completed with a conditional pass | Current: P1.4; Next: P2.1 |
 
 Update this file after every completed work session. Every DONE status requires reviewed evidence.

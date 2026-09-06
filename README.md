@@ -8,7 +8,7 @@ Project foundation is complete. Official-source validation is in progress.
 
 - Repository structure and GitHub remote: created
 - Python environment: created and verified
-- Data validation: P1.1 conditionally passed; P1.2 `Elspotprices` passed; P1.3 current
+- Data validation: P1.1 conditionally passed; P1.2 passed; P1.3 conditionally passed; P1.4 current
 - Hypothesis testing: not started
 - Level A (CV-safe): not achieved
 - Locked holdout: unused
@@ -21,10 +21,12 @@ Project foundation is complete. Official-source validation is in progress.
 
 For each hourly DK1 delivery period:
 
-`Spread_t = P_Balancing,t - Elspotprices.SpotPriceEUR_t`
+`Spread_t = RegulatingBalancePowerdata.ImbalancePriceEUR_t - Elspotprices.SpotPriceEUR_t`
 
-The DK1 day-ahead reference is fixed as `SpotPriceEUR` in EUR/MWh. The exact
-historical balancing-price field remains pending P1.3 official-source validation.
+The DK1 day-ahead reference is fixed as `SpotPriceEUR` and the historical
+balancing outcome as `ImbalancePriceEUR`, both in EUR/MWh. The balancing source
+has one documented missing development hour and is used as an ex-post research
+outcome rather than an executable trading price.
 
 ## Research Periods
 

@@ -1,0 +1,43 @@
+{
+  "manifest_created_at_utc": "2026-09-06T11:20:17.886114+00:00",
+  "source_organization": "Energinet",
+  "scope": "official metadata and bounded DK1 development samples; no holdout outcome data",
+  "files": [
+    {
+      "file": "metadata_RegulatingBalancePowerdata_2026-09-06.json",
+      "source_url": "https://api.energidataservice.dk/meta/Dataset/RegulatingBalancePowerdata",
+      "note": "official legacy dataset metadata",
+      "sha256": "1798bca7bf3a635b5c2b3cccea34bf0fe35447537544adf65e71a7661f97795f",
+      "bytes": 10177,
+      "records": 0,
+      "holdout_accessed": false
+    },
+    {
+      "file": "candidate_metadata_ImbalancePrice_2026-09-06.json",
+      "source_url": "https://api.energidataservice.dk/meta/Dataset/ImbalancePrice",
+      "note": "official active-successor metadata; no outcome rows requested",
+      "sha256": "578ae0cdf48ebbcc6cc13dc8c382c0575b9e7b7155e93141bddc8585497b67d6",
+      "bytes": 12826,
+      "records": 0,
+      "holdout_accessed": false
+    },
+    {
+      "file": "sample_dk1_2024-01-15.json",
+      "source_url": "https://api.energidataservice.dk/dataset/RegulatingBalancePowerdata?start=2024-01-15&end=2024-01-16&filter=%7B%22PriceArea%22%3A%5B%22DK1%22%5D%7D&sort=HourUTC&limit=0&timezone=DK",
+      "note": "bounded DK1 development sample",
+      "sha256": "a6c7f6f93309460c92426c6294f35e01c7221120e8383e86943341906b81ddd6",
+      "bytes": 12533,
+      "records": 24,
+      "holdout_accessed": false
+    },
+    {
+      "file": "dst_window_dk1_2022-10-30.json",
+      "source_url": "https://api.energidataservice.dk/dataset/RegulatingBalancePowerdata?start=2022-10-29T22%3A00&end=2022-10-30T04%3A00&filter=%7B%22PriceArea%22%3A%5B%22DK1%22%5D%7D&sort=HourUTC&limit=0&timezone=UTC",
+      "note": "bounded DST-window recheck confirming the missing UTC hour",
+      "sha256": "a15ab81f3fa223911ca57ab7dbf1fca90b98623466d843091331284f07287662",
+      "bytes": 2746,
+      "records": 5,
+      "holdout_accessed": false
+    }
+  ]
+}

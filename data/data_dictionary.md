@@ -1,7 +1,7 @@
 # Data Dictionary
 
 **Project:** DK1 Short-Term Power Market Research
-**Status:** P1.1 and P1.2 completed; forecast and day-ahead sources registered
+**Status:** P1.1-P1.3 completed; forecast, day-ahead and balancing sources registered
 **Last updated:** 2026-09-06
 
 ## Field Registry
@@ -24,6 +24,15 @@
 | Elspotprices | PriceArea | Bidding zone for the area price | text | Static area selector | decision_eligible (key) | Validated P1.2; use DK1 |
 | Elspotprices | SpotPriceDKK | Day-ahead spot price in the price area | DKK/MWh | Price for the delivery hour, formed in the preceding day-ahead market | decision_eligible (reference audit) | Validated P1.2; not selected for spread |
 | Elspotprices | SpotPriceEUR | Day-ahead spot price in the price area | EUR/MWh | Price for the delivery hour, formed in the preceding day-ahead market | decision_eligible (reference) | Validated P1.2; selected as P_DayAhead,t |
+| RegulatingBalancePowerdata | HourUTC | Start of the balancing delivery hour in UTC | — | Delivery interval; canonical outcome join time | outcome (key) | Validated P1.3 |
+| RegulatingBalancePowerdata | HourDK | Start of the balancing delivery hour in Danish local time | — | Delivery interval; DST interpretation only | outcome (key) | Validated P1.3; not sole join key |
+| RegulatingBalancePowerdata | PriceArea | Bidding zone for the balancing outcome | text | Static area selector | outcome (key) | Validated P1.3; use DK1 |
+| RegulatingBalancePowerdata | ImbalancePriceEUR | Official imbalance price based on the dominating direction | EUR/MWh | Final price outcome for the delivery hour | outcome | Validated P1.3; selected as P_Balancing,t |
+| RegulatingBalancePowerdata | BalancingPowerPriceUpEUR | Official upward balancing-power price component | EUR/MWh | Final directional price for the delivery hour | outcome (audit) | Validated P1.3; not independently selected as target |
+| RegulatingBalancePowerdata | BalancingPowerPriceDownEUR | Official downward balancing-power price component | EUR/MWh | Final directional price for the delivery hour | outcome (audit) | Validated P1.3; not independently selected as target |
+| RegulatingBalancePowerdata | ImbalanceMWh | Imbalance remaining after TSO activation of mFRR, aFRR and FCR | MWh | Ex-post physical-system diagnostic | outcome (diagnostic) | Validated P1.3; do not infer official direction from sign alone |
+| RegulatingBalancePowerdata | mFRRUpActBal | Danish mFRR activation for upward balancing | MWh | Ex-post activation volume | outcome (diagnostic) | Validated definition P1.3 |
+| RegulatingBalancePowerdata | mFRRDownActBal | Danish mFRR activation for downward balancing | MWh | Ex-post activation volume | outcome (diagnostic) | Validated definition P1.3 |
 
 ## Point-in-Time Classes
 
@@ -105,6 +114,52 @@ The development period contains 76 zero and 503 negative EUR prices. They are
 retained as valid observations rather than treated as missing or errors. The
 complete evidence and handling rules are recorded in
 `research/evidence/p1_2_elspotprices/development_validation_2026-09-06.md`.
+
+## P1.3 Dataset Contract
+
+- Dataset ID: `122`
+- Dataset name: `RegulatingBalancePowerdata`
+- Source: Energinet Energi Data Service
+- License: CC BY 4.0; attribute published use to Energinet
+- Source lifecycle: discontinued legacy hourly dataset
+- Resolution: one hour (`PT1H`)
+- Official primary key: `HourUTC`, `PriceArea`
+- Area selector: `DK1`
+- Selected field: `ImbalancePriceEUR`
+- Selected unit: `EUR per MWh`
+- Target role: `P_Balancing,t` in
+  `Spread_t = P_Balancing,t - P_DayAhead,t`
+- PIT class: `outcome`; unavailable to the simulated pre-delivery decision
+- Canonical time key: `HourUTC`
+- Interpretation timezone: `Europe/Copenhagen`
+- Official logic: based on the dominating direction; Up uses the maximum of
+  the aFRR component or mFRR price, None uses avoided-activation value / spot
+  price, and Down uses the minimum of the aFRR component or mFRR price
+- Directional-price policy: retain Up and Down EUR fields for audit; do not
+  choose a direction after observing the research result
+- Missing policy: preserve the absent full row; never create or zero-fill it
+- Value policy: preserve zero, negative and extreme prices with quality flags
+- Currency policy: use EUR; the official source cautions that DKK Up/Down
+  values are missing
+- Historical regime: the Nordic single-price model went live on 2021-11-01,
+  before the development period
+- Publication limitation: the discontinued source reports update frequency as
+  N/A and does not document an exact historical publication delay
+- Successor limitation: active `ImbalancePrice` begins in 2025 at 15-minute
+  resolution and does not cover the declared development period
+
+## P1.3 Coverage Evidence
+
+| Expected hours | Returned rows | Target nulls | Missing rows | Duplicate key rows | Holdout rows |
+|---:|---:|---:|---:|---:|---:|
+| 21,887 | 21,886 | 0 | 1 | 0 | 0 |
+
+The missing row is `2022-10-30T00:00:00Z`, the first repeated local 02:00
+hour on the DST fall-back day. A separate bounded official request confirmed
+the same gap. Across all returned rows, `ImbalancePriceEUR` matches the Up
+price only in 5,290 hours, the Down price only in 7,900, and both prices in
+8,696; it matches neither in zero hours. The complete evidence is recorded in
+`research/evidence/p1_3_regulating_balance_power/development_validation_2026-09-06.md`.
 
 ## Registration Rules
 

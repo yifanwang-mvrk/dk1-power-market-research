@@ -21,7 +21,8 @@ target:
   unit: EUR/MWh
   day_ahead_source_dataset: Elspotprices
   day_ahead_source_field: SpotPriceEUR
-  balancing_source_field: null
+  balancing_source_dataset: RegulatingBalancePowerdata
+  balancing_source_field: ImbalancePriceEUR
   labels:
     up: spread > delta
     down: spread < -delta

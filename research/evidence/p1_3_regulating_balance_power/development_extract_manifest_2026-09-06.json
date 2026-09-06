@@ -1,0 +1,26 @@
+{
+  "file_timestamp_utc": "2026-09-06T11:06:06.584219+00:00",
+  "source_organization": "Energinet",
+  "dataset": "RegulatingBalancePowerdata",
+  "source_url": "https://api.energidataservice.dk/dataset/RegulatingBalancePowerdata?start=2022-01-01&end=2024-07-01&filter=%7B%22PriceArea%22%3A%5B%22DK1%22%5D%7D&sort=HourUTC&limit=0&timezone=DK",
+  "request": {
+    "start_local_inclusive": "2022-01-01",
+    "end_local_exclusive": "2024-07-01",
+    "timezone": "DK",
+    "filter": {
+      "PriceArea": [
+        "DK1"
+      ]
+    },
+    "sort": "HourUTC",
+    "limit": 0
+  },
+  "local_file": "data/raw/p1_3_validation/RegulatingBalancePowerdata_DK1_development_2022-01-01_2024-06-30.json",
+  "git_ignored": true,
+  "bytes": 11378075,
+  "sha256": "4ef2e3ceb5e696d86ac950f33d34fafb0ebc1da0b367ba0fc7352df8c3deac3e",
+  "records": 21886,
+  "first_utc_delivery_hour": "2021-12-31T23:00:00",
+  "last_utc_delivery_hour": "2024-06-30T21:00:00",
+  "holdout_records": 0
+}

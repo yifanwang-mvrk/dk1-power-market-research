@@ -23,7 +23,7 @@ Actual demand and actual renewable production may explain past outcomes but cann
 
 ## H2 — Renewable Forecast Revision
 
-**Status:** Forecast and day-ahead reference validated; balancing source pending; testing not started
+**Status:** Forecast, day-ahead reference and balancing outcome validated; testing not started
 **Role:** Primary MVP hypothesis
 
 ### Question
@@ -44,7 +44,10 @@ missingness, zero-value and DST rules. The exact simulated decision cutoff
 remains to be locked in P2.3; no complete tick-by-tick vintage claim is allowed.
 P1.2 fixed the same-hour DK1 day-ahead reference as
 `Elspotprices.SpotPriceEUR` in EUR/MWh with complete development-period
-coverage. The balancing outcome field remains pending P1.3.
+coverage. P1.3 fixed the ex-post balancing outcome as
+`RegulatingBalancePowerdata.ImbalancePriceEUR` in EUR/MWh. Its official
+development extract is missing one complete DST fall-back hour, which must
+remain missing rather than be filled with zero.
 
 ## H3 — Cross-Border and System Conditions
 

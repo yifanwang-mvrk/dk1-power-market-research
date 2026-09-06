@@ -20,7 +20,10 @@ For each hourly DK1 delivery period:
 `Spread_t = P_Balancing,t - P_DayAhead,t`
 
 P1.2 fixed `P_DayAhead,t` as DK1 `Elspotprices.SpotPriceEUR` in EUR/MWh.
-The final historical balancing-price field remains pending P1.3 validation.
+P1.3 fixed `P_Balancing,t` as DK1
+`RegulatingBalancePowerdata.ImbalancePriceEUR` in EUR/MWh, subject to one
+documented missing development hour. It is an ex-post outcome and not an
+executable trading price.
 
 The outcome classes are:
 

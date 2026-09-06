@@ -46,6 +46,7 @@ Source: the complete 31-section final Blueprint response and the owner's subsequ
 | D020 | Forecasts_Hour fixed-horizon H2 eligibility | IMPLEMENTATION NOTE |
 | D021 | Forecast gaps, values and DST handling | FROZEN |
 | D022 | Elspotprices SpotPriceEUR as day-ahead reference | FROZEN |
+| D023 | RegulatingBalancePowerdata ImbalancePriceEUR as balancing outcome | FROZEN |
 | E001–E003 | 执行说明 / Execution clarifications | IMPLEMENTATION NOTE |
 | I01–I08 | 字段、参数和可用性 / Fields, parameters and availability | TRACKED — see current table |
 
@@ -283,6 +284,20 @@ Source: the complete 31-section final Blueprint response and the owner's subsequ
 
 **影响 / Impact:** The day-ahead side of D001 is now implemented and registered. P2 must preserve both currencies, select EUR for the target, join by UTC, retain DST-aware local time and respect API `Retry-After` limits. Exact row-level publication timestamps are not stored and the availability mapping remains under I03/P2.3. **Evidence:** `research/evidence/p1_2_elspotprices/development_validation_2026-09-06.md`. **Holdout:** remained locked and unused.
 
+## D023 · Use RegulatingBalancePowerdata ImbalancePriceEUR as the DK1 balancing outcome
+
+**日期 / Date:** 2026-09-06
+
+**状态 / Status:** FROZEN
+
+**决定 / Decision:** For the declared hourly development period, use DK1 `RegulatingBalancePowerdata.ImbalancePriceEUR` as `P_Balancing,t` in EUR/MWh. Classify it as an ex-post `outcome`; retain `BalancingPowerPriceUpEUR` and `BalancingPowerPriceDownEUR` for audit rather than selecting one after observing results. Join on `HourUTC + PriceArea`, and keep `HourDK` for interpretation and DST checks only.
+
+**理由 / Rationale:** Official metadata defines `ImbalancePriceEUR` as the imbalance price selected under the dominating direction: Up uses the maximum of the aFRR component or mFRR price, None uses avoided-activation value / spot price, and Down uses the minimum of the aFRR component or mFRR price. Across all 21,886 returned development rows the field has zero nulls and matches the Up price, Down price or both; it matches neither in zero rows. The Nordic single-price model went live on 2021-11-01, before the development period begins.
+
+**未采用 / Alternative:** The active `ImbalancePrice` successor begins in 2025 at 15-minute resolution and does not cover the development period. Selecting the Up or Down price independently would require an outcome-informed direction rule and could introduce result-driven selection. `ImbalanceMWh` is defined after TSO activations and its sign is not used to recreate the official dominating direction.
+
+**影响 / Impact:** The balancing side of D001 is now implemented and registered. P2 must preserve one absent full row at `2022-10-30T00:00:00Z` as missing and must retain zero, negative and extreme prices without automatic deletion. The source has 21,886 of 21,887 expected hours, no duplicate key and no holdout row, so P1.3 is a conditional pass. The legacy metadata gives no exact historical publication delay; I03/P2.3 must resolve or conservatively handle any lagged-outcome baseline. This field measures balancing pressure and is not executable trading P&L. **Evidence:** `research/evidence/p1_3_regulating_balance_power/development_validation_2026-09-06.md`. **Holdout:** remained locked and unused.
+
 ## 本次执行说明 / Operational clarifications
 
 ### E001 · Preserve both persistence and point-in-time integrity
@@ -316,10 +331,10 @@ All items begin **OPEN**. There is no confirmed external blocker, and lack of ve
 
 | ID | 问题 / Question | 解决步骤 / Gate | 需要的证据 / Evidence required |
 |---|---|---|---|
-| I01 | 哪个历史 DK1 balancing/regulating 字段构成单一目标价格？/ Which exact historical price field? | P1.3，P3 前 | 字段定义、规则适用日期、单位、hour mapping；不能结果导向挑选 / Definition, dates, units and mapping |
+| I01 | **RESOLVED by D023:** use hourly DK1 `RegulatingBalancePowerdata.ImbalancePriceEUR` in EUR/MWh as the ex-post balancing outcome | P1.3 complete | Official definition, single-price go-live evidence and full-development validation |
 | I02 | **RESOLVED by D020/D021:** 5h/1h are fixed-horizon snapshots; `TimestampUTC` belongs to Current; no row-level tick history; coverage is conditionally sufficient | P1.1 complete; exact cutoff continues in I03 | Official metadata + full development coverage/pairing report |
 | I03 | 决策 cutoff、预报可得时刻、outcome 发布延迟与 `y_t-1` 可用性？ | P2.3 / P3.4；信号前 | 有证据的时间线、as-of 规则、基准处理；未定数值不补猜 / Evidenced timeline and benchmark handling |
-| I04 | **PARTIALLY RESOLVED by D021/D022:** use local-date request boundaries, `HourUTC` as canonical join key and `HourDK` for DST interpretation; confirm the same contract for remaining sources | P1.3/P1.4; P2 抓取前 | Remaining-source boundary checks without changing frozen calendar dates |
+| I04 | **PARTIALLY RESOLVED by D021/D022/D023:** use local-date request boundaries, `HourUTC` as canonical join key and `HourDK` for DST interpretation; confirm the same contract for P1.4 sources | P1.4; P2 抓取前 | Remaining-source boundary checks without changing frozen calendar dates |
 | I05 | δ 的实际值、quantile interpolation、有效样本与 missing policy？ | P3.2 | Development-only 非零绝对 spread、样本数、算法、配置值和版本 |
 | I06 | H1-B load proxy、H3 exchange / capacity / flow 哪些可用？ | P1.4 / P5.2 / P6.1 | 逐字段资格；缺失时明确 conditional / diagnostic / unavailable |
 | I07 | Regime bins、strong revision、rule thresholds、confidence / No Trade 如何定义？ | P4 / P7；对应测试前 | Development-only 预登记规格、理由和版本 |
@@ -328,7 +343,7 @@ All items begin **OPEN**. There is no confirmed external blocker, and lack of ve
 ## 后续决策模板 / Template for the next entry
 
 ```text
-Decision ID / 决策编号: D023 (or next unused ID)
+Decision ID / 决策编号: D024 (or next unused ID)
 Date / 日期:
 Status / 状态: FROZEN / IMPLEMENTATION NOTE / OPEN / SUPERSEDED
 Related step / 对应步骤:
