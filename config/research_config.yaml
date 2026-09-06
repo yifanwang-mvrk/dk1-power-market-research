@@ -177,6 +177,34 @@ signal_engine:  # P7 / D033 — transparent rule, research judgment only (D016)
   coverage_active_share_development: 0.327
   down_pressure_realized_down_rate: 0.400  # vs 0.329 base rate
 
+level_c_model:  # P10.1 / D035 / I08 — frozen before the holdout unlock
+  status: frozen_pending_holdout
+  model: multinomial LogisticRegression (lbfgs), class_weight=balanced, C=1.0
+  candidate_C_grid: [0.05, 0.1, 0.25, 0.5, 1.0]
+  selection_metric: calibration-slice macro-F1 (grid nearly flat)
+  features:
+    - wind_revision_mwh
+    - wind_forecast_5h_mwh
+    - wind_revision_when_low_wind_mwh
+    - solar_revision_mwh
+    - residual_load_known_mwh
+    - hour_sin
+    - hour_cos
+    - doy_sin
+    - doy_cos
+    - is_weekend
+  standardization: StandardScaler on the train slice only
+  calibration: sigmoid (Platt), CalibratedClassifierCV on the frozen model, calibration slice only
+  temporal_split_local:
+    train: "development start .. < 2023-07-01"
+    calibration: "2023-07-01 .. < 2024-01-01"
+    validation: "2024-01-01 .. < 2024-07-01"
+  multiclass_brier_convention: mean sum_k (p_k - y_k)^2; range [0, 2] for three classes
+  random_state: 20260906
+  target: frozen three-class label; delta 5.9956075 not re-estimated
+  development_validation_finding: right coefficient signs (5/5 checks), no edge on the 2024 H1 slice
+  predeclared_holdout_secondaries: [by_season, by_wind_level, delta_Q20_Q30_sensitivity]
+
 claims:
   executable_intraday_pnl: false
   causal_effects: false

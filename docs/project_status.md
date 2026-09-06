@@ -8,25 +8,26 @@
 
 | Item | Current Status |
 |---|---|
-| Completed phase | P9 — Level B memo and audit |
-| Current phase | P10 — Level C (logistic model, calibration, holdout) |
-| Current step | P10.1 — fit logistic regression + calibration within development |
-| Next step | P10.2 — freeze the final spec and pass the holdout-unlock gate |
+| Completed phase | P10.1 — logistic model + calibration frozen (development) |
+| Current phase | P10 — Level C |
+| Current step | P10.2 — freeze the spec and complete the holdout-unlock gate |
+| Next step | P10.3 — run the single locked-holdout evaluation (needs owner sign-off) |
 | Current milestone | Level C — MVP Complete |
-| Milestone status | NOT STARTED (Level B achieved 2026-09-06) |
+| Milestone status | IN PROGRESS (Level B achieved; P10.1 done) |
 | Holdout | LOCKED and unused |
-| Blocker | None |
+| Blocker | None — P10.3 requires the owner's explicit unlock approval |
 
 ## One Current Action / 当前唯一动作
 
-Start P10.1: fit a logistic regression on decision-eligible features (H2 wind
-revision, H1-B residual-load proxy, time context) with a time-ordered
-development-only train/validation split and probability calibration. Record the
-temporal split, model selection and calibration plan before the holdout unlock.
+Start P10.2: freeze the P10.1 specification (features, `C`, calibration, split
+dates, frozen labels and delta) and fill in the decision-log holdout-unlock
+template — unlock date, frozen code/config version, prior-non-use evidence,
+planned request boundaries. **P10.3 (the actual holdout evaluation) does not run
+until the owner explicitly approves the unlock.**
 
-开始 P10.1：用 decision-eligible 特征（H2 风电修正、H1-B 净负荷代理、时间上下文）
-拟合逻辑回归，采用开发期内按时间排序的训练/验证切分和概率校准。在解锁 holdout 前
-记录时间切分、模型选择和校准方案。
+开始 P10.2：冻结 P10.1 规格（特征、`C`、校准、切分日期、冻结标签和 delta），并填写
+decision log 的 holdout 解锁模板——解锁日期、冻结的代码/配置版本、此前未使用证据、
+计划的请求边界。**P10.3（真正的 holdout 评估）在所有者明确批准解锁前不运行。**
 
 ## P1.1 Completion / Forecasts_Hour 核验结论
 
@@ -342,6 +343,30 @@ tercile scheme declared before crossing outcomes
   language, D016/D018); Decision D034
 - Level C not started
 
+## P10.1 Completion / Logistic Model 完成结论
+
+**Status:** COMPLETE — 2026-09-06 — model and calibration frozen; **holdout still
+locked and unread**
+
+- `src/p10_model.py` fits a multinomial LogisticRegression (`C=1.0`,
+  `class_weight=balanced`) on 10 decision-eligible features against the frozen
+  three-class label; time-ordered development split: train `< 2023-07-01`
+  (12,478), calibration `[2023-07-01, 2024-01-01)` (4,405), validation
+  `[2024-01-01, 2024-07-01)` (4,207); 797 hours dropped for an incomplete feature
+- Platt (sigmoid) calibration on the calibration slice (lower validation Brier
+  than isotonic); multiclass Brier convention `mean sum_k (p_k - y_k)^2`
+- **Coefficient signs match the H1/H2 mechanisms on all 5 checked terms** — the
+  model learned the right directions
+- **No edge on the 2024 H1 validation slice:** class-weighted argmax balanced
+  accuracy 0.354 (vs 0.333 chance); calibrated argmax collapses to majority
+  (0.333); calibrated Brier 0.642 vs 0.637 train-frequency reference. Consistent
+  with P4.4 (2024 H1 is where the H2 gradient did not reproduce)
+- Frozen spec + P10.2/P10.3 test plan recorded; config `level_c_model`; I08
+  resolved; Decision D035
+- `src/p10_model.py` + `tests/test_p10_model.py` (5 tests; 44/44); quality gate
+  8/8; chart `p10_1_calibration_chart_2026-09-06.png`
+- Evidence: `research/evidence/p10_model/`
+
 ## P8 Completion / Level A Packaging 完成结论
 
 **Status:** PASS — Level A (CV-safe) ACHIEVED 2026-09-06
@@ -394,7 +419,22 @@ tercile scheme declared before crossing outcomes
 
 **Level A: ACHIEVED 2026-09-06 — 10/10 criteria audited (P8.1); see `research/evidence/p8_level_a/`**
 **Level B: ACHIEVED 2026-09-06 — 10/10 criteria audited (P9.2); see `research/evidence/p9_level_b/`**
-**Level C: NOT STARTED**
+**Level C: IN PROGRESS — P10.1 model frozen; P10.2 unlock gate next; P10.3 holdout evaluation needs owner sign-off**
+
+## Level C Evidence Board / Level C 证据板
+
+| # | Criterion | Status |
+|---|---|---|
+| C1 | Logistic Regression baseline | DONE — P10.1 (D035): frozen; right signs, no 2024 H1 dev-validation edge |
+| C2 | Locked holdout unlocked under the protocol | NOT STARTED — P10.2 gate; needs owner approval |
+| C3 | Out-of-sample evaluation on 2024 H2 | NOT STARTED — P10.3 |
+| C4 | Comparison vs majority baseline (holdout) | NOT STARTED — P10.3 |
+| C5 | Comparison vs persistence (holdout) | NOT STARTED — P10.3 |
+| C6 | Probability calibration + assessment | PARTIAL — calibrator frozen (P10.1); holdout assessment in P10.3 |
+| C7 | Regime performance (holdout) | NOT STARTED — P10.3 |
+| C8 | Limitations | PARTIAL — throughout; final pass in P10.4 |
+| C9 | Full research memo | PARTIAL — r01 v1.0 exists; holdout section in P10.4 |
+| C10 | Polished README | PARTIAL — final pass in P10.4 |
 
 ## Level B Evidence Board / Level B 证据板
 
@@ -448,5 +488,6 @@ Earlier assistant-prepared P1.1 files remain outside the formal repository as re
 | 2026-09-06 | P6.1–P6.2 H3: decision-eligible day-ahead cross-border capacity/schedule does not condition the H2 gradient; realized net-import flow shows weak diagnostic steepening. D032. Level B B3 done | Current: P7.1; Next: P7.2 |
 | 2026-09-06 | P7.1–P7.3 transparent signal engine: DOWN PRESSURE realizes DOWN 40% vs 33% base (+7pp), UP side negligible, active 33%, marginally beats availability-safe baselines; 4 State Cards + Journal J001. D033. Level B B4–B8 done | Current: P9.1; Next: P9.2 |
 | 2026-09-06 | P9.1 research memo r01 v1.0 written; P9.2 audited all ten Level B criteria (10/10) — **Level B (Interview Ready) ACHIEVED**. D034 | Current: P10.1; Next: P10.2 |
+| 2026-09-06 | P10.1 logistic regression + Platt calibration frozen (development split at 2023-07-01 / 2024-01-01): coefficient signs correct on all 5 H1/H2 checks, but no edge on the 2024 H1 validation slice. I08 resolved. D035. Holdout still locked | Current: P10.2; Next: P10.3 (owner sign-off) |
 
 Update this file after every completed work session. Every DONE status requires reviewed evidence.

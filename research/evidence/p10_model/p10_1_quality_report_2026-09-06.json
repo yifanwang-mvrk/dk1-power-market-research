@@ -1,0 +1,16 @@
+{
+  "step": "P10.1",
+  "status": "PASS",
+  "created_at_utc": "2026-09-06T20:03:32.044489+00:00",
+  "critical_checks": {
+    "rows_equal_expected": true,
+    "splits_are_time_ordered_and_disjoint": true,
+    "no_holdout_rows_in_any_split": true,
+    "calibration_improves_or_holds_brier": true,
+    "features_are_decision_eligible": true,
+    "delta_not_re_estimated": true,
+    "test_plan_recorded": true,
+    "chart_written": true
+  },
+  "holdout": "LOCKED_AND_UNUSED"
+}

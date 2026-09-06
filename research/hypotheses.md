@@ -498,6 +498,25 @@ plain accuracy, and MEDIUM views (0.40 three-class hit) clearly beat LOW (0.21).
 thirds of the time. Not a deployable signal. P10 adds a probabilistic model and
 the locked-holdout test.
 
+## Logistic Model (P10.1) — the Level C baseline
+
+**Run:** 2026-09-06, development only, holdout not read. Evidence:
+`research/evidence/p10_model/`. Decision D035; config `level_c_model`.
+
+A multinomial logistic regression (`C=1.0`, `class_weight=balanced`) on ten
+decision-eligible features (H2 revision, 5h wind level, a low-wind interaction,
+solar revision, the H1-B proxy, cyclical time) against the frozen labels, with a
+time-ordered development split (train `< 2023-07-01`, calibration to
+`2024-01-01`, validation to `2024-07-01`) and Platt calibration.
+
+- **The coefficients have the right signs on all five checked H1/H2 terms** —
+  the model learned the mechanism.
+- **No edge on the 2024 H1 validation slice:** class-weighted argmax balanced
+  accuracy 0.354 (vs 0.333 chance); the calibrated argmax collapses to the
+  majority class. Calibrated Brier 0.642 vs a 0.637 train-frequency reference.
+- This matches P4.4 — 2024 H1 is the window where the H2 gradient did not
+  reproduce. The Level C locked-holdout evaluation (2024 H2) is the real test.
+
 ## Research Rule
 
 Each hypothesis must retain:

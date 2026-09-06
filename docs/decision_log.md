@@ -58,6 +58,7 @@ Source: the complete 31-section final Blueprint response and the owner's subsequ
 | D032 | P6 H3: diagnostic conditioning only; no decision-eligible cross-border signal | RESEARCH FINDING |
 | D033 | P7 transparent signal engine: modest DOWN-side edge, negligible UP side | RESEARCH FINDING |
 | D034 | P9 Level B (Interview Ready) acceptance | MILESTONE |
+| D035 | P10.1 logistic regression + calibration frozen; right signs, no dev-validation edge | IMPLEMENTATION NOTE |
 | E001–E003 | 执行说明 / Execution clarifications | IMPLEMENTATION NOTE |
 | I01–I08 | 字段、参数和可用性 / Fields, parameters and availability | TRACKED — see current table |
 
@@ -878,6 +879,67 @@ and in-sample; zero holdout rows read.
 
 **Supersedes / 替代:** None.
 
+## D035 · P10.1 logistic regression and calibration (development only)
+
+**日期 / Date:** 2026-09-06
+**状态 / Status:** IMPLEMENTATION NOTE
+**Related step / 对应步骤:** P10.1
+**Related open item / 对应 I 编号:** I08
+
+**决定 / Decision:** Freeze a multinomial `LogisticRegression`
+(`class_weight="balanced"`, `C = 1.0` chosen from `[0.05, 0.1, 0.25, 0.5, 1.0]`
+by calibration-slice macro-F1) on ten decision-eligible features (H2 wind
+revision, 5h wind forecast level, a wind-revision-when-low-wind interaction,
+solar revision, the H1-B residual-load proxy, cyclical hour and day-of-year,
+weekend), standardized on the train slice only. Calibrate with Platt scaling
+(sigmoid, lower validation Brier than isotonic) on the calibration slice only.
+Time-ordered development split: **train** development start .. < 2023-07-01
+(12,478 rows), **calibration** 2023-07-01 .. < 2024-01-01 (4,405), **validation**
+2024-01-01 .. < 2024-07-01 (4,207); 797 hours dropped for an incomplete feature
+row. The frozen target label and `delta = 5.9956075` are **not** re-estimated.
+
+**结论 / Finding (development validation):**
+
+- **The coefficients have the economically correct signs for all five checked
+  H1/H2 terms** — positive wind revision → DOWN, more expected wind → DOWN, looser
+  residual load → DOWN, and the mirror for UP. The model learned the mechanism.
+- **But there is no edge on the 2024 H1 validation slice.** The class-weighted
+  argmax reaches balanced accuracy 0.354 (vs 0.333 chance, like the P7 rule); the
+  calibrated argmax collapses to the majority class (0.333). Calibrated
+  multiclass Brier 0.642 is worse than the train-frequency reference 0.637.
+- This is **consistent with P4.4** — 2024 H1 is exactly the window where the H2
+  gradient did not reproduce. A weak validation-slice result there is expected
+  and is itself informative.
+
+**理由 / Rationale:** The Blueprint modelling order puts a logistic regression
+before any holdout evaluation, fit and calibrated only inside development with a
+time-ordered split (§8.3). Freezing a spec now — even one with a known
+calibration collapse on the hardest slice — is what the Level C unlock gate
+requires; the holdout report will present both the raw and the calibrated
+predictions.
+
+**未采用 / Alternative considered:** Isotonic calibration (higher validation
+Brier); random cross-validation (breaks time ordering); re-estimating delta on a
+model-friendly threshold (prohibited — delta is frozen, D002 / D026); tuning
+features or C against the validation slice (would spend the one honest split).
+
+**Evidence / 证据:**
+`research/evidence/p10_model/p10_1_model_2026-09-06.json` and `.md`,
+`p10_1_calibration_chart_2026-09-06.png`,
+`p10_1_quality_report_2026-09-06.json` (8/8); `src/p10_model.py`;
+`tests/test_p10_model.py`; `config/research_config.yaml` `level_c_model`.
+
+**Impact / 影响:** P10.2 freezes this specification and completes the
+holdout-unlock template; P10.3 runs the single locked-holdout evaluation; P10.4
+finalises the documentation. Resolves I08 (model, temporal split, calibration and
+Brier convention are now fixed and recorded).
+
+**Holdout implications / 留出期:** None yet. Model and calibration were fit only
+on development rows before 2024-07-01; the loader aborts unless the holdout is
+locked. **The holdout is not unlocked by this step** — that is P10.2 / P10.3.
+
+**Supersedes / 替代:** None. Resolves I08.
+
 ## 本次执行说明 / Operational clarifications
 
 ### E001 · Preserve both persistence and point-in-time integrity
@@ -918,7 +980,7 @@ All items begin **OPEN**. There is no confirmed external blocker, and lack of ve
 | I05 | **RESOLVED by D026:** δ = 5.9956075 EUR/MWh — pandas linear-interpolation Q25 of 15,392 nonzero absolute development spreads; the 1 missing and 6,494 observed-zero spreads are excluded; frozen in config before holdout access | P3.2 complete | Nonzero-absolute development population, count, quantile method, config value and pandas/numpy versions recorded in `config/research_config.yaml` and `p3_2_delta_freeze_2026-09-06.json` |
 | I06 | **PARTIALLY RESOLVED by D024 + D031:** H1-A actuals and realized flows are diagnostic; P5.2 registered a decision-eligible `residual_load_known_proxy` (climatology − 5h renewable forecast) as an interim eligible input; the ENTSO-E day-ahead load forecast is still pending external access; legacy day-ahead transmission fields and countertrade remain conditional candidates for P6.1 | P6.1 (borders); external access (ENTSO-E) | Border-specific feature rules without promoting actuals; ENTSO-E access + timing evidence to supersede the interim proxy |
 | I07 | **PARTIALLY RESOLVED by D027 + D033:** H2 round-1 buckets pre-registered (D027); P4.4 declared regime bins; P7 (D033) fixed the transparent-rule thresholds (`h2_strong_cut` 222.6 MWh, `low_wind_cut` 861.4 MWh, `rl_tight_cut` 1855.7 MWh) and the Low/Medium/High → No Trade mapping, all from decision-eligible distributions. A probabilistic confidence scale and any regime-specific tuning remain for P10 | P10；对应测试前 | Development-only 预登记规格、理由和版本 |
-| I08 | Logistic Regression、时间训练/验证、校准和 Brier / undefined metric conventions？ | P10.1；解锁前 | 固定时间切分、模型与校准参数、评估与敏感性计划 |
+| I08 | **RESOLVED by D035:** multinomial LogisticRegression (`C=1.0`, `class_weight=balanced`) on 10 decision-eligible features; time-ordered train / calibration / validation split at 2023-07-01 and 2024-01-01; Platt (sigmoid) calibration on the calibration slice; multiclass Brier as `mean sum_k (p_k - y_k)^2`, range [0, 2]. Secondary sensitivities pre-declared (by-season, by-wind-level, Q20/Q30 delta) | P10.1 complete | Spec, split, calibration and Brier convention recorded in config and `p10_1_model_2026-09-06.json` |
 
 ## 后续决策模板 / Template for the next entry
 

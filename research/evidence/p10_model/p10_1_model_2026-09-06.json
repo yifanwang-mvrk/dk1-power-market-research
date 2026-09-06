@@ -1,0 +1,203 @@
+{
+  "step": "P10.1",
+  "status": "PASS",
+  "created_at_utc": "2026-09-06T20:03:31.862457+00:00",
+  "git_head_before_run": "2884bb569df5ceb01055197a71c37362af18a7c3",
+  "scope": "development only; model and calibration fit inside development; holdout not read",
+  "frozen_specification": {
+    "model": "multinomial LogisticRegression (lbfgs), class_weight=balanced",
+    "features": [
+      "wind_revision_mwh",
+      "wind_forecast_5h_mwh",
+      "wind_revision_when_low_wind_mwh",
+      "solar_revision_mwh",
+      "residual_load_known_mwh",
+      "hour_sin",
+      "hour_cos",
+      "doy_sin",
+      "doy_cos",
+      "is_weekend"
+    ],
+    "standardization": "StandardScaler fit on the train slice only",
+    "selected_C": 1.0,
+    "candidate_C_grid": [
+      0.05,
+      0.1,
+      0.25,
+      0.5,
+      1.0
+    ],
+    "random_state": 20260906,
+    "calibration": "sigmoid, CalibratedClassifierCV on the frozen model, fit on the calibration slice only (selected as the lower-Brier of sigmoid and isotonic)",
+    "calibration_brier_candidates_validation": {
+      "sigmoid": 0.6415386943438988,
+      "isotonic": 0.6488119426432573
+    },
+    "target": "frozen three-class label (D026); delta not re-estimated"
+  },
+  "temporal_split": {
+    "train": {
+      "rule": "development start .. < 2023-07-01 local",
+      "n": 12478
+    },
+    "calibration": {
+      "rule": "[2023-07-01 .. < 2024-01-01) local",
+      "n": 4405
+    },
+    "validation": {
+      "rule": "[2024-01-01 .. < 2024-07-01) local",
+      "n": 4207
+    },
+    "feature_complete_rows": 21090,
+    "rows_dropped_incomplete_features": 797
+  },
+  "model_selection": [
+    {
+      "C": 0.05,
+      "calibration_macro_f1": 0.24854565734027614
+    },
+    {
+      "C": 0.1,
+      "calibration_macro_f1": 0.24932497932950023
+    },
+    {
+      "C": 0.25,
+      "calibration_macro_f1": 0.249713402867884
+    },
+    {
+      "C": 0.5,
+      "calibration_macro_f1": 0.2495199271776618
+    },
+    {
+      "C": 1.0,
+      "calibration_macro_f1": 0.2499366025006293
+    }
+  ],
+  "coefficients_standardized": {
+    "DOWN": {
+      "wind_revision_mwh": 0.1556207156882231,
+      "wind_forecast_5h_mwh": -0.2513706677743474,
+      "wind_revision_when_low_wind_mwh": 0.02751422764618628,
+      "solar_revision_mwh": 0.10094924798475027,
+      "residual_load_known_mwh": -0.35769822151079683,
+      "hour_sin": 0.00537711932104122,
+      "hour_cos": 0.023770702991610444,
+      "doy_sin": -0.015067158392494112,
+      "doy_cos": -0.0707700819845178,
+      "is_weekend": -0.016537645084644666
+    },
+    "NEUTRAL": {
+      "wind_revision_mwh": 0.00818564819647348,
+      "wind_forecast_5h_mwh": 0.18741071739133308,
+      "wind_revision_when_low_wind_mwh": -0.005996896155685636,
+      "solar_revision_mwh": -0.0025530313392117202,
+      "residual_load_known_mwh": 0.16157692554377548,
+      "hour_sin": -0.02358556134405272,
+      "hour_cos": 0.05633048972669275,
+      "doy_sin": 0.1057901698562904,
+      "doy_cos": -0.025144421007500285,
+      "is_weekend": 0.03082157711576255
+    },
+    "UP": {
+      "wind_revision_mwh": -0.16380636388469655,
+      "wind_forecast_5h_mwh": 0.06395995038301476,
+      "wind_revision_when_low_wind_mwh": -0.02151733149048521,
+      "solar_revision_mwh": -0.09839621664554686,
+      "residual_load_known_mwh": 0.19612129596702577,
+      "hour_sin": 0.01820844202301577,
+      "hour_cos": -0.08010119271829864,
+      "doy_sin": -0.0907230114637967,
+      "doy_cos": 0.09591450299201,
+      "is_weekend": -0.014283932031104275
+    }
+  },
+  "coefficient_sign_checks": {
+    "DOWN:wind_revision_mwh": {
+      "coefficient": 0.156,
+      "expected_sign": "+",
+      "matches": true
+    },
+    "DOWN:wind_forecast_5h_mwh": {
+      "coefficient": -0.251,
+      "expected_sign": "-",
+      "matches": true
+    },
+    "DOWN:residual_load_known_mwh": {
+      "coefficient": -0.358,
+      "expected_sign": "-",
+      "matches": true
+    },
+    "UP:wind_revision_mwh": {
+      "coefficient": -0.164,
+      "expected_sign": "-",
+      "matches": true
+    },
+    "UP:residual_load_known_mwh": {
+      "coefficient": 0.196,
+      "expected_sign": "+",
+      "matches": true
+    }
+  },
+  "validation_conclusion": "The coefficient signs match the H1/H2 mechanisms for 5 of 5 checked terms, but on the 2024 H1 development validation slice there is no edge: the class-weighted argmax reaches balanced accuracy 0.354 (vs 0.333 chance), and after calibration the argmax collapses to the majority class (0.333, equal to majority 0.333). Calibrated probabilities are no better than train-frequency climatology on this slice. This is consistent with P4.4 -- 2024 H1 is where the H2 gradient did not reproduce. The Level C holdout report will present both the raw and the calibrated predictions.",
+  "validation_performance": {
+    "logistic_raw": {
+      "n": 4207,
+      "balanced_accuracy": 0.3538230144911875,
+      "macro_f1": 0.3451822657141521,
+      "accuracy": 0.3639172807226052
+    },
+    "logistic_calibrated": {
+      "n": 4207,
+      "balanced_accuracy": 0.3333333333333333,
+      "macro_f1": 0.20346820809248556,
+      "accuracy": 0.43926788685524126
+    },
+    "majority_train": {
+      "n": 4207,
+      "balanced_accuracy": 0.3333333333333333,
+      "macro_f1": 0.20346820809248556,
+      "accuracy": 0.43926788685524126
+    },
+    "hour_of_week_train": {
+      "n": 4207,
+      "balanced_accuracy": 0.33254697207247236,
+      "macro_f1": 0.2570062180740476,
+      "accuracy": 0.4292845257903494
+    },
+    "persistence_ex_post": {
+      "n": 4207,
+      "balanced_accuracy": 0.6655780153556496,
+      "macro_f1": 0.6655345547648341,
+      "accuracy": 0.6814832422153554
+    }
+  },
+  "probability_quality_validation": {
+    "brier_convention": "mean sum_k (p_k - y_k)^2, range [0, 2] for three classes",
+    "multiclass_brier_raw": 0.6664527011482974,
+    "multiclass_brier_calibrated": 0.6415386943438988,
+    "reference_brier_train_class_frequencies": 0.63661043543733,
+    "down_class_reliability_calibrated": [
+      {
+        "bin": "[0.2, 0.3)",
+        "n": 2339,
+        "mean_predicted_p_down": 0.2775149616899491,
+        "observed_down_rate": 0.3539974348011971
+      },
+      {
+        "bin": "[0.3, 0.4)",
+        "n": 1868,
+        "mean_predicted_p_down": 0.3237807231502405,
+        "observed_down_rate": 0.3859743040685225
+      }
+    ]
+  },
+  "p10_2_p10_3_test_plan": {
+    "freeze": "this specification (features, C, calibration, split dates, target labels, delta 5.9956075)",
+    "unlock_gate": "record the unlock date, frozen code/config version, prior-non-use evidence and planned request boundaries in the decision log holdout-unlock template",
+    "holdout_request": "local 2024-07-01 00:00 inclusive to 2025-01-01 00:00 exclusive, DK1 only, same sources and pipeline",
+    "primary_report": "calibrated logistic vs majority and hour-of-week (both fit on all development) on balanced accuracy, macro-F1 and multiclass Brier; persistence reported as ex-post reference",
+    "secondary": "by-season and by-wind-level performance; the P7 transparent rule for comparison; Q20/Q30 delta sensitivity as pre-declared secondaries",
+    "protocol_for_changes_after_inspection": "any change informed by the holdout is exploratory and needs fresh unseen data"
+  },
+  "holdout": "LOCKED_AND_UNUSED"
+}
