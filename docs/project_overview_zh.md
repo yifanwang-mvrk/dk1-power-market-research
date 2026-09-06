@@ -40,7 +40,7 @@ DK1 是丹麦西部电力市场区域。我们先研究这一个区域，以一�
 
 **再定义结果：** Spread = 42 - 50 = -8 EUR/MWh。假设教学用的中性带 δ = 5，则该例标签为 DOWN，因为 -8 < -5。
 
-真实项目的 δ 不是 5。它将按冻结规则，用开发期非零绝对 spread 的第 25 百分位数计算，当前尚未算出。
+真实项目已经在 P3.2 按冻结规则完成计算：开发期 15,392 个非零绝对 spread 的线性第 25 百分位数为 **δ = 5.9956075 EUR/MWh**。这个数已在查看 holdout 前冻结。
 
 **最后问：** 如果我们在很多历史小时里都这样判断，是否真的比简单办法更好？哪些情况下会错？单独这个例子不能证明假设成立。
 
@@ -148,8 +148,8 @@ UP / DOWN / NEUTRAL 是结果分类；Bullish / Bearish / No Trade 是研究决�
 
 ### 我们现在在哪？
 
-**P0、P1 与 P2 已完成。当前进入 P3.1：使用每小时底表构造同小时 balancing spread。** 假设测试尚未开始，Level A/B/C 均未达到。
+**P0、P1、P2 与 P3 已完成。当前进入 P4.1：预登记并开始 H2 renewable forecast revision 测试。** 假设测试尚未开始，Level A/B/C 均未达到。
 
-P1.1 已确认同一交割小时的 5h→1h revision 在结构上可实施；P1.2 已把同小时 DK1 `SpotPriceEUR` 锁定为 EUR/MWh 日前参考价；P1.3 已把 `ImbalancePriceEUR` 锁定为 EUR/MWh 事后 balancing outcome。P1.4 已按时点角色登记 actual、cross-border 与 system sources。P2 已完成受控抓取、raw 来源追踪、UTC/丹麦时间与 DST 处理、六个来源的每小时合并和质量门禁；21,887 个开发期小时全部保留，已知的一个 balancing 缺口保持为空，holdout 仍为零行。决策时点固定为交付开始前最后一份信息快照。核心原则仍是：**先确认每个字段的市场含义、时间与单位，再构造 spread 和特征。**
+P1.1 已确认同一交割小时的 5h→1h revision 在结构上可实施；P1.2 已把同小时 DK1 `SpotPriceEUR` 锁定为 EUR/MWh 日前参考价；P1.3 已把 `ImbalancePriceEUR` 锁定为 EUR/MWh 事后 balancing outcome。P1.4 已按时点角色登记 actual、cross-border 与 system sources。P2 已完成受控抓取、raw 来源追踪、UTC/丹麦时间与 DST 处理、六个来源的每小时合并和质量门禁。P3 已构造 21,886 个有效 spread，冻结 **δ = 5.9956075 EUR/MWh**，并得到 4,354 个 UP、7,190 个 DOWN、10,342 个 NEUTRAL；已知的一个 balancing 缺口仍为空且无标签。开发期共有 21,887 个小时，holdout 仍为零行。决策时点固定为交付开始前最后一份信息快照。核心原则仍是：**先确认每个字段的市场含义、时间与单位，再构造目标和特征。**
 
 阅读自检：你能用自己的话解释为什么比较同一小时的新旧预报、为什么 actual 不自动等于可用信息、为什么要保留 holdout 吗？这三点讲清楚，就可以开始第一步了。

@@ -1,0 +1,26 @@
+{
+  "step": "P3.3",
+  "status": "PASS",
+  "rules": {
+    "UP": "spread > 5.9956075",
+    "DOWN": "spread < -5.9956075",
+    "NEUTRAL": "abs(spread) <= 5.9956075",
+    "MISSING": "spread is null -> target label is null"
+  },
+  "boundary_policy": "Both +delta and -delta are inclusive NEUTRAL boundaries.",
+  "observed_zero_policy": "Observed zero spread is NEUTRAL.",
+  "missing_policy": "Missing source price remains a missing spread and missing label; never zero-filled.",
+  "denominator_valid_labels": 21886,
+  "missing_labels": 1,
+  "counts": {
+    "UP": 4354,
+    "DOWN": 7190,
+    "NEUTRAL": 10342
+  },
+  "shares": {
+    "UP": 0.1989399616193,
+    "DOWN": 0.3285205153979713,
+    "NEUTRAL": 0.47253952298272867
+  },
+  "holdout": "LOCKED_AND_UNUSED"
+}

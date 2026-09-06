@@ -1,13 +1,17 @@
 # Data Dictionary
 
 **Project:** DK1 Short-Term Power Market Research
-**Status:** P2 completed; source fields standardized and joined to the development hourly base
+**Status:** P3 completed; target, neutral band and labels frozen on development data
 **Last updated:** 2026-09-06
 
 ## Field Registry
 
 | Dataset | Field | Business Meaning | Unit | Time Meaning | PIT Class | Evidence Status |
 |---|---|---|---|---|---|---|
+| P3 target | balancing_spread_eur_mwh | Realized balancing pressure relative to the already-cleared day-ahead reference | EUR/MWh | Same-hour `ImbalancePriceEUR - SpotPriceEUR` | outcome | P3.1 PASS; 21,886 valid values and one preserved source gap |
+| P3 target | absolute_spread_eur_mwh | Magnitude of the realized balancing spread | EUR/MWh | Absolute value of the same-hour outcome | outcome | P3.1 PASS |
+| P3 target | neutral_band_delta_eur_mwh | Frozen boundary separating small spreads from directional outcomes | EUR/MWh | Development-wide Q25 parameter, fixed before holdout | frozen_parameter | P3.2 FROZEN at 5.9956075 |
+| P3 target | target_label | UP, DOWN or NEUTRAL realized market-pressure class | text | Derived after delivery from spread and frozen delta | outcome | P3.3 PASS; missing spread remains missing label |
 | Forecasts_Hour | HourUTC | Start of the forecast delivery hour in UTC | — | Delivery interval; canonical join time | decision_eligible (key) | Validated P1.1 |
 | Forecasts_Hour | HourDK | Start of the forecast delivery hour in Danish local time | — | Delivery interval; DST interpretation only | decision_eligible (key) | Validated P1.1; not sole join key |
 | Forecasts_Hour | PriceArea | Danish bidding zone | text | Static area selector | decision_eligible (key) | Validated P1.1; use DK1 |
@@ -87,6 +91,24 @@ P2.3 last-pre-delivery cutoff.
 - Local processed file: `data/processed/p2/hourly_base_development.parquet`
 - P2 does not create spread, labels, delta or forecast-revision values
 - Evidence: `research/evidence/p2_data_pipeline/`
+
+## P3 Target Contract
+
+- Formula: `balancing_spread_eur_mwh = imbalance_price_eur_mwh - spot_price_eur_mwh`
+- Alignment: same DK1 `delivery_start_utc`, with both prices in EUR/MWh
+- Frozen delta: `5.9956075 EUR/MWh`
+- Delta population: 15,392 nonzero absolute development spreads; one missing
+  spread and 6,494 observed-zero spreads excluded
+- Quantile method: pandas linear interpolation, frozen before holdout access
+- Labels: UP above `+delta`, DOWN below `-delta`, NEUTRAL between and including
+  both boundaries; a missing spread has no label
+- Development counts: 4,354 UP, 7,190 DOWN, 10,342 NEUTRAL and one missing
+- Local processed file: `data/processed/p3/target_development.parquet`
+- Target-table size: 21,887 rows and 99 columns
+- Baselines: majority must be fit on training labels only; persistence remains
+  an ex-post reference; hour-of-week training majority is registered as the
+  availability-safe supplement
+- Evidence: `research/evidence/p3_target_construction/`
 
 ## P1.1 Dataset Contract
 

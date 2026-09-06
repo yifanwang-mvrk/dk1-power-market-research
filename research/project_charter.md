@@ -2,7 +2,7 @@
 
 **Project:** DK1 Short-Term Power Market Research
 **Version:** MVP v1
-**Status:** Frozen design; P2 data pipeline complete; P3 target construction next
+**Status:** Frozen design; P3 target construction complete; P4 H2 testing next
 **Owner:** Yifan Wang
 
 ## Mission
@@ -31,7 +31,9 @@ The outcome classes are:
 - DOWN when `Spread_t < -delta`
 - NEUTRAL when `abs(Spread_t) <= delta`
 
-The numerical value of `delta` will be calculated from development data only and frozen before holdout access.
+The frozen numerical value is `delta = 5.9956075 EUR/MWh`, calculated with
+linear interpolation as the Q25 of 15,392 nonzero absolute development spreads.
+It is fixed before holdout access.
 
 ## Hypotheses
 
@@ -67,7 +69,11 @@ pre-delivery information snapshot and does not imply executable intraday P&L.
 Every directional result must be compared with:
 
 - Majority-class baseline
-- Persistence baseline
+- Persistence baseline, retained as an ex-post reference because historical
+  outcome publication delay is undocumented
+
+An availability-safe hour-of-week training-majority reference is also
+registered and must be fit only within each future training segment.
 
 If the proposed method cannot outperform a valid baseline, the conclusion must state that no useful signal was found.
 

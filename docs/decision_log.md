@@ -49,6 +49,7 @@ Source: the complete 31-section final Blueprint response and the owner's subsequ
 | D023 | RegulatingBalancePowerdata ImbalancePriceEUR as balancing outcome | FROZEN |
 | D024 | P1.4 fundamental and system-source eligibility | FROZEN |
 | D025 | Last-pre-delivery cutoff and P2 hourly-base contract | FROZEN |
+| D026 | P3 balancing spread, frozen Q25 delta and baseline contracts | FROZEN |
 | E001–E003 | 执行说明 / Execution clarifications | IMPLEMENTATION NOTE |
 | I01–I08 | 字段、参数和可用性 / Fields, parameters and availability | TRACKED — see current table |
 
@@ -405,6 +406,70 @@ available.
 **Holdout:** locked, not requested, zero rows processed.
 **Supersedes:** None.
 
+## D026 · Freeze the P3 balancing spread, Q25 neutral band and baseline contracts
+
+**日期 / Date:** 2026-09-06
+**状态 / Status:** FROZEN
+**Related step / 对应步骤:** P3.1–P3.4
+**Related open item / 对应 I 编号:** I05; P3.4 portion of I03
+
+**决定 / Decision:** Build the primary target on the P2 hourly base as
+`balancing_spread_eur_mwh = imbalance_price_eur_mwh - spot_price_eur_mwh` for the
+same DK1 `delivery_start_utc`, both sides in EUR/MWh. Freeze the neutral-band
+threshold at `delta = 5.9956075 EUR/MWh`, the pandas linear-interpolation Q25 of
+the 15,392 nonzero absolute development spreads. Exclude the one missing spread
+and the 6,494 observed-zero spreads from the quantile population. Assign `UP`
+when `spread > +delta`, `DOWN` when `spread < -delta`, `NEUTRAL` when
+`abs(spread) <= delta`; both exact boundaries and observed zeros are NEUTRAL; a
+missing spread has a missing label. Fit the majority baseline on training labels
+only. Retain the frozen persistence formula `y_hat_t = y_(t-1)` as an ex-post
+reference. Register `hour_of_week_training_majority` — the most common training
+label per Danish local weekday-hour, with a global training-majority fallback,
+fit on training rows only — as the availability-safe supplemental baseline
+before any evaluation.
+
+**理由 / Rationale:** D001 and D002 already fix the spread formula and the
+development-only nonzero-absolute Q25 rule. On the validated P2 base the
+population is unambiguous: 21,886 valid spreads, one preserved gap at
+`2022-10-30T00:00:00Z`, 6,494 exact zeros, 15,392 nonzero. Linear Q25 falls at
+zero-based position 3847.75 between 5.990005 and 5.997475 (upper weight 0.75),
+giving 5.9956075. The value, method, population, input SHA-256 and pandas/numpy
+versions are frozen in `config/research_config.yaml` before holdout access to
+prevent result-driven retuning. Persistence stays ex-post because P1.3 / D023
+established that the legacy balancing source documents no historical publication
+delay, so `y[t-1]` cannot be proven available at the `delivery_start_utc`
+cutoff. The hour-of-week training majority uses only local weekday and local
+hour, which are always known at the decision time.
+
+**未采用 / Alternative considered:** A signed-spread or adjacent-hour
+price-change quantile (rejected by D002); including observed zeros in the
+quantile population (would collapse delta toward zero); Q20 or Q30 as the
+primary threshold (reserved as Level C secondary sensitivities only); promoting
+persistence to a decision-eligible feature (publication timing unproven);
+zero-filling the missing spread (prohibited by D021 / D023).
+
+**Evidence / 证据:** `research/evidence/p3_target_construction/`
+(`p3_1_spread_validation_2026-09-06.json`, `p3_2_delta_freeze_2026-09-06.json`,
+`p3_3_label_validation_2026-09-06.json`,
+`p3_4_base_rate_and_baselines_2026-09-06.json`,
+`quality_report_2026-09-06.json` with 13/13 critical checks,
+`target_audit_sample_2026-09-06.csv`, `README.md`);
+`config/research_config.yaml` `neutral_band` and `baselines` blocks;
+`src/p3_target.py`; `tests/test_p3_target.py` (4 P3 tests; 13/13 suite).
+
+**Impact / 影响:** P4 may now build 5h-to-1h wind and solar revisions on the P2
+base and test H2 against the frozen labels and the two mandatory baselines. The
+frozen delta also governs the eventual locked-holdout evaluation.
+`data/processed/p3/target_development.parquet` (21,887 rows, 99 columns) is
+git-ignored; the committed JSON, CSV, config and hashes are the review trail.
+Implements D001, D002 and D012.
+
+**Holdout implications / 留出期:** The delta and labels were computed only on
+development rows. `src/p3_target.py` aborts unless the holdout stays locked and
+fetch-disabled. Zero holdout rows were read or inspected.
+
+**Supersedes / 替代:** None.
+
 ## 本次执行说明 / Operational clarifications
 
 ### E001 · Preserve both persistence and point-in-time integrity
@@ -440,9 +505,9 @@ All items begin **OPEN**. There is no confirmed external blocker, and lack of ve
 |---|---|---|---|
 | I01 | **RESOLVED by D023:** use hourly DK1 `RegulatingBalancePowerdata.ImbalancePriceEUR` in EUR/MWh as the ex-post balancing outcome | P1.3 complete | Official definition, single-price go-live evidence and full-development validation |
 | I02 | **RESOLVED by D020/D021:** 5h/1h are fixed-horizon snapshots; `TimestampUTC` belongs to Current; no row-level tick history; coverage is conditionally sufficient | P1.1 complete; exact cutoff continues in I03 | Official metadata + full development coverage/pairing report |
-| I03 | **PARTIALLY RESOLVED by D025:** last-pre-delivery cutoff frozen; fixed 5h/1h forecasts qualify; undocumented outcome delay keeps `y[t-1]` as ex-post reference | P2.3 complete; P3.4 baseline report remains | Register any availability-correct supplemental baseline before evaluation; do not promote unverified lags |
+| I03 | **RESOLVED by D025 + D026:** last-pre-delivery cutoff frozen; fixed 5h/1h forecasts qualify; undocumented outcome delay keeps `y[t-1]` as an ex-post reference; P3.4 registered the availability-safe hour-of-week training-majority baseline before evaluation | P2.3 and P3.4 complete | Persistence stays ex-post; hour-of-week training majority is fit only within each future training segment; no unverified lag promoted |
 | I04 | **RESOLVED by D021/D022/D023/D024:** use local-date request boundaries, UTC canonical keys and Danish-local time for DST interpretation across all P1 sources | P1 complete | Full development-boundary validation; P1.4 uses `HourUTC + PriceArea` or `HourUTC + PriceArea + ConnectedArea` as appropriate |
-| I05 | δ 的实际值、quantile interpolation、有效样本与 missing policy？ | P3.2 | Development-only 非零绝对 spread、样本数、算法、配置值和版本 |
+| I05 | **RESOLVED by D026:** δ = 5.9956075 EUR/MWh — pandas linear-interpolation Q25 of 15,392 nonzero absolute development spreads; the 1 missing and 6,494 observed-zero spreads are excluded; frozen in config before holdout access | P3.2 complete | Nonzero-absolute development population, count, quantile method, config value and pandas/numpy versions recorded in `config/research_config.yaml` and `p3_2_delta_freeze_2026-09-06.json` |
 | I06 | **PARTIALLY RESOLVED by D024:** H1-A actual and realized flows are diagnostic; legacy day-ahead transmission fields and countertrade are conditional candidates; H1-B external forecast remains pending | P5.2 / P6.1 | Complete load-proxy access/timing evidence and border-specific feature rules without promoting actuals |
 | I07 | Regime bins、strong revision、rule thresholds、confidence / No Trade 如何定义？ | P4 / P7；对应测试前 | Development-only 预登记规格、理由和版本 |
 | I08 | Logistic Regression、时间训练/验证、校准和 Brier / undefined metric conventions？ | P10.1；解锁前 | 固定时间切分、模型与校准参数、评估与敏感性计划 |

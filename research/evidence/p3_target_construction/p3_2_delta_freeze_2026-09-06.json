@@ -1,0 +1,31 @@
+{
+  "step": "P3.2",
+  "status": "FROZEN",
+  "frozen_at_utc": "2026-09-06T14:22:34Z",
+  "development_period": {
+    "start_date": "2022-01-01",
+    "end_date_inclusive": "2024-06-30"
+  },
+  "input_file": "data/processed/p2/hourly_base_development.parquet",
+  "input_sha256": "cb69be3091d71e27a157ec3e529878cfaed74f3d9f734ebaa9db56d3a695e66d",
+  "quantile": 0.25,
+  "population": "abs(spread) where spread is valid and nonzero, development only",
+  "valid_spreads": 21886,
+  "missing_spreads": 1,
+  "zero_spreads_excluded": 6494,
+  "nonzero_absolute_spreads": 15392,
+  "quantile_method": "linear",
+  "calculation": "pandas.Series.quantile(q=0.25, interpolation='linear')",
+  "zero_based_position": 3847.75,
+  "lower_index": 3847,
+  "upper_index": 3848,
+  "lower_value": 5.9900049999999965,
+  "upper_value": 5.997474999999994,
+  "upper_weight": 0.75,
+  "delta_eur_mwh": 5.995607499999995,
+  "pandas_version": "3.0.5",
+  "numpy_version": "2.5.2",
+  "configured_delta_eur_mwh": 5.9956075,
+  "holdout_influenced": false,
+  "sensitivity_policy": "Q20 and Q30 may be reported later as secondary Level C sensitivities; Q25 remains primary."
+}

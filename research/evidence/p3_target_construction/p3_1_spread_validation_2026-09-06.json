@@ -1,0 +1,26 @@
+{
+  "step": "P3.1",
+  "status": "PASS",
+  "formula": "ImbalancePriceEUR - SpotPriceEUR",
+  "normalized_formula": "imbalance_price_eur_mwh - spot_price_eur_mwh",
+  "zone": "DK1",
+  "unit": "EUR/MWh",
+  "join_key": [
+    "delivery_start_utc",
+    "price_area"
+  ],
+  "rows": 21887,
+  "valid_spreads": 21886,
+  "missing_spreads": 1,
+  "zero_spreads": 6494,
+  "positive_spreads": 6345,
+  "negative_spreads": 9047,
+  "minimum": -2192.67,
+  "median": 0.0,
+  "maximum": 4599.379997,
+  "missing_delivery_hours_utc": [
+    "2022-10-30T00:00:00+00:00"
+  ],
+  "interpretation": "Realized balancing pressure relative to the already-cleared day-ahead reference; not executable trading P&L.",
+  "holdout": "LOCKED_AND_UNUSED"
+}

@@ -1,0 +1,28 @@
+{
+  "step": "P3.1-P3.4",
+  "status": "PASS",
+  "created_at_utc": "2026-09-06T17:42:17.530114+00:00",
+  "git_head_before_run": "92daa10c894ff9cdab8ba1ce73ca4c41798c132f",
+  "input_file": "data/processed/p2/hourly_base_development.parquet",
+  "input_sha256": "cb69be3091d71e27a157ec3e529878cfaed74f3d9f734ebaa9db56d3a695e66d",
+  "output_file": "data/processed/p3/target_development.parquet",
+  "output_sha256": "856dcfc2ceabe53a11982abbfe011b6143a27a3f2170fe146acd6ee06197a1f0",
+  "rows": 21887,
+  "columns": 99,
+  "critical_checks": {
+    "input_hash_matches_frozen_p2": true,
+    "target_rows_equal_p2": true,
+    "target_key_unique": true,
+    "no_holdout_rows": true,
+    "spread_formula_exact": true,
+    "only_documented_spread_gap": true,
+    "delta_matches_frozen_config": true,
+    "delta_uses_nonzero_development_population": true,
+    "valid_labels_are_exhaustive": true,
+    "missing_spread_has_missing_label": true,
+    "zero_spreads_are_neutral": true,
+    "label_values_are_frozen_set": true,
+    "persistence_not_decision_eligible": true
+  },
+  "holdout": "LOCKED_AND_UNUSED"
+}

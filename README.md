@@ -4,14 +4,16 @@ Independent, point-in-time research into whether renewable forecast revisions an
 
 ## Current Status
 
-Project foundation, official-source validation and the development data
-pipeline are complete. Target construction is next.
+Project foundation, official-source validation, the development data pipeline
+and target construction are complete. H2 forecast-revision testing is next.
 
 - Repository structure and GitHub remote: created
 - Python environment: created and verified
 - Data validation: P1 complete; source roles and point-in-time eligibility inventoried
 - Data pipeline: P2 complete; bounded acquisition, raw provenance, timestamp
   normalization, hourly joins and quality gates passed
+- Target construction: P3 complete; the balancing spread, development-only
+  Q25 neutral band, three outcome labels and baseline contracts are frozen
 - Hypothesis testing: not started
 - Level A (CV-safe): not achieved
 - Locked holdout: unused
@@ -30,6 +32,10 @@ The DK1 day-ahead reference is fixed as `SpotPriceEUR` and the historical
 balancing outcome as `ImbalancePriceEUR`, both in EUR/MWh. The balancing source
 has one documented missing development hour and is used as an ex-post research
 outcome rather than an executable trading price.
+
+The frozen development-only neutral-band threshold is `5.9956075 EUR/MWh`.
+Valid target labels are `UP` above `+delta`, `DOWN` below `-delta`, and
+`NEUTRAL` on both boundaries and between them.
 
 ## Research Periods
 
@@ -83,6 +89,34 @@ Rebuild the local P2 outputs with:
 
 ```bash
 uv run python src/p2_pipeline.py
+```
+
+## Target Construction
+
+P3 produces a local, git-ignored target table at
+`data/processed/p3/target_development.parquet`. It retains all 21,887 P2 hours,
+adds the same-hour balancing spread and assigns 21,886 valid labels while
+preserving the documented missing balancing outcome as a missing target.
+Committed evidence is under
+[`research/evidence/p3_target_construction`](research/evidence/p3_target_construction/README.md).
+
+- `Spread = ImbalancePriceEUR - SpotPriceEUR`, using DK1 EUR/MWh prices for the
+  same delivery hour
+- `delta = 5.9956075 EUR/MWh`, the linear Q25 of 15,392 nonzero absolute
+  development spreads; 6,494 observed zero spreads are excluded from the
+  quantile population and later labelled NEUTRAL
+- Development labels: 4,354 UP, 7,190 DOWN and 10,342 NEUTRAL, plus one missing
+  label at the preserved source gap
+- The majority baseline is fit on training labels only. The frozen persistence
+  formula is retained as an ex-post reference because historical publication
+  delay is undocumented.
+- An hour-of-week training-majority baseline is registered as an
+  availability-safe supplemental reference for later chronological evaluation.
+
+Rebuild and validate the local P3 target with:
+
+```bash
+uv run python src/p3_target.py
 ```
 
 ## Research Principles

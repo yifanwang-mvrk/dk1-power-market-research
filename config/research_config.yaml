@@ -31,8 +31,29 @@ target:
 neutral_band:
   primary_quantile: 0.25
   population: nonzero_absolute_development_spreads
-  numerical_delta: null
-  quantile_method: null
+  numerical_delta: 5.9956075
+  unit: EUR/MWh
+  status: frozen
+  frozen_at_utc: "2026-09-06T14:22:34Z"
+  quantile_method: linear
+  calculation: pandas.Series.quantile
+  calculation_versions:
+    pandas: 3.0.5
+    numpy: 2.5.2
+  sample:
+    start_date: "2022-01-01"
+    end_date_inclusive: "2024-06-30"
+    valid_spreads: 21886
+    missing_spreads: 1
+    zero_spreads_excluded: 6494
+    nonzero_absolute_spreads: 15392
+  interpolation_audit:
+    zero_based_position: 3847.75
+    lower_value: 5.990005
+    upper_value: 5.997475
+    upper_weight: 0.75
+  input_file: data/processed/p2/hourly_base_development.parquet
+  input_sha256: cb69be3091d71e27a157ec3e529878cfaed74f3d9f734ebaa9db56d3a695e66d
   holdout_may_influence: false
 
 point_in_time:
@@ -110,7 +131,16 @@ baselines:
     availability_status: ex_post_reference_only
     reason: legacy_outcome_publication_delay_not_documented
     decision_feature_eligible: false
-    availability_correct_alternative_gate: P3.4
+    availability_correct_alternative_gate: resolved_at_P3.4
+  availability_safe_supplemental:
+    enabled: true
+    name: hour_of_week_training_majority
+    formula: most_common_training_label_for_local_weekday_and_hour
+    fallback: global_training_majority
+    fit_scope: training_rows_only
+    decision_inputs: local_weekday_and_local_hour
+    decision_feature_eligible: true
+    status: registered_before_evaluation
 
 hypotheses:
   H1: residual_load_and_system_tightness

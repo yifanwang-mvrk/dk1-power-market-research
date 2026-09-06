@@ -1,0 +1,67 @@
+{
+  "step": "P3.4",
+  "status": "PASS_WITH_PERSISTENCE_AS_EX_POST_REFERENCE",
+  "development_base_rates": {
+    "denominator_valid_labels": 21886,
+    "missing_labels": 1,
+    "counts": {
+      "UP": 4354,
+      "DOWN": 7190,
+      "NEUTRAL": 10342
+    },
+    "shares": {
+      "UP": 0.1989399616193,
+      "DOWN": 0.3285205153979713,
+      "NEUTRAL": 0.47253952298272867
+    }
+  },
+  "majority_class": {
+    "definition": "Fit on training labels only, then always predict the training majority class.",
+    "development_wide_descriptive_majority": "NEUTRAL",
+    "development_wide_descriptive_correct": 10342,
+    "development_wide_descriptive_accuracy": 0.47253952298272867,
+    "evaluation_rule": "For every future validation segment, refit using only its preceding training segment.",
+    "decision_availability": "eligible_when_fit_on_training_only"
+  },
+  "persistence": {
+    "formula": "predicted_label_t = observed_label_t_minus_1",
+    "eligible_pairs": 21884,
+    "excluded_pairs": 3,
+    "correct": 15636,
+    "development_wide_descriptive_accuracy": 0.7144946079327362,
+    "confusion_matrix_actual_rows_predicted_columns": {
+      "UP": {
+        "UP": 2720,
+        "DOWN": 430,
+        "NEUTRAL": 1203
+      },
+      "DOWN": {
+        "UP": 387,
+        "DOWN": 5290,
+        "NEUTRAL": 1513
+      },
+      "NEUTRAL": {
+        "UP": 1246,
+        "DOWN": 1469,
+        "NEUTRAL": 7626
+      }
+    },
+    "availability_status": "ex_post_reference_only",
+    "decision_feature_eligible": false,
+    "reason": "The legacy balancing dataset does not document historical outcome publication delay, so y[t-1] cannot be proven available at the last-pre-delivery cutoff."
+  },
+  "availability_safe_supplemental": {
+    "name": "hour_of_week_training_majority",
+    "definition": "Within each training segment, select the most common label for each Danish local weekday-hour; fall back to the global training majority.",
+    "inputs_at_prediction": [
+      "local_weekday",
+      "local_hour"
+    ],
+    "fit_scope": "training_rows_only",
+    "decision_availability": "eligible",
+    "evaluation_status": "registered_before_evaluation; performance belongs to later time-split testing",
+    "note": "This is an availability-safe reference, not a replacement presented as outcome persistence."
+  },
+  "interpretation": "All P3 accuracy values are development-wide descriptive diagnostics, not out-of-sample model evidence.",
+  "holdout": "LOCKED_AND_UNUSED"
+}

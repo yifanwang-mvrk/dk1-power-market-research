@@ -8,10 +8,10 @@
 
 | Item | Current Status |
 |---|---|
-| Completed phase | P2 — Data Pipeline |
-| Current phase | P3 — Target Construction |
-| Current step | P3.1 — Build the balancing spread |
-| Next step | P3.2 — Freeze development-only delta |
+| Completed phase | P3 — Target Construction |
+| Current phase | P4 — H2 Renewable Forecast Revision |
+| Current step | P4.1 — Pre-register the H2 test specification |
+| Next step | P4.2 — Build wind/solar 5h-to-1h revisions |
 | Current milestone | Level A — CV-safe |
 | Milestone status | NOT ACHIEVED |
 | Holdout | LOCKED and unused |
@@ -19,10 +19,12 @@
 
 ## One Current Action / 当前唯一动作
 
-Construct the same-hour EUR/MWh balancing spread from the P2 hourly base while
-preserving the documented missing balancing outcome.
+Pre-register the H2 forecast-revision test in `research/hypotheses.md` — expected
+direction, mechanism, eligible inputs, development sample, grouping and failure
+criterion — before constructing any revision variable.
 
-使用 P2 小时底表构造同小时 EUR/MWh balancing spread，并保留已记录的 balancing outcome 缺口。
+在 `research/hypotheses.md` 预登记 H2 预报修正测试：预期方向、机制、合格输入、
+开发期样本、分组规则、失败标准，然后再构造任何 revision 变量。
 
 ## P1.1 Completion / Forecasts_Hour 核验结论
 
@@ -135,6 +137,35 @@ preserving the documented missing balancing outcome.
 - Evidence: `research/evidence/p2_data_pipeline/`; local processed table:
   `data/processed/p2/hourly_base_development.parquet`
 
+## P3 Completion / Target Construction 完成结论
+
+**Status:** PASS — P3.1 through P3.4 completed 2026-09-06
+
+- P3.1 built the same-hour target
+  `balancing_spread_eur_mwh = imbalance_price_eur_mwh - spot_price_eur_mwh` on the
+  P2 base: 21,886 valid spreads, 6,494 exact zeros, 6,345 positive and 9,047
+  negative; the one documented gap at `2022-10-30T00:00:00Z` is preserved as a
+  missing spread
+- P3.2 froze `delta = 5.9956075 EUR/MWh`, the pandas linear-interpolation Q25 of
+  15,392 nonzero absolute development spreads; the one missing spread and the
+  6,494 observed-zero spreads are excluded from the quantile population
+- The frozen value, method, nonzero population, input SHA-256 and library
+  versions are recorded in `config/research_config.yaml` with
+  `holdout_may_influence: false`
+- P3.3 assigned 4,354 UP, 7,190 DOWN and 10,342 NEUTRAL labels plus one missing
+  label; both exact `±delta` boundaries and observed zeros are NEUTRAL; no
+  missing value is zero-filled
+- P3.4 fixed the baseline contracts: the majority baseline is fit on training
+  labels only; the frozen persistence formula stays an ex-post reference because
+  the legacy outcome publication delay is undocumented;
+  `hour_of_week_training_majority` is registered as the availability-safe
+  supplemental baseline before evaluation
+- Quality gate: 13/13 critical checks; target table 21,887 rows and 99 columns;
+  zero holdout rows; 13/13 test suite passes
+- Decision: D026; resolves I05 and the P3.4 portion of I03
+- Evidence: `research/evidence/p3_target_construction/`; local processed table:
+  `data/processed/p3/target_development.parquet`
+
 ## Completed Setup / 已完成搭建
 
 - [x] Formal local Git repository created
@@ -162,7 +193,7 @@ preserving the documented missing balancing outcome.
 | A1 | Repository | DONE |
 | A2 | Professional README | DONE |
 | A3 | Project Charter | DONE |
-| A4 | Target, development and holdout config | DONE |
+| A4 | Target, development and holdout config | DONE — periods, target fields and the frozen Q25 delta (5.9956075 EUR/MWh) all in research config |
 | A5 | Forecast, day-ahead and balancing data | DONE — all three core sources validated with documented conditions |
 | A6 | Data Dictionary and PIT classification | DONE — core and P1.4 source fields registered by eligibility class |
 | A7 | H2 revision variables | NOT STARTED |
@@ -179,8 +210,8 @@ preserving the documented missing balancing outcome.
 - Development period: 2022-01-01 to 2024-06-30
 - Locked holdout: 2024-07-01 to 2024-12-31
 - Target: `Spread_t = P_Balancing,t - P_DayAhead,t`
-- Neutral band: development-only Q25 of nonzero absolute spreads
-- Mandatory baselines: majority class and persistence
+- Neutral band: development-only Q25 of nonzero absolute spreads = 5.9956075 EUR/MWh (frozen 2026-09-06, before holdout access)
+- Mandatory baselines: majority class and persistence (persistence is ex-post reference; hour-of-week training majority is the availability-safe supplement)
 - Primary MVP hypothesis: H2 renewable forecast revision
 - No executable intraday P&L claim
 - Holdout access remains prohibited
@@ -199,5 +230,6 @@ Earlier assistant-prepared P1.1 files remain outside the formal repository as re
 | 2026-09-06 | P1.3 `RegulatingBalancePowerdata` completed with a conditional pass | Current: P1.4; Next: P2.1 |
 | 2026-09-06 | P1.4 fundamentals, cross-border and system-source inventory completed with a pass | Current: P2.1; Next: P2.2 |
 | 2026-09-06 | P2.1–P2.5 bounded acquisition, provenance, time normalization, hourly joining and quality gates completed | Current: P3.1; Next: P3.2 |
+| 2026-09-06 | P3.1–P3.4 balancing spread built, Q25 delta frozen at 5.9956075 EUR/MWh, three labels assigned, baseline contracts fixed (D026) | Current: P4.1; Next: P4.2 |
 
 Update this file after every completed work session. Every DONE status requires reviewed evidence.
