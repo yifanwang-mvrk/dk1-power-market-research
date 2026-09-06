@@ -50,6 +50,7 @@ Source: the complete 31-section final Blueprint response and the owner's subsequ
 | D024 | P1.4 fundamental and system-source eligibility | FROZEN |
 | D025 | Last-pre-delivery cutoff and P2 hourly-base contract | FROZEN |
 | D026 | P3 balancing spread, frozen Q25 delta and baseline contracts | FROZEN |
+| D027 | P4.1 H2 round-1 pre-registered test specification | IMPLEMENTATION NOTE |
 | E001–E003 | 执行说明 / Execution clarifications | IMPLEMENTATION NOTE |
 | I01–I08 | 字段、参数和可用性 / Fields, parameters and availability | TRACKED — see current table |
 
@@ -470,6 +471,68 @@ fetch-disabled. Zero holdout rows were read or inspected.
 
 **Supersedes / 替代:** None.
 
+## D027 · Pre-register the P4.1 H2 round-1 test specification
+
+**日期 / Date:** 2026-09-06
+**状态 / Status:** IMPLEMENTATION NOTE
+**Related step / 对应步骤:** P4.1
+**Related open item / 对应 I 编号:** I07 (round-1 method and buckets only)
+
+**决定 / Decision:** Fix the H2 round-1 test before constructing any revision
+variable. Primary test: `wind_revision_t = (Offshore + Onshore) (Forecast1Hour -
+Forecast5Hour)` in raw MWh, same-hour non-null pairs only (D021); this test alone
+determines whether "H2 is supported". Solar runs the identical procedure as a
+separate secondary test and a solar-only pass is labelled "conditionally
+supported — solar only, needs replication". Predicted direction: positive wind
+revision favours `DOWN`, negative favours `UP`. Buckets: development-only signed
+quantiles Q20/Q40/Q60/Q80 (primary) plus a ten-decile secondary view, frozen in
+P4.2 before any outcome comparison; no hand-picked "strong revision" magnitude
+threshold in round 1. Method: bucket-by-label contingency table; Spearman
+association (primary against the frozen continuous signed spread, secondary
+against the `+1/0/-1` label score) with a bootstrap CI; one transparent rule with
+`c` fixed at the development Q60 magnitude; one chart. Pass/fail is judged only
+against the two availability-safe baselines (majority, hour-of-week training
+majority); persistence is reported prominently but is not a gate.
+
+**理由 / Rationale:** Pre-registration collapses a large researcher-degrees-of-
+freedom space (variable, scale, bucketing, statistic) to one procedure, so a hit
+means something (D002, D013 principle 2). Wind is primary because DK1 has a very
+high wind share and wind dominates physical imbalance in MWh; making wind and
+solar co-primary would be two shots at the same hypothesis. Raw MWh is the
+physical quantity the system must balance and avoids the divide-by-near-zero
+trap of normalization. Signed quantiles are data-defined and need no tuned
+threshold. Persistence is excluded from the gate because D023 / E001 already
+classify it `ex_post_reference_only` and `decision_feature_eligible: false` — its
+`y[t-1]` cannot be proven available at the `delivery_start_utc` cutoff, so making
+an undeployable benchmark the pass/fail line would bury a genuine mechanism
+finding; whether the revision adds information beyond lagged state is deferred to
+the P10 multivariate stage.
+
+**未采用 / Alternative considered:** Wind and solar as co-primary (rejected —
+multiple-comparison dilution); normalized revision as primary (kept as a
+secondary sensitivity only); a hand-picked "strong revision" magnitude threshold
+now (deferred to P4.4 / P7 under I07); requiring the rule to also beat
+persistence (rejected as above; persistence is still reported); looking at the
+data first to choose the specification (the entire point of pre-registration is
+to forbid this).
+
+**Evidence / 证据:**
+`research/evidence/p4_h2_revision/p4_1_preregistration_2026-09-06.json`
+(git head `f1a30a4` at registration) and
+`research/evidence/p4_h2_revision/README.md`; the readable specification in
+`research/hypotheses.md` under "H2 — Renewable Forecast Revision".
+
+**Impact / 影响:** P4.2 may now build the revision variables and freeze the
+bucket edges and diagnostics; it must not change the P4.1 procedure. P4.3 runs
+the test and produces the chart (Level A A9). A null result is a valid completed
+test and satisfies Level A A8. Regime and cross-border conditioning stay in P4.4.
+
+**Holdout implications / 留出期:** None. All P4.1 choices are procedural and were
+made with zero data inspection; the holdout stays locked.
+
+**Supersedes / 替代:** None. Implements D008, D009 and D013; partially addresses
+I07 (round-1 method and buckets).
+
 ## 本次执行说明 / Operational clarifications
 
 ### E001 · Preserve both persistence and point-in-time integrity
@@ -509,7 +572,7 @@ All items begin **OPEN**. There is no confirmed external blocker, and lack of ve
 | I04 | **RESOLVED by D021/D022/D023/D024:** use local-date request boundaries, UTC canonical keys and Danish-local time for DST interpretation across all P1 sources | P1 complete | Full development-boundary validation; P1.4 uses `HourUTC + PriceArea` or `HourUTC + PriceArea + ConnectedArea` as appropriate |
 | I05 | **RESOLVED by D026:** δ = 5.9956075 EUR/MWh — pandas linear-interpolation Q25 of 15,392 nonzero absolute development spreads; the 1 missing and 6,494 observed-zero spreads are excluded; frozen in config before holdout access | P3.2 complete | Nonzero-absolute development population, count, quantile method, config value and pandas/numpy versions recorded in `config/research_config.yaml` and `p3_2_delta_freeze_2026-09-06.json` |
 | I06 | **PARTIALLY RESOLVED by D024:** H1-A actual and realized flows are diagnostic; legacy day-ahead transmission fields and countertrade are conditional candidates; H1-B external forecast remains pending | P5.2 / P6.1 | Complete load-proxy access/timing evidence and border-specific feature rules without promoting actuals |
-| I07 | Regime bins、strong revision、rule thresholds、confidence / No Trade 如何定义？ | P4 / P7；对应测试前 | Development-only 预登记规格、理由和版本 |
+| I07 | **PARTIALLY RESOLVED by D027:** the H2 round-1 method and revision buckets are pre-registered (signed quantiles, no tuned "strong revision" threshold in round 1). Regime bins, the magnitude-threshold rule, confidence mapping and No Trade conditions remain open | P4.4 / P7；对应测试前 | Development-only 预登记规格、理由和版本 |
 | I08 | Logistic Regression、时间训练/验证、校准和 Brier / undefined metric conventions？ | P10.1；解锁前 | 固定时间切分、模型与校准参数、评估与敏感性计划 |
 
 ## 后续决策模板 / Template for the next entry

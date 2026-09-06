@@ -1,0 +1,111 @@
+{
+  "step": "P4.1",
+  "status": "PRE_REGISTERED",
+  "hypothesis_id": "H2",
+  "role": "primary_mvp_hypothesis",
+  "registered_at_utc": "2026-09-06T17:54:40Z",
+  "git_head_at_registration": "f1a30a49d0bd0d639a4aece96c4dbe68840aa103",
+  "registration_precondition": "Registered before any revision variable was constructed and before any revision-outcome relationship was inspected on development data.",
+  "tested_relationship": "Whether the 5h-to-1h renewable forecast revision for a DK1 delivery hour carries information about that same hour's realized balancing-pressure outcome: the frozen label (UP / DOWN / NEUTRAL, delta 5.9956075 EUR/MWh, D026) and the frozen continuous signed spread.",
+  "revision_variable": {
+    "per_type_formula": "revision_k_t = Forecast1Hour_k_t - Forecast5Hour_k_t (MWh)",
+    "forecast_types": ["Offshore Wind", "Onshore Wind", "Solar"],
+    "same_hour_rule": "Both horizon fields must be non-null in the same HourUTC + PriceArea + ForecastType row (D021).",
+    "wind_aggregate": "wind_revision_t = revision_OffshoreWind_t + revision_OnshoreWind_t, computed only when all four wind horizon fields are non-null.",
+    "primary_scale": "raw MWh",
+    "secondary_scale": "wind_revision_t / wind_forecast_5h_t, reported only where wind_forecast_5h_t is at or above a development-distribution floor fixed in P4.2 (avoids divide-by-near-zero)."
+  },
+  "primary_and_secondary_tests": {
+    "primary_wind": {
+      "variable": "wind_revision_t (raw MWh)",
+      "role": "This test alone determines whether H2 is supported.",
+      "rationale": "DK1 has a very high wind share; wind is the dominant renewable driver of physical imbalance."
+    },
+    "secondary_solar": {
+      "variable": "solar_revision_t",
+      "procedure": "identical full procedure (buckets, association, rule, chart, baselines) with its own separate success/failure judgment",
+      "samples": ["all numeric pairs", "both-horizons-positive daytime subset (D021)"],
+      "labelling_rule": "A solar-only positive result is reported as 'conditionally supported - solar only, needs replication', never as 'H2 supported'."
+    },
+    "exploratory_only_round_1": ["offshore-only revision", "onshore-only revision", "combined wind+solar revision"]
+  },
+  "expected_direction": {
+    "mechanism": "A positive wind revision means more wind is expected as delivery approaches, implying a looser expected balance and a higher probability the hour settles as DOWN pressure (balancing price below the already-cleared day-ahead). A negative revision implies the reverse and favours UP.",
+    "predictions_on_development_data": [
+      "P(DOWN | wind_revision in the top bucket) > P(DOWN | wind_revision in the middle bucket)",
+      "P(UP | wind_revision in the bottom bucket) > P(UP | wind_revision in the middle bucket)",
+      "A directionally consistent gradient in DOWN-share minus UP-share across ordered revision buckets.",
+      "A negative rank association between signed wind_revision_t and the signed spread."
+    ],
+    "admissible_results": ["supported", "conditionally supported / mechanism only", "conditionally supported - solar only, needs replication", "contrary direction", "rejected / null"]
+  },
+  "buckets": {
+    "variable": "signed wind_revision_t",
+    "primary_scheme": "five ordered groups by development-only signed quantiles Q20 / Q40 / Q60 / Q80",
+    "secondary_scheme": "ten-group signed-decile view, in case the relationship is concentrated in the tails",
+    "computed_in": "P4.2",
+    "frozen_before": "any outcome comparison",
+    "strong_revision_threshold_round_1": "none; the quantile grid is used instead of a hand-picked magnitude cutoff (magnitude-threshold tuning is I07 / P4.4 / P7)",
+    "to_record_in_p4_2": ["bucket edges", "group sizes", "tie handling"]
+  },
+  "test_method_round_1": [
+    "Contingency table: revision bucket by frozen label, with row and column shares and group sizes (five-quantile primary, ten-decile secondary).",
+    "Primary rank association: Spearman correlation between signed wind_revision_t and the frozen continuous signed spread (EUR/MWh), with a bootstrap confidence interval on development data.",
+    "Secondary rank association: Spearman between signed wind_revision_t and the ordinal label score (+1 UP, 0 NEUTRAL, -1 DOWN).",
+    "Transparent rule: predict DOWN if wind_revision_t > c, UP if wind_revision_t < -c, else NEUTRAL; c fixed at the frozen development Q60 revision magnitude (pre-registered, not tuned); scored on three-class balanced accuracy and macro-F1.",
+    "One chart: DOWN / UP / NEUTRAL share by revision bucket (also satisfies the Level A meaningful-chart criterion)."
+  ],
+  "baselines": {
+    "computed_and_reported": [
+      "majority class fit on training labels only",
+      "hour_of_week_training_majority (availability-safe supplement, D026)",
+      "persistence y_hat_t = y_(t-1), retained as an ex-post reference"
+    ],
+    "pass_fail_gate": "only the two availability-safe baselines (majority and hour-of-week)",
+    "persistence_handling": "ex_post_reference_only and decision_feature_eligible false (D023, E001); cannot be proven available at the decision cutoff, so it is not a pass/fail gate. Reported prominently: if the rule does not beat persistence, the write-up says so and defers 'does the revision add information beyond lagged state' to the P10 multivariate stage."
+  },
+  "success_and_failure_criterion": {
+    "primary_wind_supported_requires_all": [
+      "the DOWN-minus-UP share gradient is monotone in the predicted direction across at least four of the five quantile buckets",
+      "the primary Spearman interval excludes zero with the predicted (negative) sign",
+      "the transparent rule beats both availability-safe baselines (majority and hour-of-week) on both balanced accuracy and macro-F1 (with the in-sample delta caveat, E002)"
+    ],
+    "conditionally_supported_if": "the gradient and association hold but the rule does not beat the two availability-safe baselines; mechanism evidence is reported and no edge is claimed",
+    "rejected_null_if": "neither the gradient/association nor the rule holds; a valid completed test (D013, D017), retained in full",
+    "solar_secondary": "identical bar, judged separately; a solar-only pass is 'conditionally supported - solar only, needs replication'"
+  },
+  "counterargument": "The day-ahead and intraday markets may already absorb the forecast update, so by delivery the balancing outcome could be driven more by outages, cross-border flows and demand surprises than by the renewable revision. A raw association may also reflect season or regime confounding.",
+  "invalidation": [
+    "If conditioning on season, hour-of-day regime or cross-border capacity (H3 / P6) removes the gradient, H2 is at best conditional.",
+    "If P4.2 diagnostics show the 5h and 1h values are not independent pre-delivery observations (for example a large share of hours where Forecast5Hour equals Forecast1Hour exactly), the revision variable's information content is reinterpreted or the test is paused."
+  ],
+  "p4_2_diagnostics_before_outcome_comparison": [
+    "Share of eligible hours where Forecast5Hour == Forecast1Hour exactly, and the mass within a small +/- epsilon band",
+    "Coverage: hours with a non-null wind_revision_t, hours dropped for missing horizons, per forecast type",
+    "The frozen five-quantile and ten-decile bucket edges and group sizes",
+    "The normalization floor for wind_forecast_5h_t"
+  ],
+  "denominators_to_disclose": [
+    "total development hours",
+    "hours with a valid frozen label (21,886)",
+    "hours with a non-null wind_revision_t",
+    "hours dropped for missing horizons",
+    "the single missing-target hour 2022-10-30T00:00:00Z",
+    "solar all-pairs versus both-positive counts"
+  ],
+  "deferred_to_p4_4": [
+    "regime conditioning (tight / normal / loose, renewable level)",
+    "cross-border conditioning",
+    "magnitude-threshold rule tuning",
+    "logistic regression",
+    "probability calibration"
+  ],
+  "frozen_inputs_not_reopened_here": {
+    "target_labels_and_spread": "D026 (UP / DOWN / NEUTRAL, delta 5.9956075 EUR/MWh; continuous signed spread)",
+    "decision_cutoff": "D025 (delivery_start_utc; strictly-before availability)",
+    "forecast_field_handling": "D020 / D021 (fixed-horizon snapshots; non-null same-hour pairs only; no zero-fill; preserve zeros and negatives; DST rules)",
+    "day_ahead_reference": "D022 (Elspotprices.SpotPriceEUR)",
+    "balancing_outcome": "D023 (RegulatingBalancePowerdata.ImbalancePriceEUR)"
+  },
+  "holdout": "LOCKED_AND_UNUSED"
+}

@@ -32,7 +32,8 @@ candidate pending access and publication-timing evidence in P5.2.
 
 ## H2 — Renewable Forecast Revision
 
-**Status:** P2-aligned inputs and outcome ready; testing not started
+**Status:** P4.1 test specification pre-registered 2026-09-06; revision variable
+not yet constructed; no revision-outcome relationship inspected
 **Role:** Primary MVP hypothesis
 
 ### Question
@@ -59,6 +60,152 @@ coverage. P1.3 fixed the ex-post balancing outcome as
 `RegulatingBalancePowerdata.ImbalancePriceEUR` in EUR/MWh. Its official
 development extract is missing one complete DST fall-back hour, which must
 remain missing rather than be filled with zero.
+
+### P4.1 Pre-Registered Test Specification
+
+**Registered:** 2026-09-06, before any revision variable was constructed and
+before any revision-outcome relationship was inspected. Frozen machine-readable
+snapshot: `research/evidence/p4_h2_revision/p4_1_preregistration_2026-09-06.json`.
+Everything below is fixed in advance; P4.2 fills in only the development-derived
+numbers (bucket edges, group sizes, coverage, normalization floor) without
+changing the procedure.
+
+**Tested relationship.** Whether the 5h-to-1h renewable forecast revision for a
+DK1 delivery hour carries information about that same hour's realized
+balancing-pressure outcome — the frozen label (`UP` / `DOWN` / `NEUTRAL`,
+`delta = 5.9956075 EUR/MWh`, D026) and the frozen continuous signed spread.
+
+**Revision variable.** For each DK1 delivery hour `t` and forecast type
+`k in {Offshore Wind, Onshore Wind, Solar}`:
+
+`revision_k,t = Forecast1Hour_k,t - Forecast5Hour_k,t` (MWh)
+
+computed only when both horizon fields are non-null in the same
+`HourUTC + PriceArea + ForecastType` row (D021). Wind is aggregated as
+`wind_revision_t = revision_OffshoreWind,t + revision_OnshoreWind,t`, computed
+only when all four wind horizon fields are non-null. Raw MWh is the primary
+scale. A secondary normalized form `wind_revision_t / wind_forecast_5h_t` is
+reported only where `wind_forecast_5h_t` is at or above a development-distribution
+floor fixed in P4.2, to avoid divide-by-near-zero.
+
+**Primary and secondary tests.**
+
+- **Primary — wind.** `wind_revision_t` in raw MWh. This test alone determines
+  whether "H2 is supported". DK1 has a very high wind share and wind is the
+  dominant renewable driver of physical imbalance.
+- **Secondary — solar.** `solar_revision_t` runs the *same* full procedure
+  (buckets, association, rule, chart, baselines) with its own success/failure
+  judgment, on both the all-numeric-pairs set and the both-horizons-positive
+  daytime subset (D021). A solar-only positive result is reported as
+  **conditionally supported — solar only, needs replication**, never as "H2
+  supported".
+- Offshore-only, onshore-only and combined wind+solar revisions are exploratory
+  in round 1.
+
+**Expected direction (pre-registered and falsifiable).** Mechanism: a positive
+wind revision means more wind is expected as delivery approaches, implying a
+looser expected balance and a higher probability that the hour settles as `DOWN`
+pressure (balancing price below the already-cleared day-ahead). A negative
+revision implies the reverse and favours `UP`. On development data we predict:
+
+- `P(DOWN | wind_revision in the top bucket) > P(DOWN | wind_revision in the middle bucket)`;
+- `P(UP | wind_revision in the bottom bucket) > P(UP | wind_revision in the middle bucket)`;
+- a directionally consistent gradient in the `DOWN`-share minus `UP`-share across
+  ordered revision buckets;
+- a negative rank association between signed `wind_revision_t` and the signed
+  spread.
+
+Contrary-direction and no-relationship outcomes are both admissible results and
+must be reported, not discarded (D008, D013).
+
+**Buckets.** `wind_revision_t` is cut into five ordered groups by its
+development-only signed quantiles Q20 / Q40 / Q60 / Q80, computed in P4.2 and
+frozen before any outcome comparison. A ten-group signed-decile view is reported
+as a secondary check in case the relationship is concentrated in the tails. No
+hand-picked "strong revision" magnitude threshold is used in round 1; the
+quantile grid lets a monotone pattern appear or fail to appear on its own.
+Bucket edges, group sizes and tie handling are recorded in P4.2 evidence.
+
+**Test method (round 1 — descriptive and conditional, per the D013 modelling
+order).**
+
+1. Contingency table: revision bucket by frozen label, with row and column
+   shares and group sizes (five-quantile primary, ten-decile secondary).
+2. Rank association between signed `wind_revision_t` and the outcome:
+   - primary: Spearman correlation with the frozen continuous signed spread
+     (EUR/MWh), with a bootstrap confidence interval on development data;
+   - secondary: Spearman with the ordinal label score (`+1` `UP`, `0` `NEUTRAL`,
+     `-1` `DOWN`).
+3. A transparent rule — predict `DOWN` if `wind_revision_t > c`, `UP` if
+   `wind_revision_t < -c`, else `NEUTRAL` — with `c` fixed at the frozen
+   development Q60 revision magnitude (pre-registered, not tuned). Score it on
+   three-class balanced accuracy and macro-F1.
+4. One chart: `DOWN` / `UP` / `NEUTRAL` share by revision bucket (also satisfies
+   the Level A "meaningful chart" criterion).
+
+**Baselines.** All three are computed and reported (D012):
+
+- majority class, fit on training labels only;
+- hour-of-week training majority (availability-safe supplement, D026);
+- persistence `y_hat_t = y_(t-1)`, retained as an ex-post reference.
+
+The rule's pass/fail is judged only against the two availability-safe baselines
+(majority and hour-of-week). Persistence is `ex_post_reference_only` and
+`decision_feature_eligible: false` (D023, E001) — it cannot be proven available
+at the decision cutoff, so it is not a pass/fail gate. It is still reported
+prominently: if the rule does not beat persistence, the write-up states that and
+defers "does the revision add information beyond lagged state" to the P10
+multivariate stage.
+
+**Success and failure criterion (pre-registered).** The primary wind test is
+**supported** only if all three hold on the development sample:
+
+- the `DOWN`-minus-`UP` share gradient is monotone in the predicted direction
+  across at least four of the five quantile buckets;
+- the primary Spearman interval excludes zero with the predicted (negative)
+  sign;
+- the transparent rule beats both availability-safe baselines (majority and
+  hour-of-week) on both balanced accuracy and macro-F1, reported with the
+  in-sample delta caveat (E002).
+
+If the gradient and association hold but the rule does not beat those baselines,
+the conclusion is **conditionally supported / mechanism only** — mechanism
+evidence is reported and no edge is claimed. If neither holds, the conclusion is
+**rejected / null**, which is a valid completed test (D013, D017) and is
+retained in full. The solar secondary test uses the identical bar for its own
+separate judgment.
+
+**Counterargument.** The day-ahead and intraday markets may already absorb the
+forecast update, so by delivery the balancing outcome could be driven more by
+outages, cross-border flows and demand surprises than by the renewable revision.
+A raw association may also reflect season or regime confounding rather than
+information content.
+
+**Invalidation.** If conditioning on season, hour-of-day regime or cross-border
+capacity (H3 / P6) removes the gradient, H2 is at best conditional. If P4.2
+diagnostics show the 5h and 1h values are not independent pre-delivery
+observations (for example a large share of hours where `Forecast5Hour` equals
+`Forecast1Hour` exactly), the revision variable's information content is
+reinterpreted or the test is paused.
+
+**P4.2 diagnostics to report before any outcome comparison.**
+
+- Share of eligible hours where `Forecast5Hour == Forecast1Hour` exactly
+  (forecast never updated) and the mass within a small `±epsilon` band;
+- coverage: hours with a non-null `wind_revision_t`, hours dropped for missing
+  horizons, per forecast type;
+- the frozen five-quantile and ten-decile bucket edges and group sizes;
+- the normalization floor for `wind_forecast_5h_t`.
+
+**Denominators to disclose (E002, D021).** Total development hours; hours with a
+valid frozen label (21,886); hours with a non-null `wind_revision_t`; hours
+dropped for missing horizons; the single missing-target hour
+(`2022-10-30T00:00:00Z`); solar all-pairs versus both-positive counts.
+
+**Deferred to P4.4 (not round 1).** Regime conditioning
+(tight / normal / loose, renewable level), cross-border conditioning, any
+magnitude-threshold rule tuning, logistic regression and probability
+calibration.
 
 ## H3 — Cross-Border and System Conditions
 

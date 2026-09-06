@@ -10,8 +10,8 @@
 |---|---|
 | Completed phase | P3 — Target Construction |
 | Current phase | P4 — H2 Renewable Forecast Revision |
-| Current step | P4.1 — Pre-register the H2 test specification |
-| Next step | P4.2 — Build wind/solar 5h-to-1h revisions |
+| Current step | P4.2 — Build wind/solar 5h-to-1h revisions on the P2 base |
+| Next step | P4.3 — Run the pre-registered round-1 test and chart |
 | Current milestone | Level A — CV-safe |
 | Milestone status | NOT ACHIEVED |
 | Holdout | LOCKED and unused |
@@ -19,12 +19,14 @@
 
 ## One Current Action / 当前唯一动作
 
-Pre-register the H2 forecast-revision test in `research/hypotheses.md` — expected
-direction, mechanism, eligible inputs, development sample, grouping and failure
-criterion — before constructing any revision variable.
+Build the wind and solar 5h-to-1h revision variables on the P2 hourly base per
+the frozen P4.1 spec: same-hour non-null pairs only, the `5h == 1h` and coverage
+diagnostics, and the frozen five-quantile / ten-decile bucket edges — before any
+revision-outcome comparison.
 
-在 `research/hypotheses.md` 预登记 H2 预报修正测试：预期方向、机制、合格输入、
-开发期样本、分组规则、失败标准，然后再构造任何 revision 变量。
+按冻结的 P4.1 规格，在 P2 小时底表上构造 wind 和 solar 的 5h→1h revision 变量：
+只用同小时非空配对，产出 `5h == 1h` 与覆盖率诊断，并冻结五分位 / 十分位分箱边界，
+然后再做任何 revision 与结果的比较。
 
 ## P1.1 Completion / Forecasts_Hour 核验结论
 
@@ -166,6 +168,28 @@ criterion — before constructing any revision variable.
 - Evidence: `research/evidence/p3_target_construction/`; local processed table:
   `data/processed/p3/target_development.parquet`
 
+## P4.1 Completion / H2 Pre-Registration 完成结论
+
+**Status:** DONE — H2 round-1 test pre-registered 2026-09-06, before any revision
+variable was constructed
+
+- Primary test: `wind_revision_t = (Offshore + Onshore) Forecast1Hour - Forecast5Hour`
+  in raw MWh, same-hour non-null pairs only; this test alone decides "H2 supported"
+- Solar runs the identical procedure as a separate secondary test; a solar-only
+  pass is "conditionally supported — solar only, needs replication"
+- Expected direction: positive wind revision favours DOWN, negative favours UP;
+  contrary and null outcomes are admissible and must be reported
+- Buckets: development-only signed quantiles Q20/Q40/Q60/Q80 (primary) plus a
+  ten-decile secondary view, frozen in P4.2 before any outcome comparison
+- Method: bucket × label contingency table; Spearman association (primary vs the
+  continuous signed spread, secondary vs the +1/0/-1 label score) with bootstrap
+  CI; one transparent rule with `c` = development Q60 magnitude; one chart
+- Pass/fail gate: the rule must beat majority and hour-of-week on balanced
+  accuracy and macro-F1; persistence is reported prominently but is an ex-post
+  reference (D023, E001), not a gate
+- Evidence: `research/evidence/p4_h2_revision/` and
+  `research/hypotheses.md` (H2 section)
+
 ## Completed Setup / 已完成搭建
 
 - [x] Formal local Git repository created
@@ -196,7 +220,7 @@ criterion — before constructing any revision variable.
 | A4 | Target, development and holdout config | DONE — periods, target fields and the frozen Q25 delta (5.9956075 EUR/MWh) all in research config |
 | A5 | Forecast, day-ahead and balancing data | DONE — all three core sources validated with documented conditions |
 | A6 | Data Dictionary and PIT classification | DONE — core and P1.4 source fields registered by eligibility class |
-| A7 | H2 revision variables | NOT STARTED |
+| A7 | H2 revision variables | IN PROGRESS — round-1 test pre-registered (P4.1); variables built in P4.2 |
 | A8 | At least one completed hypothesis test | NOT STARTED |
 | A9 | At least one meaningful chart | NOT STARTED |
 | A10 | Holdout completely unused | MAINTAINED |
@@ -231,5 +255,6 @@ Earlier assistant-prepared P1.1 files remain outside the formal repository as re
 | 2026-09-06 | P1.4 fundamentals, cross-border and system-source inventory completed with a pass | Current: P2.1; Next: P2.2 |
 | 2026-09-06 | P2.1–P2.5 bounded acquisition, provenance, time normalization, hourly joining and quality gates completed | Current: P3.1; Next: P3.2 |
 | 2026-09-06 | P3.1–P3.4 balancing spread built, Q25 delta frozen at 5.9956075 EUR/MWh, three labels assigned, baseline contracts fixed (D026) | Current: P4.1; Next: P4.2 |
+| 2026-09-06 | P4.1 H2 round-1 test pre-registered (wind primary, solar secondary; signed-quantile buckets; Spearman + transparent rule; gate = majority + hour-of-week) | Current: P4.2; Next: P4.3 |
 
 Update this file after every completed work session. Every DONE status requires reviewed evidence.
