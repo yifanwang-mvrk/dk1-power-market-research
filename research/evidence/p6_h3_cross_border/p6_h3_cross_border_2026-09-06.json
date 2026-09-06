@@ -1,0 +1,225 @@
+{
+  "step": "P6",
+  "status": "PASS",
+  "created_at_utc": "2026-09-06T19:31:11.745139+00:00",
+  "git_head_before_run": "670e748b05d50b5bafb385569a2414acbb9d394b",
+  "scope": "development only; exploratory / descriptive (E002)",
+  "declared_before_crossing_outcomes": {
+    "usable_borders": [
+      "de",
+      "dk2",
+      "nl",
+      "no2",
+      "se3"
+    ],
+    "realized_borders": [
+      "no",
+      "se",
+      "ge",
+      "nl",
+      "great_belt"
+    ],
+    "tercile_quantiles": [
+      0.3333333333333333,
+      0.6666666666666666
+    ],
+    "material_gradient_difference": 0.05
+  },
+  "p6_1_build": {
+    "usable_borders": [
+      "de",
+      "dk2",
+      "nl",
+      "no2",
+      "se3"
+    ],
+    "excluded_border": "gb (all day-ahead fields null, P1.4)",
+    "export_capacity_sign_convention": "export direction stored as a negative number; magnitude taken; positive export-capacity records (166 hours) treated as zero available export and flagged",
+    "realized_borders": [
+      "no",
+      "se",
+      "ge",
+      "nl",
+      "great_belt"
+    ],
+    "realized_classification": "diagnostic_only (settlement flow, published after delivery)",
+    "any_positive_export_capacity_hours": 166
+  },
+  "coverage": {
+    "cross_border_eligible_available_hours": 21887,
+    "realized_flow_available_hours": 21887,
+    "expected_hours": 21887
+  },
+  "p6_2_eligible_conditioning": {
+    "export_headroom_mw": {
+      "conditioning_variable": "export_headroom_mw",
+      "tercile_edges": [
+        5005.0,
+        5618.0
+      ],
+      "congested_tercile": "T1_low",
+      "cells": {
+        "T1_low": {
+          "n": 7213,
+          "insufficient": false,
+          "down_minus_up_by_bucket": {
+            "1": 0.04388926401080348,
+            "2": 0.08695652173913046,
+            "3": 0.11790393013100436,
+            "4": 0.18082191780821916,
+            "5": 0.21187997550520513
+          },
+          "q5_minus_q1_spread": 0.16799071149440165,
+          "gradient_spearman": 0.9999999999999999,
+          "directionally_consistent": true
+        },
+        "T2_mid": {
+          "n": 7453,
+          "insufficient": false,
+          "down_minus_up_by_bucket": {
+            "1": 0.003457814661134151,
+            "2": 0.08677396780965713,
+            "3": 0.1687853107344633,
+            "4": 0.2066225165562914,
+            "5": 0.22033898305084743
+          },
+          "q5_minus_q1_spread": 0.21688116838971327,
+          "gradient_spearman": 0.9999999999999999,
+          "directionally_consistent": true
+        },
+        "T3_high": {
+          "n": 6948,
+          "insufficient": false,
+          "down_minus_up_by_bucket": {
+            "1": 0.030824372759856666,
+            "2": 0.07305095150399016,
+            "3": 0.1506849315068493,
+            "4": 0.14781966001478197,
+            "5": 0.2109826589595376
+          },
+          "q5_minus_q1_spread": 0.18015828619968094,
+          "gradient_spearman": 0.8999999999999998,
+          "directionally_consistent": true
+        }
+      },
+      "gradient_spread_congested_minus_open": -0.012167574705279294,
+      "conditions_h2": false,
+      "predicted_direction": "steeper H2 DOWN-gradient when the export direction is congested"
+    },
+    "net_scheduled_exchange_da_mw": {
+      "conditioning_variable": "net_scheduled_exchange_da_mw",
+      "tercile_edges": [
+        -1096.2666733333333,
+        235.1333439999999
+      ],
+      "congested_tercile": "T1_low",
+      "cells": {
+        "T1_low": {
+          "n": 7205,
+          "insufficient": false,
+          "down_minus_up_by_bucket": {
+            "1": 0.07414104882459313,
+            "2": 0.04949053857350802,
+            "3": 0.1275862068965517,
+            "4": 0.17891566265060238,
+            "5": 0.19812630117973629
+          },
+          "q5_minus_q1_spread": 0.12398525235514316,
+          "gradient_spearman": 0.8999999999999998,
+          "directionally_consistent": true
+        },
+        "T2_mid": {
+          "n": 7205,
+          "insufficient": false,
+          "down_minus_up_by_bucket": {
+            "1": -0.008505467800729027,
+            "2": 0.03851851851851851,
+            "3": 0.11384399156711172,
+            "4": 0.18226299694189604,
+            "5": 0.26064291920069504
+          },
+          "q5_minus_q1_spread": 0.26914838700142407,
+          "gradient_spearman": 0.9999999999999999,
+          "directionally_consistent": true
+        },
+        "T3_high": {
+          "n": 7204,
+          "insufficient": false,
+          "down_minus_up_by_bucket": {
+            "1": 0.0286624203821656,
+            "2": 0.1167979002624672,
+            "3": 0.17684729064039406,
+            "4": 0.17607003891050585,
+            "5": 0.19999999999999998
+          },
+          "q5_minus_q1_spread": 0.17133757961783438,
+          "gradient_spearman": 0.8999999999999998,
+          "directionally_consistent": true
+        }
+      },
+      "gradient_spread_congested_minus_open": -0.04735232726269123,
+      "conditions_h2": false,
+      "predicted_direction": "steeper H2 DOWN-gradient when the export direction is congested"
+    }
+  },
+  "p6_2_diagnostic_conditioning": {
+    "realized_net_import_mwh": {
+      "conditioning_variable": "realized_net_import_mwh",
+      "tercile_edges": [
+        -425.39126666666675,
+        502.98343333333327
+      ],
+      "congested_tercile": "T3_high",
+      "cells": {
+        "T1_low": {
+          "n": 7205,
+          "insufficient": false,
+          "down_minus_up_by_bucket": {
+            "1": 0.0204878048780488,
+            "2": 0.0043795620437956095,
+            "3": 0.11933701657458565,
+            "4": 0.17102966841186734,
+            "5": 0.19540229885057472
+          },
+          "q5_minus_q1_spread": 0.17491449397252593,
+          "gradient_spearman": 0.8999999999999998,
+          "directionally_consistent": true
+        },
+        "T2_mid": {
+          "n": 7205,
+          "insufficient": false,
+          "down_minus_up_by_bucket": {
+            "1": 0.04417413572343151,
+            "2": 0.07796852646638053,
+            "3": 0.13660834454912515,
+            "4": 0.1935483870967742,
+            "5": 0.2562724014336918
+          },
+          "q5_minus_q1_spread": 0.21209826571026028,
+          "gradient_spearman": 0.9999999999999999,
+          "directionally_consistent": true
+        },
+        "T3_high": {
+          "n": 7204,
+          "insufficient": false,
+          "down_minus_up_by_bucket": {
+            "1": 0.013256484149855918,
+            "2": 0.10758928571428572,
+            "3": 0.16614906832298137,
+            "4": 0.17065556711758587,
+            "5": 0.24404761904761904
+          },
+          "q5_minus_q1_spread": 0.23079113489776312,
+          "gradient_spearman": 0.9999999999999999,
+          "directionally_consistent": true
+        }
+      },
+      "gradient_spread_congested_minus_open": 0.0558766409252372,
+      "conditions_h2": true,
+      "predicted_direction": "steeper H2 DOWN-gradient when the export direction is congested"
+    }
+  },
+  "conclusion": "H3 conditions H2 only through realized flows (diagnostic); the decision-eligible day-ahead capacity and schedule do not materially move the H2 gradient",
+  "limitations": "In-sample / descriptive. Export-capacity sign convention is imperfect (166 anomalous hours). Countertrade (partial period from 2023-04-18) and border-specific flow modelling are not included; a proper H3 model is later work. GB is excluded (null day-ahead fields).",
+  "holdout": "LOCKED_AND_UNUSED"
+}

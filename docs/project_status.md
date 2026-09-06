@@ -8,27 +8,25 @@
 
 | Item | Current Status |
 |---|---|
-| Completed phase | P5 — H1 residual load (H1-A diagnostic; H1-B interim proxy) |
-| Current phase | P6 — H3 cross-border and system conditions |
-| Current step | P6.1 — build eligible cross-border conditioning or diagnostic stratification |
-| Next step | P6.2 — preliminary H3 test |
+| Completed phase | P6 — H3 preliminary (diagnostic conditioning only) |
+| Current phase | P7 — Signal engine |
+| Current step | P7.1 — build the transparent rule-based signal |
+| Next step | P7.2 — confidence, No Trade, risk and invalidation |
 | Current milestone | Level B — Interview Ready |
-| Milestone status | IN PROGRESS (Level A done; B1 H2 and B2 H1 done) |
+| Milestone status | IN PROGRESS (Level A done; B1 H2, B2 H1, B3 H3 done) |
 | Holdout | LOCKED and unused |
 | Blocker | None |
 
 ## One Current Action / 当前唯一动作
 
-Start P6.1: build the H3 cross-border conditioning inputs. From `Transmissionlines`
-day-ahead capacity / scheduled exchange (decision-eligible candidates, D024),
-define usable borders, sign conventions and null handling, then test whether the
-H2 wind-revision gradient changes with available import/export capacity.
-Separate eligible conditioning from diagnostic (realized-flow) stratification.
+Start P7.1: build a transparent, rule-based signal that outputs UP PRESSURE /
+DOWN PRESSURE / NO TRADE from decision-eligible inputs only — the H2 wind
+revision and the H1-B residual-load proxy, with the H2 low-wind failure region
+handled explicitly. State every rule and threshold.
 
-开始 P6.1：构造 H3 跨境条件性输入。用 `Transmissionlines` 的日前容量 / 计划交换
-（decision-eligible 候选，D024），确定可用边界、符号约定和 null 处理，然后检验 H2
-风电修正梯度是否随可用进出口容量变化。区分 eligible 条件分层与 diagnostic
-（实际流量）分层。
+开始 P7.1：构造透明的规则信号，只用 decision-eligible 输入（H2 风电修正 +
+H1-B 净负荷代理），显式处理 H2 低风失效区间，输出 UP PRESSURE / DOWN PRESSURE /
+NO TRADE。写清每条规则和阈值。
 
 ## P1.1 Completion / Forecasts_Hour 核验结论
 
@@ -282,6 +280,30 @@ permutation seed declared before crossing outcomes
 - Chart `p5_1_residual_load_label_chart_2026-09-06.png`
 - Evidence: `research/evidence/p5_h1_residual_load/`
 
+## P6 Completion / H3 Cross-Border 完成结论
+
+**Status:** COMPLETE — 2026-09-06 — **H3 diagnostic conditioning only**; Level B
+B3 done. Exploratory / descriptive (E002); border subset, sign conventions and
+tercile scheme declared before crossing outcomes
+
+- **P6.1:** decision-eligible `import_headroom_mw`, `export_headroom_mw`,
+  `net_scheduled_exchange_da_mw` built over usable borders DE/DK2/NL/NO2/SE3 (GB
+  excluded, day-ahead null); export capacity stored negative, magnitude taken,
+  166 positive-anomaly hours flagged; `realized_net_import_mwh` is diagnostic
+- **P6.2:** stratifying the H2 gradient by terciles of the eligible variables
+  shows no material change (congested − open −0.012 and −0.047; threshold 0.05)
+  and a mid-tercile hump (noise signature). Interconnector capacity barely varies
+  hour to hour, so it carries little conditioning info
+- Realized net import (diagnostic) shows a weak steepening — Q5−Q1 spread +0.231
+  when DK1 ends up short vs +0.175 when long — consistent with a congested
+  export direction trapping a wind surplus, but unknown at decision time
+- **No decision-eligible H3 conditioning signal.** The H2 gradient stands
+  unconditioned by H3; the P7 engine gains no cross-border input
+- `src/p6_cross_border.py` + `tests/test_p6_cross_border.py` (4 tests; 37/37);
+  quality gate 7/7; Decision D032
+- Chart `p6_h3_gradient_by_crossborder_2026-09-06.png`
+- Evidence: `research/evidence/p6_h3_cross_border/`
+
 ## P8 Completion / Level A Packaging 完成结论
 
 **Status:** PASS — Level A (CV-safe) ACHIEVED 2026-09-06
@@ -342,7 +364,7 @@ permutation seed declared before crossing outcomes
 |---|---|---|
 | B1 | H2 complete first round | DONE — P4.1 pre-registration, P4.3 test, P4.4 conditioning; conditionally supported |
 | B2 | H1 mechanism research (H1-A) + H1-B eligibility | DONE — P5: H1-A weak threshold-like (diagnostic); H1-B interim proxy registered (D031) |
-| B3 | H3 preliminary cross-border conditioning (eligible vs diagnostic) | NOT STARTED — P6 |
+| B3 | H3 preliminary cross-border conditioning (eligible vs diagnostic) | DONE — P6: diagnostic conditioning only, no decision-eligible signal (D032) |
 | B4 | Transparent rule-based signal (UP/DOWN/NO TRADE) | NOT STARTED — P7 |
 | B5 | Confidence levels with basis | NOT STARTED — P7 |
 | B6 | Risk / invalidation per view | NOT STARTED — P7 |
@@ -385,5 +407,6 @@ Earlier assistant-prepared P1.1 files remain outside the formal repository as re
 | 2026-09-06 | P8.1 audited all ten Level A criteria (10/10) and P8.2 aligned README/charter wording — **Level A (CV-safe) ACHIEVED** | Current: P4.4; Next: P5 (Level B) |
 | 2026-09-06 | P4.4 H2 conditioning: CONDITIONALLY SUPPORTED — permutation p~0 (real), robust to season/hour, fails at low wind, no out-of-time reproduction. D030. H2 first round complete | Current: P5.1; Next: P5.2 |
 | 2026-09-06 | P5.1–P5.2 H1: H1-A weak threshold-like mechanism (diagnostic), concentrated where H2 fails; H1-B interim climatology proxy registered (tracks actual RL +0.92, weak spread association). D031. Level B B2 done | Current: P6.1; Next: P6.2 |
+| 2026-09-06 | P6.1–P6.2 H3: decision-eligible day-ahead cross-border capacity/schedule does not condition the H2 gradient; realized net-import flow shows weak diagnostic steepening. D032. Level B B3 done | Current: P7.1; Next: P7.2 |
 
 Update this file after every completed work session. Every DONE status requires reviewed evidence.

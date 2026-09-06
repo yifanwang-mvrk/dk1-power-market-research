@@ -387,7 +387,10 @@ evaluation (Level C) remain.
 
 ## H3 — Cross-Border and System Conditions
 
-**Status:** Sources registered; testing not started
+**Status:** P6 preliminary test complete 2026-09-06 — **diagnostic conditioning
+only.** Decision-eligible day-ahead cross-border capacity and scheduled exchange
+do not measurably change the H2 gradient; realized net-import flow (diagnostic)
+shows a weak steepening when DK1 ends up short. No decision-eligible H3 signal.
 **Role:** Conditional hypothesis
 
 ### Question
@@ -413,6 +416,59 @@ Legacy `CountertradeIntraday` is a partial-period conditional candidate from
 282 stored rows unavailable at the cutoff. Later versions overwrite earlier
 history, and absent publication days do not mean zero. The 2025 successor is
 unavailable for development.
+
+### P6 — Preliminary Cross-Border Conditioning Test
+
+**Run:** 2026-09-06, exploratory / descriptive (E002); the border subset, sign
+conventions and tercile scheme were declared before crossing outcomes. Evidence:
+`research/evidence/p6_h3_cross_border/p6_h3_cross_border_2026-09-06.{json,md}`,
+`p6_h3_gradient_by_crossborder_2026-09-06.png`,
+`p6_quality_report_2026-09-06.json` (7/7).
+
+**P6.1 — conditioning variables.** Usable borders DE, DK2, NL, NO2, SE3 (GB
+excluded, all day-ahead fields null). All decision-eligible, published day-ahead
+(D024 / D025):
+
+- `import_headroom_mw` = Σ positive import capacity into DK1;
+- `export_headroom_mw` = Σ magnitude of the negative-stored export capacity; 166
+  hours with an anomalous positive export-capacity record are treated as zero
+  available export and flagged;
+- `net_scheduled_exchange_da_mw` = Σ day-ahead scheduled exchange (positive = net
+  import).
+
+`realized_net_import_mwh` (settled flow across NO, SE, GE, NL, Great Belt) is
+`diagnostic_only`.
+
+**P6.2 — does H3 condition the H2 gradient?** The H2 wind-revision gradient
+(Q5−Q1 spread in `P(DOWN) − P(UP)`) is computed inside each tercile of a
+cross-border variable. Predicted: steeper when the export direction is congested.
+
+| Conditioning variable | Class | Gradient: congested − open tercile | Conditions H2 (> 0.05)? |
+|---|---|---:|---|
+| Export headroom | eligible | −0.012 | No |
+| Net day-ahead scheduled exchange | eligible | −0.047 | No |
+| Realized net import | diagnostic | +0.056 | Weakly (diagnostic) |
+
+The two decision-eligible variables show a "middle tercile highest" hump — a
+noise signature, not conditioning. Cross-border interconnector capacity barely
+varies hour to hour (export headroom Q20/Q80 ≈ 4.7 / 5.8 GW), so it cannot carry
+much conditioning information.
+
+**Conclusion: diagnostic conditioning only.** When DK1 *realized* a net-import
+position (system short), the wind-revision→DOWN gradient was steeper (Q5−Q1 spread
++0.231 vs +0.175) — consistent with the mechanism that a congested export
+direction traps a wind surplus. But that is a realized flow, unknown at the
+decision time. **There is no decision-eligible H3 conditioning signal in this
+specification.**
+
+**Counterargument / limitations.** In-sample / descriptive. The export-capacity
+sign convention is imperfect (166 anomalous hours). Countertrade and
+border-specific flow modelling are not included; a proper H3 model is later work.
+
+**Invalidation.** The H2 gradient is stable across the decision-eligible
+cross-border regimes, so H3 does not currently downgrade H2. If a future
+border-level or countertrade model finds decision-eligible conditioning, this
+preliminary null is revisited.
 
 ## Research Rule
 

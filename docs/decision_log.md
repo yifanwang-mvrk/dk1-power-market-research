@@ -55,6 +55,7 @@ Source: the complete 31-section final Blueprint response and the owner's subsequ
 | D029 | P8 Level A (CV-safe) acceptance | MILESTONE |
 | D030 | P4.4 H2 conditioning: conditionally supported, two failure conditions | RESEARCH FINDING |
 | D031 | P5 H1: weak threshold-like mechanism; H1-B interim proxy registered | RESEARCH FINDING |
+| D032 | P6 H3: diagnostic conditioning only; no decision-eligible cross-border signal | RESEARCH FINDING |
 | E001–E003 | 执行说明 / Execution clarifications | IMPLEMENTATION NOTE |
 | I01–I08 | 字段、参数和可用性 / Fields, parameters and availability | TRACKED — see current table |
 
@@ -721,6 +722,58 @@ Cross-border conditioning is H3 / P6.
 **Impact / 影响:** Level B B2 (H1 mechanism + H1-B eligibility) is complete. P7
 may use `residual_load_known_mwh` as a decision-eligible input alongside the H2
 wind revision. I06 stays open for the ENTSO-E forecast.
+
+**Holdout implications / 留出期:** None. In-sample development analysis; the
+loader aborts unless the holdout is locked. Zero holdout rows read.
+
+**Supersedes / 替代:** None.
+
+## D032 · P6 H3 cross-border and system conditions — preliminary test
+
+**日期 / Date:** 2026-09-06
+**状态 / Status:** RESEARCH FINDING (does not change any frozen design)
+**Related step / 对应步骤:** P6.1, P6.2
+**Related open item / 对应 I 编号:** I06 (transmission border rules)
+
+**结论 / Finding: diagnostic conditioning only.**
+
+- **P6.1.** Decision-eligible cross-border conditioning variables were built from
+  `Transmissionlines` day-ahead fields over the usable borders DE, DK2, NL, NO2,
+  SE3 (GB excluded — all day-ahead fields null). Export capacity is stored as a
+  negative number; magnitude taken; 166 hours with an anomalous positive
+  export-capacity record are treated as zero available export and flagged.
+  `realized_net_import_mwh` (settled flow) is `diagnostic_only`.
+- **P6.2.** Stratifying the H2 wind-revision gradient by terciles of
+  `export_headroom_mw` and `net_scheduled_exchange_da_mw` shows no material
+  change (congested − open tercile difference −0.012 and −0.047; threshold
+  0.05), and a "middle tercile highest" hump consistent with noise. Interconnector
+  capacity barely varies hour to hour (export headroom Q20/Q80 ≈ 4.7 / 5.8 GW),
+  so it carries little conditioning information.
+- Stratifying by **realized net import** (diagnostic) does show a weak steepening
+  — Q5−Q1 spread +0.231 in the high-net-import tercile vs +0.175 in the low —
+  consistent with a congested export direction trapping a wind surplus. This is a
+  realized flow, unknown at decision time.
+
+**理由 / Rationale:** H3 is a conditioning hypothesis; the handbook (§05)
+anticipates that only realized flows may be usable and requires that such work be
+labelled diagnostic conditioning without a deployable-prediction claim. The
+preliminary test is exploratory, so its conclusion is not pre-registered but is
+drawn conservatively against a declared 0.05 gradient-difference threshold.
+
+**未采用 / Not done:** No promotion of realized flows into a decision rule. No
+border-level flow model, no countertrade feature (partial period from
+2023-04-18) — a proper H3 model is later work. GB not reconstructed.
+
+**Impact / 影响:** Level B B3 (preliminary H3 conditioning, eligible vs
+diagnostic) is complete. The P7 signal engine does not gain a decision-eligible
+cross-border input; the H2 gradient stands unconditioned by H3. The realized-flow
+result is retained as diagnostic mechanism evidence.
+
+**Evidence / 证据:**
+`research/evidence/p6_h3_cross_border/p6_h3_cross_border_2026-09-06.json` and
+`.md`, `p6_h3_gradient_by_crossborder_2026-09-06.png`,
+`p6_quality_report_2026-09-06.json`; `src/p6_cross_border.py`;
+`tests/test_p6_cross_border.py`.
 
 **Holdout implications / 留出期:** None. In-sample development analysis; the
 loader aborts unless the holdout is locked. Zero holdout rows read.
