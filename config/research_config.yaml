@@ -120,6 +120,19 @@ source_eligibility:
     dataset: ENTSO-E day-ahead total load forecast
     class: external_candidate_pending_access_timing
     eligibility_gate: P5.2
+    status: still_pending_external_access  # I06
+  residual_load_known_proxy:
+    definition: consumption_climatology_mwh - renewable_forecast_5h_mwh
+    class: decision_eligible
+    components:
+      consumption_climatology: point_in_time expanding mean of actual_gross_consumption over prior same-(local_weekday, local_hour) occurrences, lagged 3 occurrences past the settlement delay
+      renewable_forecast_5h: forecast_5_hour offshore + onshore + solar
+    registration_status: ELIGIBLE_INTERIM_PROXY  # P5.2 / D031
+    coverage_hours: 21184
+    tracks_actual_residual_load_spearman: 0.92
+    spread_association_spearman: 0.042
+    use: eligible input for the P7 signal engine, not a standalone signal
+    supersede_when: ENTSO-E day-ahead load forecast becomes available (I06)
 
 baselines:
   majority_class:

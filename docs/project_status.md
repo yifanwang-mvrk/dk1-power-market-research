@@ -8,26 +8,27 @@
 
 | Item | Current Status |
 |---|---|
-| Completed phase | P4.4 — H2 first round complete (conditionally supported) |
-| Current phase | P5 — H1 residual load and system tightness |
-| Current step | P5.1 — H1-A actual residual-load mechanism research (diagnostic) |
-| Next step | P5.2 — assess H1-B decision-eligible load proxy |
+| Completed phase | P5 — H1 residual load (H1-A diagnostic; H1-B interim proxy) |
+| Current phase | P6 — H3 cross-border and system conditions |
+| Current step | P6.1 — build eligible cross-border conditioning or diagnostic stratification |
+| Next step | P6.2 — preliminary H3 test |
 | Current milestone | Level B — Interview Ready |
-| Milestone status | IN PROGRESS (Level A achieved 2026-09-06; H2 first round done) |
+| Milestone status | IN PROGRESS (Level A done; B1 H2 and B2 H1 done) |
 | Holdout | LOCKED and unused |
 | Blocker | None |
 
 ## One Current Action / 当前唯一动作
 
-Start P5.1: H1-A mechanism research. Build actual residual load
-(`GrossConsumption − actual wind − actual solar`) from the P2 diagnostic fields,
-relate it to the realized balancing spread and label, and produce a mechanism
-chart and conclusion. Keep every actual-settlement field `diagnostic_only`
-(D024); do not admit it to any decision rule.
+Start P6.1: build the H3 cross-border conditioning inputs. From `Transmissionlines`
+day-ahead capacity / scheduled exchange (decision-eligible candidates, D024),
+define usable borders, sign conventions and null handling, then test whether the
+H2 wind-revision gradient changes with available import/export capacity.
+Separate eligible conditioning from diagnostic (realized-flow) stratification.
 
-开始 P5.1：H1-A 机制研究。用 P2 的诊断字段构造实际净负荷
-（`总消费 − 实际风电 − 实际光伏`），与已实现的 balancing spread 和标签关联，产出
-机制图和结论。所有结算实际值保持 `diagnostic_only`（D024），不进任何决策规则。
+开始 P6.1：构造 H3 跨境条件性输入。用 `Transmissionlines` 的日前容量 / 计划交换
+（decision-eligible 候选，D024），确定可用边界、符号约定和 null 处理，然后检验 H2
+风电修正梯度是否随可用进出口容量变化。区分 eligible 条件分层与 diagnostic
+（实际流量）分层。
 
 ## P1.1 Completion / Forecasts_Hour 核验结论
 
@@ -259,6 +260,28 @@ permutation seed declared before crossing outcomes
 - Evidence: `research/evidence/p4_h2_revision/` (`p4_4_*` files);
   `research/hypotheses.md` (H2 section)
 
+## P5 Completion / H1 Residual Load 完成结论
+
+**Status:** COMPLETE — 2026-09-06 — Level B B2 done
+
+- **P5.1 H1-A (diagnostic):** `residual_load_actual_mwh` complete for 21,887
+  hours (5,974 negative, preserved), `diagnostic_only` (D024). The
+  tighter-system → upward-pressure mechanism is **directionally present but weak
+  and threshold-like**: `P(DOWN)` ~35% through the lower three residual-load
+  quintiles, falling to 27% only in the tightest quintile; gradient Spearman
+  +0.70; Spearman(residual load, spread) +0.057, CI [+0.043, +0.070]
+- The effect concentrates where H2 fails (wind-poor / tight, P4.4) — H1 and H2
+  look complementary; joint use is P7
+- **P5.2 H1-B:** a decision-eligible proxy `consumption_climatology −
+  renewable_forecast_5h` (21,184 h) tracks actual residual load at Spearman +0.92
+  and reproduces the H1 direction (association +0.042, weak). Registered
+  `ELIGIBLE_INTERIM_PROXY` — a P7 input, not a standalone signal. ENTSO-E
+  day-ahead load forecast still pending (I06)
+- `src/p5_residual_load.py` + `tests/test_p5_residual_load.py` (6 tests; 33/33);
+  quality gate 7/7; Decision D031
+- Chart `p5_1_residual_load_label_chart_2026-09-06.png`
+- Evidence: `research/evidence/p5_h1_residual_load/`
+
 ## P8 Completion / Level A Packaging 完成结论
 
 **Status:** PASS — Level A (CV-safe) ACHIEVED 2026-09-06
@@ -318,7 +341,7 @@ permutation seed declared before crossing outcomes
 | # | Criterion | Status |
 |---|---|---|
 | B1 | H2 complete first round | DONE — P4.1 pre-registration, P4.3 test, P4.4 conditioning; conditionally supported |
-| B2 | H1 mechanism research (H1-A) + H1-B eligibility | NOT STARTED — P5 |
+| B2 | H1 mechanism research (H1-A) + H1-B eligibility | DONE — P5: H1-A weak threshold-like (diagnostic); H1-B interim proxy registered (D031) |
 | B3 | H3 preliminary cross-border conditioning (eligible vs diagnostic) | NOT STARTED — P6 |
 | B4 | Transparent rule-based signal (UP/DOWN/NO TRADE) | NOT STARTED — P7 |
 | B5 | Confidence levels with basis | NOT STARTED — P7 |
@@ -361,5 +384,6 @@ Earlier assistant-prepared P1.1 files remain outside the formal repository as re
 | 2026-09-06 | P4.3 H2 round-1 test run as pre-registered: SUPPORTED (weak, asymmetric) — monotone contingency gradient, Spearman -0.096 (CI excludes 0), rule marginally beats availability-safe baselines. D028. Level A A8 + A9 met | Current: P8.1; Next: P8.2 then P4.4 |
 | 2026-09-06 | P8.1 audited all ten Level A criteria (10/10) and P8.2 aligned README/charter wording — **Level A (CV-safe) ACHIEVED** | Current: P4.4; Next: P5 (Level B) |
 | 2026-09-06 | P4.4 H2 conditioning: CONDITIONALLY SUPPORTED — permutation p~0 (real), robust to season/hour, fails at low wind, no out-of-time reproduction. D030. H2 first round complete | Current: P5.1; Next: P5.2 |
+| 2026-09-06 | P5.1–P5.2 H1: H1-A weak threshold-like mechanism (diagnostic), concentrated where H2 fails; H1-B interim climatology proxy registered (tracks actual RL +0.92, weak spread association). D031. Level B B2 done | Current: P6.1; Next: P6.2 |
 
 Update this file after every completed work session. Every DONE status requires reviewed evidence.

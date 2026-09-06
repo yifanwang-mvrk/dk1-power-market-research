@@ -1,0 +1,92 @@
+{
+  "step": "P5.2",
+  "hypothesis": "H1-B",
+  "status": "PASS",
+  "created_at_utc": "2026-09-06T19:24:44.239949+00:00",
+  "proxy_definition": "residual_load_known_mwh = consumption_climatology_mwh - renewable_forecast_5h_mwh; climatology is a point-in-time expanding mean of gross consumption over prior same-(weekday, hour) occurrences, lagged 3 occurrences past the settlement delay; renewable forecast is the 5h offshore + onshore + solar forecast.",
+  "eligibility": "consumption climatology and 5h renewable forecasts are both available strictly before delivery (D025)",
+  "coverage": {
+    "rl_known_available_hours": 21184,
+    "expected_hours": 21887,
+    "unavailable_reason": "first same-(weekday, hour) occurrences lack the lagged climatology window; some hours lack a 5h renewable forecast"
+  },
+  "signed_quintile_edges_mwh": [
+    -244.603563,
+    628.687975,
+    1294.495546,
+    1855.66206
+  ],
+  "proxy_vs_actual_residual_load": {
+    "n": 21184,
+    "spearman_rho": 0.9242705142646539,
+    "ci_low": 0.9222596152769661,
+    "ci_high": 0.9261364985620157,
+    "ci_excludes_zero": true,
+    "predicted_sign": 1,
+    "observed_sign": 1,
+    "association_supported": true,
+    "bootstrap_seed": 20260906
+  },
+  "contingency": {
+    "n": 21183,
+    "group_sizes": {
+      "1": 4237,
+      "2": 4237,
+      "3": 4235,
+      "4": 4237,
+      "5": 4237
+    },
+    "p_label_given_bucket": {
+      "1": {
+        "UP": 0.1902289355676186,
+        "DOWN": 0.3469435921642672,
+        "NEUTRAL": 0.4628274722681142
+      },
+      "2": {
+        "UP": 0.18834080717488788,
+        "DOWN": 0.3568562662261034,
+        "NEUTRAL": 0.45480292659900873
+      },
+      "3": {
+        "UP": 0.21369539551357733,
+        "DOWN": 0.353482880755608,
+        "NEUTRAL": 0.4328217237308146
+      },
+      "4": {
+        "UP": 0.19424120840217135,
+        "DOWN": 0.3089450082605617,
+        "NEUTRAL": 0.49681378333726695
+      },
+      "5": {
+        "UP": 0.21170639603493038,
+        "DOWN": 0.2860514514987019,
+        "NEUTRAL": 0.5022421524663677
+      }
+    },
+    "up_share_minus_down_share_by_bucket": {
+      "1": -0.15671465659664857,
+      "2": -0.1685154590512155,
+      "3": -0.1397874852420307,
+      "4": -0.11470379985839035,
+      "5": -0.07434505546377154
+    },
+    "gradient_bucket_index_spearman": 0.8999999999999998,
+    "endpoints_top_gt_bottom": true,
+    "gradient_directionally_consistent": true
+  },
+  "association_vs_signed_spread": {
+    "n": 21183,
+    "spearman_rho": 0.04186645508968842,
+    "ci_low": 0.02881643497794009,
+    "ci_high": 0.05516779034841458,
+    "ci_excludes_zero": true,
+    "predicted_sign": 1,
+    "observed_sign": 1,
+    "association_supported": true,
+    "bootstrap_seed": 20260906
+  },
+  "no_validated_eds_load_forecast": "P1.4 found no validated Energi Data Service historical load forecast; ENTSO-E day-ahead total load forecast remains an external candidate pending access (I06).",
+  "verdict": "A decision-eligible residual-load proxy is feasible: it tracks actual residual load well (Spearman +0.92) and reproduces the H1 direction, though its own association with the spread is as weak as H1-A (Spearman +0.042). Register it as an eligible input for P7, not a standalone signal.",
+  "registration_status": "ELIGIBLE_INTERIM_PROXY",
+  "holdout": "LOCKED_AND_UNUSED"
+}

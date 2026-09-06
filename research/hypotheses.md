@@ -7,7 +7,12 @@ registered, testing not started
 
 ## H1 — Residual Load and System Tightness
 
-**Status:** Source registered; testing not started
+**Status:** P5 complete 2026-09-06 — H1-A (diagnostic): directionally present but
+weak and threshold-like, concentrated in the tightest ~40% of hours. H1-B: a
+decision-eligible climatology proxy is feasible (tracks actual residual load,
+Spearman +0.92) but its own spread association is as weak as H1-A; registered as
+an eligible P7 input, not a standalone signal. A proper H1-B still needs the
+external ENTSO-E day-ahead load forecast (I06).
 **Role:** Fundamental baseline hypothesis
 
 ### Question
@@ -30,6 +35,60 @@ revised. The full development period contains 21,887 complete derived rows.
 No validated historical Energi Data Service load-forecast source was found for
 H1-B. The ENTSO-E day-ahead total-load forecast is registered as an external
 candidate pending access and publication-timing evidence in P5.2.
+
+### P5.1 — H1-A Mechanism Research (diagnostic)
+
+**Run:** 2026-09-06, in-sample / descriptive (E002). Evidence:
+`research/evidence/p5_h1_residual_load/p5_1_h1a_mechanism_2026-09-06.json`,
+`p5_1_residual_load_label_chart_2026-09-06.png`. `residual_load_actual_mwh` is
+`diagnostic_only` (D024) and complete for all 21,887 hours; 5,974 negative-value
+hours are preserved.
+
+`P(label | signed actual-residual-load quintile)`:
+
+| Bucket | P(UP) | P(NEUTRAL) | P(DOWN) | UP−DOWN share |
+|---|---:|---:|---:|---:|
+| Q1 (highest renewables) | 18.4% | 47.1% | 34.6% | −0.162 |
+| Q2 | 19.1% | 46.0% | 34.9% | −0.158 |
+| Q3 | 19.6% | 44.5% | 35.9% | −0.163 |
+| Q4 | 19.9% | 48.4% | 31.6% | −0.117 |
+| Q5 (tightest) | 22.5% | 50.3% | 27.3% | −0.048 |
+
+**Conclusion (diagnostic): directionally present but weak and threshold-like.**
+`P(DOWN)` is flat at ~35% through Q1–Q3 then drops to 27% in Q5; `P(UP)` edges up
+from 18% to 23%. The mean UP−DOWN share is −0.082 across Q4–Q5 versus −0.161
+across Q1–Q3 — the "tighter system → upward pressure" mechanism appears only once
+the system is actually tight, not as a smooth gradient (gradient Spearman +0.70).
+Association Spearman(actual residual load, signed spread) = +0.057, 95% CI
+[+0.043, +0.070] — right sign, real, small.
+
+**Relation to H2.** H2 fails exactly where the system is wind-poor / tight
+(P4.4), which is the high-residual-load Q4–Q5 region where H1's directional
+effect concentrates. H1 and H2 look **complementary rather than redundant**; a
+joint transparent rule is P7.
+
+### P5.2 — H1-B Decision-Eligible Proxy Assessment
+
+**Run:** 2026-09-06. Evidence:
+`research/evidence/p5_h1_residual_load/p5_2_h1b_assessment_2026-09-06.json`.
+
+Proxy: `residual_load_known_mwh = consumption_climatology_mwh −
+renewable_forecast_5h_mwh`, where the climatology is a point-in-time expanding
+mean of gross consumption over prior same-(weekday, hour) occurrences lagged 3
+occurrences past the settlement delay, and the renewable forecast is the 5h
+offshore + onshore + solar forecast. Both inputs are available strictly before
+delivery (D025). Available for 21,184 / 21,887 hours.
+
+- The proxy tracks actual residual load well: Spearman +0.92 (n = 21,184).
+- It reproduces the H1 direction (gradient Spearman +0.90; association with the
+  spread +0.042, right sign, CI excludes zero) — but that association is as weak
+  as H1-A.
+
+**Verdict / registration:** `ELIGIBLE_INTERIM_PROXY`. A decision-eligible
+residual-load proxy is feasible and carries the H1 direction; register it as an
+eligible input for the P7 signal engine, **not** a standalone signal. A stronger
+H1-B still needs the external ENTSO-E day-ahead total-load forecast (I06,
+pending access).
 
 ## H2 — Renewable Forecast Revision
 

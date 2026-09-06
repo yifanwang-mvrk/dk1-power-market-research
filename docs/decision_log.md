@@ -54,6 +54,7 @@ Source: the complete 31-section final Blueprint response and the owner's subsequ
 | D028 | P4.3 H2 round-1 result: supported, weak and asymmetric | RESEARCH FINDING |
 | D029 | P8 Level A (CV-safe) acceptance | MILESTONE |
 | D030 | P4.4 H2 conditioning: conditionally supported, two failure conditions | RESEARCH FINDING |
+| D031 | P5 H1: weak threshold-like mechanism; H1-B interim proxy registered | RESEARCH FINDING |
 | E001–E003 | 执行说明 / Execution clarifications | IMPLEMENTATION NOTE |
 | I01–I08 | 字段、参数和可用性 / Fields, parameters and availability | TRACKED — see current table |
 
@@ -670,6 +671,62 @@ locked. Zero holdout rows read.
 
 **Supersedes / 替代:** None.
 
+## D031 · P5 H1 residual load — mechanism and decision-eligible proxy
+
+**日期 / Date:** 2026-09-06
+**状态 / Status:** RESEARCH FINDING (does not change any frozen design)
+**Related step / 对应步骤:** P5.1, P5.2
+**Related open item / 对应 I 编号:** I06 (H1-B external load forecast)
+
+**结论 / Finding:**
+
+**H1-A (diagnostic).** `residual_load_actual_mwh = actual_gross_consumption −
+Σ actual wind − Σ actual solar`, `diagnostic_only` (D024), complete for all
+21,887 hours (5,974 negative, preserved). The "tighter system → upward pressure"
+mechanism is **directionally present but weak and threshold-like**: `P(DOWN)`
+holds near 35% through the lower three residual-load quintiles then falls to 27%
+in the tightest quintile; `P(UP)` rises 18% → 23%. Gradient Spearman +0.70 (not a
+smooth gradient); Spearman(residual load, signed spread) +0.057, 95% CI
+[+0.043, +0.070]. The effect concentrates exactly in the wind-poor / tight region
+where H2 fails (P4.4), so H1 and H2 look complementary — joint use is P7.
+
+**H1-B (decision-eligible).** A point-in-time proxy `residual_load_known_mwh =
+consumption_climatology_mwh − renewable_forecast_5h_mwh` (expanding
+same-weekday-hour consumption mean, lagged 3 occurrences past the settlement
+delay, minus the 5h offshore + onshore + solar forecast) is available for 21,184
+hours and tracks actual residual load with Spearman +0.92. It reproduces the H1
+direction (association +0.042, CI excludes zero) but that association is as weak
+as H1-A. Registered as `ELIGIBLE_INTERIM_PROXY` — an eligible input for the P7
+signal engine, not a standalone signal.
+
+**理由 / Rationale:** P1.4 found no validated Energi Data Service historical load
+forecast. Rather than leave H1-B empty or (prohibited) substitute actual demand,
+P5.2 builds the weakest defensible decision-eligible proxy and evidences its
+tracking quality and its weak predictive association. The ENTSO-E day-ahead
+total-load forecast remains the proper H1-B source, pending external access
+(I06).
+
+**未采用 / Not done:** No promotion of any actual-settlement field into a
+decision rule (D007 / D024). No claim that H1 or the proxy is a deployable edge.
+Cross-border conditioning is H3 / P6.
+
+**Evidence / 证据:**
+`research/evidence/p5_h1_residual_load/p5_1_h1a_mechanism_2026-09-06.json`,
+`p5_2_h1b_assessment_2026-09-06.json`, `p5_h1_residual_load_2026-09-06.md`,
+`p5_1_residual_load_label_chart_2026-09-06.png`,
+`p5_quality_report_2026-09-06.json` (7/7); `src/p5_residual_load.py`;
+`tests/test_p5_residual_load.py`; `config/research_config.yaml`
+`source_eligibility.residual_load_known_proxy`.
+
+**Impact / 影响:** Level B B2 (H1 mechanism + H1-B eligibility) is complete. P7
+may use `residual_load_known_mwh` as a decision-eligible input alongside the H2
+wind revision. I06 stays open for the ENTSO-E forecast.
+
+**Holdout implications / 留出期:** None. In-sample development analysis; the
+loader aborts unless the holdout is locked. Zero holdout rows read.
+
+**Supersedes / 替代:** None.
+
 ## 本次执行说明 / Operational clarifications
 
 ### E001 · Preserve both persistence and point-in-time integrity
@@ -708,7 +765,7 @@ All items begin **OPEN**. There is no confirmed external blocker, and lack of ve
 | I03 | **RESOLVED by D025 + D026:** last-pre-delivery cutoff frozen; fixed 5h/1h forecasts qualify; undocumented outcome delay keeps `y[t-1]` as an ex-post reference; P3.4 registered the availability-safe hour-of-week training-majority baseline before evaluation | P2.3 and P3.4 complete | Persistence stays ex-post; hour-of-week training majority is fit only within each future training segment; no unverified lag promoted |
 | I04 | **RESOLVED by D021/D022/D023/D024:** use local-date request boundaries, UTC canonical keys and Danish-local time for DST interpretation across all P1 sources | P1 complete | Full development-boundary validation; P1.4 uses `HourUTC + PriceArea` or `HourUTC + PriceArea + ConnectedArea` as appropriate |
 | I05 | **RESOLVED by D026:** δ = 5.9956075 EUR/MWh — pandas linear-interpolation Q25 of 15,392 nonzero absolute development spreads; the 1 missing and 6,494 observed-zero spreads are excluded; frozen in config before holdout access | P3.2 complete | Nonzero-absolute development population, count, quantile method, config value and pandas/numpy versions recorded in `config/research_config.yaml` and `p3_2_delta_freeze_2026-09-06.json` |
-| I06 | **PARTIALLY RESOLVED by D024:** H1-A actual and realized flows are diagnostic; legacy day-ahead transmission fields and countertrade are conditional candidates; H1-B external forecast remains pending | P5.2 / P6.1 | Complete load-proxy access/timing evidence and border-specific feature rules without promoting actuals |
+| I06 | **PARTIALLY RESOLVED by D024 + D031:** H1-A actuals and realized flows are diagnostic; P5.2 registered a decision-eligible `residual_load_known_proxy` (climatology − 5h renewable forecast) as an interim eligible input; the ENTSO-E day-ahead load forecast is still pending external access; legacy day-ahead transmission fields and countertrade remain conditional candidates for P6.1 | P6.1 (borders); external access (ENTSO-E) | Border-specific feature rules without promoting actuals; ENTSO-E access + timing evidence to supersede the interim proxy |
 | I07 | **PARTIALLY RESOLVED by D027:** the H2 round-1 method and revision buckets are pre-registered (signed quantiles, no tuned "strong revision" threshold in round 1). Regime bins, the magnitude-threshold rule, confidence mapping and No Trade conditions remain open | P4.4 / P7；对应测试前 | Development-only 预登记规格、理由和版本 |
 | I08 | Logistic Regression、时间训练/验证、校准和 Brier / undefined metric conventions？ | P10.1；解锁前 | 固定时间切分、模型与校准参数、评估与敏感性计划 |
 

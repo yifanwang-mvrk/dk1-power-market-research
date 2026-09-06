@@ -1,7 +1,8 @@
 # Data Dictionary
 
 **Project:** DK1 Short-Term Power Market Research
-**Status:** P3 completed; target, neutral band and labels frozen on development data
+**Status:** Level A achieved; H2 first round and H1 (P5) complete; H1-B interim
+residual-load proxy registered
 **Last updated:** 2026-09-06
 
 ## Field Registry
@@ -12,6 +13,10 @@
 | P3 target | absolute_spread_eur_mwh | Magnitude of the realized balancing spread | EUR/MWh | Absolute value of the same-hour outcome | outcome | P3.1 PASS |
 | P3 target | neutral_band_delta_eur_mwh | Frozen boundary separating small spreads from directional outcomes | EUR/MWh | Development-wide Q25 parameter, fixed before holdout | frozen_parameter | P3.2 FROZEN at 5.9956075 |
 | P3 target | target_label | UP, DOWN or NEUTRAL realized market-pressure class | text | Derived after delivery from spread and frozen delta | outcome | P3.3 PASS; missing spread remains missing label |
+| P4 revision | wind_revision_mwh | 5h-to-1h forecast revision, offshore + onshore wind, same delivery hour | MWh | `Forecast1Hour − Forecast5Hour`; both horizons non-null | decision_eligible | P4.2 PASS; 21,615 hours; buckets and rule threshold frozen |
+| P4 revision | solar_revision_mwh | 5h-to-1h solar forecast revision, same delivery hour | MWh | `Forecast1Hour − Forecast5Hour`; both non-null | decision_eligible | P4.2 PASS; secondary test on the both-positive subset (D021) |
+| P5 H1-A | residual_load_actual_mwh | Actual gross consumption minus actual wind and solar | MWh | Ex-post settlement; realized system tightness | diagnostic_only | P5.1; complete 21,887 h; 5,974 negative preserved; never a decision input (D024) |
+| P5 H1-B | residual_load_known_mwh | Decision-eligible residual-load proxy: consumption climatology minus 5h renewable forecast | MWh | Point-in-time; available strictly before delivery (D025) | decision_eligible | P5.2; `ELIGIBLE_INTERIM_PROXY` (D031); tracks actual RL at Spearman +0.92; P7 input, not a standalone signal |
 | Forecasts_Hour | HourUTC | Start of the forecast delivery hour in UTC | — | Delivery interval; canonical join time | decision_eligible (key) | Validated P1.1 |
 | Forecasts_Hour | HourDK | Start of the forecast delivery hour in Danish local time | — | Delivery interval; DST interpretation only | decision_eligible (key) | Validated P1.1; not sole join key |
 | Forecasts_Hour | PriceArea | Danish bidding zone | text | Static area selector | decision_eligible (key) | Validated P1.1; use DK1 |

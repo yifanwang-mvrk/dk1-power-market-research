@@ -1,0 +1,98 @@
+{
+  "step": "P5.1",
+  "hypothesis": "H1-A",
+  "classification": "diagnostic_only",
+  "status": "PASS",
+  "created_at_utc": "2026-09-06T19:24:29.537454+00:00",
+  "definition": "residual_load_actual_mwh = actual_gross_consumption - sum(actual wind) - sum(actual solar)",
+  "availability_note": "Settlement data published ~9-15 days after delivery and later revised (D024); it explains realized conditions and is never a decision input.",
+  "coverage": {
+    "available_hours": 21887,
+    "expected_hours": 21887,
+    "negative_residual_load_hours": 5974
+  },
+  "signed_quintile_edges_mwh": [
+    -293.765943,
+    448.534989,
+    1108.895239,
+    1682.407856
+  ],
+  "contingency": {
+    "n": 21886,
+    "group_sizes": {
+      "1": 4378,
+      "2": 4377,
+      "3": 4376,
+      "4": 4377,
+      "5": 4378
+    },
+    "p_label_given_bucket": {
+      "1": {
+        "UP": 0.1836455002284148,
+        "DOWN": 0.34559159433531295,
+        "NEUTRAL": 0.47076290543627225
+      },
+      "2": {
+        "UP": 0.1907699337445739,
+        "DOWN": 0.3490975554032442,
+        "NEUTRAL": 0.4601325108521819
+      },
+      "3": {
+        "UP": 0.19629798903107862,
+        "DOWN": 0.3590036563071298,
+        "NEUTRAL": 0.4446983546617916
+      },
+      "4": {
+        "UP": 0.19945167923235094,
+        "DOWN": 0.31619830934429977,
+        "NEUTRAL": 0.4843500114233493
+      },
+      "5": {
+        "UP": 0.2245317496573778,
+        "DOWN": 0.2727272727272727,
+        "NEUTRAL": 0.5027409776153495
+      }
+    },
+    "up_share_minus_down_share_by_bucket": {
+      "1": -0.16194609410689814,
+      "2": -0.15832762165867031,
+      "3": -0.1627056672760512,
+      "4": -0.11674663011194883,
+      "5": -0.04819552306989491
+    },
+    "gradient_bucket_index_spearman": 0.7,
+    "endpoints_top_gt_bottom": true,
+    "gradient_directionally_consistent": false
+  },
+  "association_vs_signed_spread": {
+    "n": 21886,
+    "spearman_rho": 0.05677930267052011,
+    "ci_low": 0.04302268659370514,
+    "ci_high": 0.07024878242098008,
+    "ci_excludes_zero": true,
+    "predicted_sign": 1,
+    "observed_sign": 1,
+    "association_supported": true,
+    "bootstrap_seed": 20260906
+  },
+  "association_vs_label_score": {
+    "n": 21886,
+    "spearman_rho": 0.05554908229178062,
+    "ci_low": 0.04159902430927306,
+    "ci_high": 0.06843384371071945,
+    "ci_excludes_zero": true,
+    "predicted_sign": 1,
+    "observed_sign": 1,
+    "association_supported": true,
+    "bootstrap_seed": 20260906
+  },
+  "predicted_direction": "higher residual load -> higher P(UP), more positive spread",
+  "tight_hours_effect": {
+    "up_minus_down_share_top_two_buckets": -0.08247107659092187,
+    "up_minus_down_share_bottom_three_buckets": -0.1609931276805399,
+    "note": "The UP-vs-DOWN shift is concentrated in Q4-Q5 (tight system)."
+  },
+  "conclusion": "directionally present but weak and threshold-like (diagnostic) — the shift toward UP and away from DOWN appears only in the tightest ~40% of hours (Q4-Q5), not as a smooth gradient",
+  "relation_to_h2": "H2 (P4.4) fails exactly where the system is wind-poor / tight, which is the high-residual-load Q4-Q5 region where H1's directional effect concentrates. H1 and H2 look complementary rather than redundant; a joint transparent rule is P7.",
+  "holdout": "LOCKED_AND_UNUSED"
+}
