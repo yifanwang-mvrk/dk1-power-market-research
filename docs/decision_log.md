@@ -53,6 +53,7 @@ Source: the complete 31-section final Blueprint response and the owner's subsequ
 | D027 | P4.1 H2 round-1 pre-registered test specification | IMPLEMENTATION NOTE |
 | D028 | P4.3 H2 round-1 result: supported, weak and asymmetric | RESEARCH FINDING |
 | D029 | P8 Level A (CV-safe) acceptance | MILESTONE |
+| D030 | P4.4 H2 conditioning: conditionally supported, two failure conditions | RESEARCH FINDING |
 | E001–E003 | 执行说明 / Execution clarifications | IMPLEMENTATION NOTE |
 | I01–I08 | 字段、参数和可用性 / Fields, parameters and availability | TRACKED — see current table |
 
@@ -616,6 +617,56 @@ and `.json`.
 the next milestone. The holdout stays locked until the Level C unlock gate.
 
 **Holdout implications / 留出期:** None. A10 confirms zero holdout use.
+
+**Supersedes / 替代:** None.
+
+## D030 · P4.4 H2 conditioning and failure analysis
+
+**日期 / Date:** 2026-09-06
+**状态 / Status:** RESEARCH FINDING (does not change any frozen design)
+**Related step / 对应步骤:** P4.4
+**Related decision / 对应决策:** conditions D028; H2 first round now complete
+
+**结论 / Finding:** H2 moves from round-1 "supported (weak)" to **CONDITIONALLY
+SUPPORTED** after three exploratory stress tests (regime bins, chronological split
+and permutation seed all declared before crossing outcomes; E002).
+
+- **Mechanism is real.** Permutation null on the transparent rule (shuffle
+  `wind_revision` 500x, seed 20260906): observed balanced accuracy 0.3647 above
+  the null max 0.3426, p ~ 0.000.
+- **Robust to season and hour-of-day.** Directionally consistent gradient in all
+  four seasons and all four hour-of-day blocks; strongest in summer, weakest in
+  winter.
+- **Failure condition — low expected wind.** By 5h wind-forecast terciles the
+  gradient holds for mid and high wind but collapses at low wind (gradient
+  Spearman +0.30, Q5-Q1 `P(DOWN)-P(UP)` spread +0.047 vs +0.288 for mid wind).
+- **Does not reproduce out-of-time.** Train `< 2024-01-01`, validate 2024 H1
+  (4,207 h, partial year): validate gradient Spearman +0.10, Spearman(revision,
+  spread) -0.015. Small, seasonally confounded window; a warning, not proof.
+
+**理由 / Why this framing:** P4.4 is exploratory, so the conclusion is not
+pre-registered, but it is drawn conservatively: a documented regime failure plus
+an out-of-time non-reproduction warrant "conditional", while the permutation
+result forbids "rejected / null". The round-1 record (D028) is unchanged.
+
+**未采用 / Not done:** No change to the frozen labels, delta, buckets or `c`. No
+claim that H2 is deployable. Cross-border conditioning was not folded in here (it
+is H3 / P6).
+
+**Impact / 影响:** H2 first round is complete (route P4.4 done). For decision use
+H2 is conditional on expected wind not being low; out-of-time stability is
+unproven and is a Level C question. Carried forward: H3 cross-border conditioning
+(P6), a logistic model with calibration (P10), the locked-holdout test.
+
+**Evidence / 证据:**
+`research/evidence/p4_h2_revision/p4_4_conditioning_2026-09-06.json` and `.md`,
+`p4_4_regime_gradient_chart_2026-09-06.png`,
+`p4_4_quality_report_2026-09-06.json`; `src/p4_conditioning.py`;
+`tests/test_p4_conditioning.py`.
+
+**Holdout implications / 留出期:** None. The chronological split is entirely
+inside development (`< 2024-07-01`); the loader aborts unless the holdout is
+locked. Zero holdout rows read.
 
 **Supersedes / 替代:** None.
 

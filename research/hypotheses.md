@@ -33,8 +33,11 @@ candidate pending access and publication-timing evidence in P5.2.
 
 ## H2 — Renewable Forecast Revision
 
-**Status:** P4.3 round-1 test complete 2026-09-06 — **SUPPORTED (weak, asymmetric
-effect)** in-sample; regime and cross-border conditioning is P4.4
+**Status:** P4.1–P4.4 complete 2026-09-06 — round 1 **SUPPORTED (weak,
+asymmetric)**; after conditioning (P4.4) **CONDITIONALLY SUPPORTED** — real
+mechanism (permutation p < 0.05), robust to season and hour-of-day, but it fails
+at low expected wind and does not reproduce on a 2024 H1 chronological hold-back.
+Cross-border conditioning is H3 / P6.
 **Role:** Primary MVP hypothesis
 
 ### Question
@@ -285,6 +288,43 @@ persisted the wind threshold. Not counted toward "H2 supported".
 snapshots (P4.2: the wind forecast moved in every wind-aggregate hour), so the
 revision variable is valid. If P4.4 regime or cross-border conditioning removes
 the gradient, H2 is downgraded to conditional.
+
+### P4.4 Conditioning and Failure Analysis
+
+**Run:** 2026-09-06. Exploratory / descriptive (E002); the regime bins, the
+chronological split date and the permutation seed were declared before any
+outcome was crossed. Evidence:
+`research/evidence/p4_h2_revision/p4_4_conditioning_2026-09-06.{json,md}`,
+`p4_4_regime_gradient_chart_2026-09-06.png`, `p4_4_quality_report_2026-09-06.json`
+(7/7).
+
+**Conclusion: CONDITIONALLY SUPPORTED.** The mechanism is real but not robust
+enough for decision use as it stands.
+
+1. **The rule uses real information.** Permutation null (shuffle `wind_revision`
+   500 times, seed 20260906): observed balanced accuracy 0.3647 vs null max
+   0.3426, p ≈ 0.000. The weak edge is not chance.
+2. **Robust to season and hour-of-day.** The gradient is directionally consistent
+   (gradient Spearman ≥ 0.9, Q5−Q1 `P(DOWN)−P(UP)` spread positive) in all four
+   seasons and all four hour-of-day blocks. Strongest in summer (+0.359) and
+   midday (+0.249); weakest in winter (+0.115).
+3. **Documented failure — low expected wind.** Split by 5h wind-forecast
+   terciles, the gradient holds for mid wind (Spearman +1.00, spread +0.288) and
+   high wind (+0.90, +0.119) but collapses to noise at low wind (+0.30, +0.047).
+   When the system is already wind-poor, a marginal wind revision no longer
+   moves the balancing outcome.
+4. **Does not reproduce out-of-time.** Train `< 2024-01-01` (17,408 h), validate
+   2024-01-01..2024-06-30 (4,207 h; partial year). Refreezing the quintile edges,
+   `c` and the hour-of-week baseline on train, the validate gradient Spearman is
+   +0.10 and Spearman(revision, spread) is −0.015 — the effect is essentially
+   absent. The window is small and seasonally confounded, so this is a warning,
+   not proof; the Level C holdout is the real test.
+
+**Implication for decision use.** H2 is conditional on expected wind not being
+low, and its stability out-of-time is unproven. It is a population-level
+mechanism finding, not a deployable hour-by-hour edge. Cross-border conditioning
+(H3 / P6), a logistic model and calibration (P10), and the locked-holdout
+evaluation (Level C) remain.
 
 ## H3 — Cross-Border and System Conditions
 

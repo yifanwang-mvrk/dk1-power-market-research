@@ -1,7 +1,7 @@
 # P4 H2 Renewable Forecast Revision Evidence
 
-**Status:** P4.1–P4.3 complete 2026-09-06 — H2 round-1 result: **SUPPORTED
-(weak, asymmetric)**, in-sample
+**Status:** P4.1–P4.4 complete 2026-09-06 — H2 first round done. Round 1
+**SUPPORTED (weak, asymmetric)**; after conditioning **CONDITIONALLY SUPPORTED**
 **Holdout:** LOCKED AND UNUSED
 
 ## P4.1 — Pre-registered test specification
@@ -85,9 +85,33 @@ because P4.2 only persisted the wind threshold.
 Recorded per D013 / E002: supported within its limitations; in-sample; not a
 deployable or profitable rule (D016). Decision D028.
 
+## P4.4 — Conditioning and failure analysis
+
+`src/p4_conditioning.py` stress-tests the P4.3 gradient. Files:
+`p4_4_conditioning_2026-09-06.{json,md}`,
+`p4_4_regime_gradient_chart_2026-09-06.png`,
+`p4_4_quality_report_2026-09-06.json` (7/7). Tests: `tests/test_p4_conditioning.py`.
+Exploratory / descriptive (E002); regime bins, split date and permutation seed
+declared before crossing outcomes.
+
+**Conclusion: CONDITIONALLY SUPPORTED.**
+
+- Permutation null (500 shuffles, seed 20260906): observed balanced accuracy
+  0.3647 vs null max 0.3426, p ~ 0.000 — the edge is real, not chance.
+- Robust across all four seasons and all four hour-of-day blocks (gradient
+  Spearman >= 0.9). Strongest in summer, weakest in winter.
+- Failure condition — low expected wind: gradient collapses to Spearman +0.30,
+  Q5-Q1 `P(DOWN)-P(UP)` spread +0.047 (vs +0.288 for mid wind).
+- Does not reproduce out-of-time: train `< 2024-01-01`, validate 2024 H1
+  (4,207 h, partial year) — validate gradient Spearman +0.10,
+  Spearman(revision, spread) -0.015. The Level C holdout is the real test.
+
+Decision D030. H2 first round is complete.
+
 ## Next steps
 
 | Step | Action |
 |---|---|
-| P8.1 | Audit the ten Level A criteria (A8 and A9 now met) |
-| P4.4 | Chronological OOS check, a stricter baseline gate, and season / regime / cross-border conditioning of the gradient |
+| P5 | H1 residual-load mechanism research (H1-A diagnostic; H1-B eligibility) |
+| P6 | H3 cross-border conditioning of the H2 gradient |
+| P10 | Logistic model + calibration; then the Level C locked-holdout test |

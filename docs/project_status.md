@@ -8,25 +8,26 @@
 
 | Item | Current Status |
 |---|---|
-| Completed phase | P8 — Level A packaging (audit + factual README/charter) |
-| Current phase | P4.4 — H2 first-round conditioning and failure analysis (Level B) |
-| Current step | P4.4 — stricter baseline gate + chronological OOS + regime conditioning |
-| Next step | P5 — H1 residual-load mechanism research |
+| Completed phase | P4.4 — H2 first round complete (conditionally supported) |
+| Current phase | P5 — H1 residual load and system tightness |
+| Current step | P5.1 — H1-A actual residual-load mechanism research (diagnostic) |
+| Next step | P5.2 — assess H1-B decision-eligible load proxy |
 | Current milestone | Level B — Interview Ready |
-| Milestone status | NOT STARTED (Level A achieved 2026-09-06) |
+| Milestone status | IN PROGRESS (Level A achieved 2026-09-06; H2 first round done) |
 | Holdout | LOCKED and unused |
 | Blocker | None |
 
 ## One Current Action / 当前唯一动作
 
-Start P4.4: re-test the H2 wind-revision gradient with a stricter rule-vs-baseline
-gate (beat a directional baseline or use a proper scoring rule), a chronological
-development-only train/validation split, and conditioning on season and
-hour-of-day regime. Retain the round-1 record unchanged.
+Start P5.1: H1-A mechanism research. Build actual residual load
+(`GrossConsumption − actual wind − actual solar`) from the P2 diagnostic fields,
+relate it to the realized balancing spread and label, and produce a mechanism
+chart and conclusion. Keep every actual-settlement field `diagnostic_only`
+(D024); do not admit it to any decision rule.
 
-开始 P4.4：用更严的规则对基准门槛（打赢一个也做方向判断的基准，或用 proper
-scoring rule）、开发期内按时间排序的训练/验证切分、以及按季节和时段 regime 分层，
-重新检验 H2 风电修正梯度。round-1 记录原样保留。
+开始 P5.1：H1-A 机制研究。用 P2 的诊断字段构造实际净负荷
+（`总消费 − 实际风电 − 实际光伏`），与已实现的 balancing spread 和标签关联，产出
+机制图和结论。所有结算实际值保持 `diagnostic_only`（D024），不进任何决策规则。
 
 ## P1.1 Completion / Forecasts_Hour 核验结论
 
@@ -235,6 +236,29 @@ in-sample / descriptive; ran exactly as pre-registered (D027)
 - Evidence: `research/evidence/p4_h2_revision/` (`p4_3_*` files);
   `research/hypotheses.md` (H2 section)
 
+## P4.4 Completion / H2 Conditioning 完成结论
+
+**Status:** COMPLETE — 2026-09-06 — **H2 CONDITIONALLY SUPPORTED**; H2 first
+round done. Exploratory / descriptive (E002); regime bins, split date and
+permutation seed declared before crossing outcomes
+
+- `src/p4_conditioning.py` runs three stress tests on the P4.3 gradient;
+  `p4_4_quality_report_2026-09-06.json` 7/7
+- Permutation null (shuffle `wind_revision` 500x, seed 20260906): observed
+  balanced accuracy 0.3647 vs null max 0.3426, p ~ 0.000 — the edge is real,
+  not chance
+- Robust across all four seasons and all four hour-of-day blocks (gradient
+  Spearman >= 0.9); strongest in summer, weakest in winter
+- Failure condition: at low expected wind (bottom 5h-forecast tercile) the
+  gradient collapses (Spearman +0.30, Q5-Q1 spread +0.047 vs +0.288 mid wind)
+- Does not reproduce out-of-time: train `< 2024-01-01`, validate 2024 H1
+  (4,207 h, partial year) — validate gradient Spearman +0.10, Spearman(revision,
+  spread) -0.015. Small/confounded window; a warning, the Level C holdout is the
+  real test
+- Decision D030; chart `p4_4_regime_gradient_chart_2026-09-06.png`
+- Evidence: `research/evidence/p4_h2_revision/` (`p4_4_*` files);
+  `research/hypotheses.md` (H2 section)
+
 ## P8 Completion / Level A Packaging 完成结论
 
 **Status:** PASS — Level A (CV-safe) ACHIEVED 2026-09-06
@@ -286,8 +310,25 @@ in-sample / descriptive; ran exactly as pre-registered (D027)
 | A10 | Holdout completely unused | MAINTAINED |
 
 **Level A: ACHIEVED 2026-09-06 — 10/10 criteria audited (P8.1); see `research/evidence/p8_level_a/`**
-**Level B: NOT STARTED**
+**Level B: IN PROGRESS**
 **Level C: NOT STARTED**
+
+## Level B Evidence Board / Level B 证据板
+
+| # | Criterion | Status |
+|---|---|---|
+| B1 | H2 complete first round | DONE — P4.1 pre-registration, P4.3 test, P4.4 conditioning; conditionally supported |
+| B2 | H1 mechanism research (H1-A) + H1-B eligibility | NOT STARTED — P5 |
+| B3 | H3 preliminary cross-border conditioning (eligible vs diagnostic) | NOT STARTED — P6 |
+| B4 | Transparent rule-based signal (UP/DOWN/NO TRADE) | NOT STARTED — P7 |
+| B5 | Confidence levels with basis | NOT STARTED — P7 |
+| B6 | Risk / invalidation per view | NOT STARTED — P7 |
+| B7 | Market State Card (>= 1 real development example) | NOT STARTED — P7 |
+| B8 | First Market Journal entry | NOT STARTED — P7 |
+| B9 | Short research memo (`research/r01_research_memo.md`) | NOT STARTED — P9 |
+| B10 | Majority + persistence baseline comparison in scorecard form | PARTIAL — computed in P3/P4; needs the memo scorecard |
+
+**Level B: IN PROGRESS — B1 done; P5 → P6 → P7 → P9 remain**
 
 ## Frozen Research Controls / 冻结研究规则
 
@@ -319,5 +360,6 @@ Earlier assistant-prepared P1.1 files remain outside the formal repository as re
 | 2026-09-06 | P4.2 wind/solar 5h-to-1h revisions built on the P2 base; forecast moves every hour (0 wind hours with 5h==1h); quintile edges and rule threshold frozen; no outcome joined | Current: P4.3; Next: P4.4 |
 | 2026-09-06 | P4.3 H2 round-1 test run as pre-registered: SUPPORTED (weak, asymmetric) — monotone contingency gradient, Spearman -0.096 (CI excludes 0), rule marginally beats availability-safe baselines. D028. Level A A8 + A9 met | Current: P8.1; Next: P8.2 then P4.4 |
 | 2026-09-06 | P8.1 audited all ten Level A criteria (10/10) and P8.2 aligned README/charter wording — **Level A (CV-safe) ACHIEVED** | Current: P4.4; Next: P5 (Level B) |
+| 2026-09-06 | P4.4 H2 conditioning: CONDITIONALLY SUPPORTED — permutation p~0 (real), robust to season/hour, fails at low wind, no out-of-time reproduction. D030. H2 first round complete | Current: P5.1; Next: P5.2 |
 
 Update this file after every completed work session. Every DONE status requires reviewed evidence.

@@ -1,0 +1,15 @@
+{
+  "step": "P4.4",
+  "status": "PASS",
+  "created_at_utc": "2026-09-06T19:12:21.862654+00:00",
+  "critical_checks": {
+    "join_rows_equal_expected": true,
+    "no_holdout_rows": true,
+    "regime_bins_declared_from_decision_eligible_inputs": true,
+    "chronological_split_before_holdout": true,
+    "permutation_seed_recorded": true,
+    "chart_written": true,
+    "conclusion_is_nonempty": true
+  },
+  "holdout": "LOCKED_AND_UNUSED"
+}
