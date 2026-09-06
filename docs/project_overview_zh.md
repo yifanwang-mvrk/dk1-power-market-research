@@ -148,8 +148,8 @@ UP / DOWN / NEUTRAL 是结果分类；Bullish / Bearish / No Trade 是研究决�
 
 ### 我们现在在哪？
 
-**P0 与 P1 已完成；P1.4 已建立 fundamentals、cross-border 和 system sources 的来源与资格清单。当前进入 P2.1：实现范围受控、可重复运行的 development 数据抓取。** 假设测试尚未开始，Level A/B/C 均未达到。
+**P0、P1 与 P2 已完成。当前进入 P3.1：使用每小时底表构造同小时 balancing spread。** 假设测试尚未开始，Level A/B/C 均未达到。
 
-P1.1 已确认同一交割小时的 5h→1h revision 在结构上可实施；P1.2 已把同小时 DK1 `SpotPriceEUR` 锁定为 EUR/MWh 日前参考价；P1.3 已把 `ImbalancePriceEUR` 锁定为 EUR/MWh 事后 balancing outcome。P1.4 已把实际剩余负荷与实际跨境流归为复盘变量，把日前跨境容量和计划交换登记为待 P2.3 时点映射的候选决策变量，并把历史不可用或覆盖不足的来源明确标出。核心原则仍是：**先确认每个字段的市场含义、时间与单位，再构造 spread 和特征。**
+P1.1 已确认同一交割小时的 5h→1h revision 在结构上可实施；P1.2 已把同小时 DK1 `SpotPriceEUR` 锁定为 EUR/MWh 日前参考价；P1.3 已把 `ImbalancePriceEUR` 锁定为 EUR/MWh 事后 balancing outcome。P1.4 已按时点角色登记 actual、cross-border 与 system sources。P2 已完成受控抓取、raw 来源追踪、UTC/丹麦时间与 DST 处理、六个来源的每小时合并和质量门禁；21,887 个开发期小时全部保留，已知的一个 balancing 缺口保持为空，holdout 仍为零行。决策时点固定为交付开始前最后一份信息快照。核心原则仍是：**先确认每个字段的市场含义、时间与单位，再构造 spread 和特征。**
 
 阅读自检：你能用自己的话解释为什么比较同一小时的新旧预报、为什么 actual 不自动等于可用信息、为什么要保留 holdout 吗？这三点讲清楚，就可以开始第一步了。

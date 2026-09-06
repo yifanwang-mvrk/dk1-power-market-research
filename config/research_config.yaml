@@ -40,9 +40,27 @@ point_in_time:
     - decision_eligible
     - diagnostic_only
     - outcome
-  decision_cutoff: null
+  decision_cutoff:
+    anchor: delivery_start_utc
+    offset_minutes: 0
+    availability_rule: strictly_before_anchor
+    interpretation: last_pre_delivery_information_snapshot
+    executable_intraday_claim: false
+  timestamp_contract:
+    canonical_join_key: delivery_start_utc
+    local_timezone: Europe/Copenhagen
+    source_hour_dk_use: validation_and_interpretation_only
+    repeated_dst_hours: preserve_as_distinct_utc_rows
 
 source_eligibility:
+  renewable_fixed_horizon_forecasts:
+    dataset: Forecasts_Hour
+    fields:
+      - Forecast5Hour
+      - Forecast1Hour
+    class: decision_eligible
+    eligibility_rule: non_null_same_delivery_hour_at_last_pre_delivery_snapshot
+    vintage_claim: fixed_horizon_only
   actual_residual_load:
     dataset: ProductionConsumptionSettlement
     fields:
@@ -65,7 +83,7 @@ source_eligibility:
       - ExportCapacity
       - ScheduledExchangeDayAhead
     class: decision_eligible_candidate
-    exact_cutoff_gate: P2.3
+    timing_status: passed_at_last_pre_delivery_cutoff
     border_handling_gate: P6.1
   realized_exchange:
     dataset: ProductionConsumptionSettlement
@@ -74,7 +92,9 @@ source_eligibility:
     dataset: CountertradeIntraday
     class: conditional_decision_candidate
     development_coverage_start: "2023-04-18"
-    exact_cutoff_gate: P2.3
+    row_eligibility_rule: publication_time_utc < delivery_start_utc
+    historical_version_limit: prior_overwritten_versions_unavailable
+    absence_means_zero: false
   load_forecast_proxy:
     dataset: ENTSO-E day-ahead total load forecast
     class: external_candidate_pending_access_timing
@@ -87,7 +107,10 @@ baselines:
   persistence:
     enabled: true
     formula: predicted_label_t = observed_label_t_minus_1
-    availability_status: pending_validation
+    availability_status: ex_post_reference_only
+    reason: legacy_outcome_publication_delay_not_documented
+    decision_feature_eligible: false
+    availability_correct_alternative_gate: P3.4
 
 hypotheses:
   H1: residual_load_and_system_tightness

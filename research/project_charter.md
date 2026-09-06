@@ -2,7 +2,7 @@
 
 **Project:** DK1 Short-Term Power Market Research
 **Version:** MVP v1
-**Status:** Frozen design; P1 source validation in progress
+**Status:** Frozen design; P2 data pipeline complete; P3 target construction next
 **Owner:** Yifan Wang
 
 ## Mission
@@ -57,6 +57,10 @@ Every field must be assigned to one of three classes:
 - `outcome`: known only after delivery
 
 Historical availability in an API does not automatically make a field decision eligible.
+
+P2.3 fixes the simulated decision anchor at `delivery_start_utc` and requires
+eligible information to be available strictly before it. This is the last
+pre-delivery information snapshot and does not imply executable intraday P&L.
 
 ## Mandatory Baselines
 

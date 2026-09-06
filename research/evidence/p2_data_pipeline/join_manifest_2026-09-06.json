@@ -1,0 +1,41 @@
+{
+  "step": "P2.4",
+  "status": "PASS",
+  "join_type": "Expected development-hour spine with validated one-to-one or pivoted left joins",
+  "canonical_key": [
+    "delivery_start_utc",
+    "price_area"
+  ],
+  "hourly_base_rows": 21887,
+  "hourly_base_unique_hours": 21887,
+  "sources": {
+    "Forecasts_Hour": {
+      "normalized_rows": 65499,
+      "unique_hours": 21839
+    },
+    "Elspotprices": {
+      "normalized_rows": 21887,
+      "unique_hours": 21887
+    },
+    "RegulatingBalancePowerdata": {
+      "normalized_rows": 21886,
+      "unique_hours": 21886
+    },
+    "ProductionConsumptionSettlement": {
+      "normalized_rows": 21887,
+      "unique_hours": 21887
+    },
+    "Transmissionlines": {
+      "normalized_rows": 114809,
+      "unique_hours": 21887
+    },
+    "CountertradeIntraday": {
+      "normalized_rows": 7751,
+      "unique_hours": 7751
+    }
+  },
+  "processed_file": "data/processed/p2/hourly_base_development.parquet",
+  "processed_sha256": "cb69be3091d71e27a157ec3e529878cfaed74f3d9f734ebaa9db56d3a695e66d",
+  "spread_created": false,
+  "holdout": "LOCKED_AND_UNUSED"
+}

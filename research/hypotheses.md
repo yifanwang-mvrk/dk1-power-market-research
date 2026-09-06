@@ -32,7 +32,7 @@ candidate pending access and publication-timing evidence in P5.2.
 
 ## H2 — Renewable Forecast Revision
 
-**Status:** Forecast, day-ahead reference and balancing outcome validated; testing not started
+**Status:** P2-aligned inputs and outcome ready; testing not started
 **Role:** Primary MVP hypothesis
 
 ### Question
@@ -48,9 +48,11 @@ A positive wind revision means expected wind production increased as delivery ap
 ### Point-in-Time Constraint
 
 P1.1 established same-hour fixed-horizon fields with approximately 99% numeric
-pair coverage in the development period. Use them only with the documented
-missingness, zero-value and DST rules. The exact simulated decision cutoff
-remains to be locked in P2.3; no complete tick-by-tick vintage claim is allowed.
+pair coverage in the development period. P2.3 fixed the decision anchor at the
+delivery-hour start and permits only information available strictly before it.
+Non-null 5h and 1h fields qualify at this last-pre-delivery snapshot under the
+official source rule; no earlier exact-minute or complete tick-by-tick vintage
+claim is allowed. Use the documented missingness, zero-value and DST rules.
 P1.2 fixed the same-hour DK1 day-ahead reference as
 `Elspotprices.SpotPriceEUR` in EUR/MWh with complete development-period
 coverage. P1.3 fixed the ex-post balancing outcome as
@@ -76,15 +78,16 @@ Available transmission capacity, scheduled exchange and neighboring-market condi
 Each cross-border field must be classified as decision eligible, diagnostic only or unavailable before use.
 
 P1.4 registered `Transmissionlines.ImportCapacity`, `ExportCapacity` and
-`ScheduledExchangeDayAhead` as conditional decision candidates. P2.3 must map
-them to the exact decision cutoff, and P6.1 must handle border-specific
-coverage, nulls and mixed export-capacity signs. Final intraday schedules and
-physical settlement flows are diagnostic only.
+`ScheduledExchangeDayAhead` as conditional decision candidates. P2.3 confirmed
+their timing at the last-pre-delivery cutoff; P6.1 must still handle
+border-specific coverage, nulls and mixed export-capacity signs. Final
+intraday schedules and physical settlement flows are diagnostic only.
 
 Legacy `CountertradeIntraday` is a partial-period conditional candidate from
-2023-04-18. Later versions overwrite earlier history, so P2.3 must accept only
-rows available at the cutoff and must not infer that absent publication days
-mean zero. The 2025 successor is unavailable for development.
+2023-04-18. P2.3 found 7,469 stored rows published strictly before delivery and
+282 stored rows unavailable at the cutoff. Later versions overwrite earlier
+history, and absent publication days do not mean zero. The 2025 successor is
+unavailable for development.
 
 ## Research Rule
 

@@ -1,0 +1,184 @@
+{
+  "step": "P2.2",
+  "status": "PASS",
+  "created_at_utc": "2026-09-06T14:12:46.603228+00:00",
+  "source_organization": "Energinet",
+  "raw_policy": "Exact API JSON responses are immutable and git-ignored; this committed manifest preserves request and hash evidence.",
+  "pipeline_code": {
+    "path": "src/p2_pipeline.py",
+    "sha256": "c55c17789b9e1da8cbb2ffe64893b9a2b998e7a596782562c432ff330a53599b"
+  },
+  "research_config": {
+    "path": "config/research_config.yaml",
+    "sha256": "de875020a93237ee3438be0afda9817bfa78ba4008fe9cf0aa2323cc831e0d4a"
+  },
+  "development_boundary": {
+    "start_local_inclusive": "2022-01-01",
+    "end_local_exclusive": "2024-07-01",
+    "timezone": "Europe/Copenhagen"
+  },
+  "holdout": "LOCKED_AND_NOT_REQUESTED",
+  "files": [
+    {
+      "dataset": "Forecasts_Hour",
+      "raw_file": "data/raw/p1_1_validation/Forecasts_Hour_DK1_development_2022-01-01_2024-06-30.json",
+      "raw_response_preserved": true,
+      "bytes": 21235673,
+      "sha256": "f36338f4ec736d6de29e658d994dc9e5acb295a6d99b2f0a14301548181f49ee",
+      "matches_p1_manifest": true,
+      "p1_manifest": "research/evidence/p1_1_forecasts_hour/development_extract_manifest_2026-09-06.json",
+      "metadata_snapshot": "research/evidence/p1_1_forecasts_hour/metadata_2026-09-05.json",
+      "metadata_sha256": "2bd2f7dd9136ee14fa9783b475d621b4ac03c813df8bfdf0a9ebd250fe1d82d1",
+      "p1_retrieved_or_manifested_at_utc": "2026-09-06T10:00:03.811885+00:00",
+      "request_url": null,
+      "request": {
+        "base_url": "https://api.energidataservice.dk/dataset/Forecasts_Hour",
+        "start": "2022-01-01",
+        "end_exclusive": "2024-07-01",
+        "timezone": "DK",
+        "filter": {
+          "PriceArea": [
+            "DK1"
+          ]
+        },
+        "sort": "HourUTC,PriceArea,ForecastType",
+        "limit": 0
+      },
+      "api_reported_total": 65499,
+      "records": 65499,
+      "primary_key": [
+        "HourUTC",
+        "PriceArea",
+        "ForecastType"
+      ],
+      "research_role": "decision_eligible_fixed_horizon"
+    },
+    {
+      "dataset": "Elspotprices",
+      "raw_file": "data/raw/p1_2_validation/Elspotprices_DK1_development_2022-01-01_2024-06-30.json",
+      "raw_response_preserved": true,
+      "bytes": 2948721,
+      "sha256": "44893828275b74434d1a5ab9d259c73285be8fd7b101af0acac8887868444fc7",
+      "matches_p1_manifest": true,
+      "p1_manifest": "research/evidence/p1_2_elspotprices/development_extract_manifest_2026-09-06.json",
+      "metadata_snapshot": "research/evidence/p1_2_elspotprices/metadata_2026-09-06.json",
+      "metadata_sha256": "a8f661ac0d71d70d9767f89ccfce13747936600a8ed8cf2866f5aab7464ce37b",
+      "p1_retrieved_or_manifested_at_utc": "2026-09-06T10:17:32.032690+00:00",
+      "request_url": "https://api.energidataservice.dk/dataset/Elspotprices?start=2022-01-01&end=2024-07-01&filter={\"PriceArea\":[\"DK1\"]}&sort=HourUTC&limit=0&timezone=DK",
+      "request": {
+        "start": "2022-01-01",
+        "end_exclusive": "2024-07-01",
+        "timezone": "DK",
+        "filter": {
+          "PriceArea": [
+            "DK1"
+          ]
+        },
+        "sort": "HourUTC",
+        "limit": 0
+      },
+      "api_reported_total": 21887,
+      "records": 21887,
+      "primary_key": [
+        "HourUTC",
+        "PriceArea"
+      ],
+      "research_role": "decision_eligible_reference"
+    },
+    {
+      "dataset": "RegulatingBalancePowerdata",
+      "raw_file": "data/raw/p1_3_validation/RegulatingBalancePowerdata_DK1_development_2022-01-01_2024-06-30.json",
+      "raw_response_preserved": true,
+      "bytes": 11378075,
+      "sha256": "4ef2e3ceb5e696d86ac950f33d34fafb0ebc1da0b367ba0fc7352df8c3deac3e",
+      "matches_p1_manifest": true,
+      "p1_manifest": "research/evidence/p1_3_regulating_balance_power/development_extract_manifest_2026-09-06.json",
+      "metadata_snapshot": "research/evidence/p1_3_regulating_balance_power/metadata_RegulatingBalancePowerdata_2026-09-06.json",
+      "metadata_sha256": "1798bca7bf3a635b5c2b3cccea34bf0fe35447537544adf65e71a7661f97795f",
+      "p1_retrieved_or_manifested_at_utc": "2026-09-06T11:06:06.584219+00:00",
+      "request_url": "https://api.energidataservice.dk/dataset/RegulatingBalancePowerdata?start=2022-01-01&end=2024-07-01&filter=%7B%22PriceArea%22%3A%5B%22DK1%22%5D%7D&sort=HourUTC&limit=0&timezone=DK",
+      "request": {
+        "start_local_inclusive": "2022-01-01",
+        "end_local_exclusive": "2024-07-01",
+        "timezone": "DK",
+        "filter": {
+          "PriceArea": [
+            "DK1"
+          ]
+        },
+        "sort": "HourUTC",
+        "limit": 0
+      },
+      "api_reported_total": 21886,
+      "records": 21886,
+      "primary_key": [
+        "HourUTC",
+        "PriceArea"
+      ],
+      "research_role": "outcome"
+    },
+    {
+      "dataset": "ProductionConsumptionSettlement",
+      "raw_file": "data/raw/p1_4_validation/ProductionConsumptionSettlement_DK1_development_2022-01-01_2024-06-30.json",
+      "raw_response_preserved": true,
+      "bytes": 23691524,
+      "sha256": "10a6042e5750b68701bebf838d41d5d7da7b2b5a01495d2bdb8781eb55fcf52e",
+      "matches_p1_manifest": true,
+      "p1_manifest": "research/evidence/p1_4_sources/development_extract_manifest_2026-09-06.json",
+      "metadata_snapshot": "research/evidence/p1_4_sources/metadata_ProductionConsumptionSettlement_2026-09-06.json",
+      "metadata_sha256": "5bbdc419d6f62c14acf859cf31928095fcaeb5fd437b816b1ea7ad9e7b7b5334",
+      "p1_retrieved_or_manifested_at_utc": "2026-09-06T12:40:08.848367+00:00",
+      "request_url": "https://api.energidataservice.dk/dataset/ProductionConsumptionSettlement?start=2022-01-01&end=2024-07-01&filter=%7B%22PriceArea%22%3A%5B%22DK1%22%5D%7D&sort=HourUTC&limit=0",
+      "request": null,
+      "api_reported_total": 21887,
+      "records": 21887,
+      "primary_key": [
+        "HourUTC",
+        "PriceArea"
+      ],
+      "research_role": "diagnostic_only"
+    },
+    {
+      "dataset": "Transmissionlines",
+      "raw_file": "data/raw/p1_4_validation/Transmissionlines_DK1_development_2022-01-01_2024-06-30.json",
+      "raw_response_preserved": true,
+      "bytes": 69857084,
+      "sha256": "623ca67ce1832b1069243e15437ebfa54efc1f0ef419063a3f87d00c883f72b8",
+      "matches_p1_manifest": true,
+      "p1_manifest": "research/evidence/p1_4_sources/development_extract_manifest_2026-09-06.json",
+      "metadata_snapshot": "research/evidence/p1_4_sources/metadata_Transmissionlines_2026-09-06.json",
+      "metadata_sha256": "8a4c9623df4d46e6ebb0829ed29d6c6e720ddd6bc77c8e048463c8cc36c48334",
+      "p1_retrieved_or_manifested_at_utc": "2026-09-06T12:40:08.848367+00:00",
+      "request_url": "https://api.energidataservice.dk/dataset/Transmissionlines?start=2022-01-01&end=2024-07-01&filter=%7B%22PriceArea%22%3A%5B%22DK1%22%5D%7D&sort=HourUTC%2CConnectedArea&limit=0",
+      "request": null,
+      "api_reported_total": 114809,
+      "records": 114809,
+      "primary_key": [
+        "HourUTC",
+        "PriceArea",
+        "ConnectedArea"
+      ],
+      "research_role": "mixed_by_field"
+    },
+    {
+      "dataset": "CountertradeIntraday",
+      "raw_file": "data/raw/p1_4_validation/CountertradeIntraday_development_overlap_2023-04-18_2024-06-30.json",
+      "raw_response_preserved": true,
+      "bytes": 1662010,
+      "sha256": "eead53324ef5dce83d34517c4f651610dffa1c164e75a85a0506374ebd0d40ed",
+      "matches_p1_manifest": true,
+      "p1_manifest": "research/evidence/p1_4_sources/development_extract_manifest_2026-09-06.json",
+      "metadata_snapshot": "research/evidence/p1_4_sources/metadata_CountertradeIntraday_2026-09-06.json",
+      "metadata_sha256": "70a2e390254a0e7298451d81c10ee535f8e1eb39f1cc976d4f6274e3b0ba9e7e",
+      "p1_retrieved_or_manifested_at_utc": "2026-09-06T12:40:08.848367+00:00",
+      "request_url": "https://api.energidataservice.dk/dataset/CountertradeIntraday?start=2023-04-18&end=2024-07-01&sort=HourUTC&limit=0",
+      "request": null,
+      "api_reported_total": 7751,
+      "records": 7751,
+      "primary_key": [
+        "HourUTC"
+      ],
+      "research_role": "conditional_decision_candidate"
+    }
+  ]
+}

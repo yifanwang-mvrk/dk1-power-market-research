@@ -48,6 +48,7 @@ Source: the complete 31-section final Blueprint response and the owner's subsequ
 | D022 | Elspotprices SpotPriceEUR as day-ahead reference | FROZEN |
 | D023 | RegulatingBalancePowerdata ImbalancePriceEUR as balancing outcome | FROZEN |
 | D024 | P1.4 fundamental and system-source eligibility | FROZEN |
+| D025 | Last-pre-delivery cutoff and P2 hourly-base contract | FROZEN |
 | E001–E003 | 执行说明 / Execution clarifications | IMPLEMENTATION NOTE |
 | I01–I08 | 字段、参数和可用性 / Fields, parameters and availability | TRACKED — see current table |
 
@@ -345,6 +346,65 @@ and `source_eligibility_inventory_2026-09-06.json`. **Holdout:** all requests
 ended at local 2024-07-01 00:00 exclusive; zero holdout rows were requested or
 inspected.
 
+## D025 · Freeze the last-pre-delivery cutoff and P2 hourly-base contract
+
+**Date / 日期:** 2026-09-06
+**Status / 状态:** FROZEN
+**Related step / 对应步骤:** P2.1–P2.5
+**Related open item / 对应 I 编号:** I03; I06 timing portion
+
+**决定 / Decision:** The simulated decision anchor is the start of each UTC
+delivery hour (`decision_time_utc = delivery_start_utc`). A value qualifies
+only when it was available **strictly before** that anchor. This represents the
+last pre-delivery information snapshot and is a research-classification cutoff,
+not an executable intraday trading claim.
+
+The official `Forecasts_Hour` contract states that fixed 1h and 5h forecasts
+are released before delivery and may be updated until one minute before the
+forecast starts. Non-null `Forecast5Hour` and `Forecast1Hour` values therefore
+qualify at this cutoff for same-hour fixed-horizon research. Because exact
+minute-level versions are not retained, the project will not claim that the
+stored values were available at an earlier minute such as T-60 or T-15.
+
+`SpotPriceEUR` is a decision-eligible reference. `ImbalancePriceEUR` and all
+same-hour balancing fields remain outcomes. Settlement actuals and realized
+flows remain diagnostic. Day-ahead transmission values pass this timing gate
+but remain conditional on P6.1 border and sign handling. Countertrade qualifies
+row by row only when its local `PublicationDate`, converted to UTC, is strictly
+before delivery; missing publication rows do not mean zero. The frozen
+`y[t-1]` persistence formula remains an ex-post reference because the legacy
+balancing source does not document its historical publication delay.
+
+The P2 analysis spine contains all 21,887 expected local-date development
+hours. It uses `delivery_start_utc + price_area` as its canonical key, preserves
+Danish local time and repeated-hour occurrence, and joins sources by validated
+one-to-one keys or explicit forecast/border pivots. Raw responses and processed
+tables remain git-ignored; committed hashes, manifests, samples and quality
+reports provide the review trail.
+
+**理由 / Rationale:** This is the latest common cutoff supported by the source
+contract without inventing historical forecast vintages. An earlier cutoff
+would require versions the historical hourly source does not retain. A UTC
+spine prevents DST collisions, while an expected-hour left join preserves
+source gaps instead of silently dropping difficult hours.
+
+**未采用 / Alternative:** T-60 or T-15 was not selected because the stored
+fixed-horizon values may include a later pre-delivery update and no historical
+row version identifies which value existed at those exact minutes. `HourDK`
+was not used as the sole key, and missing outcomes, forecasts or countertrade
+publications were not converted to zero.
+
+**影响 / Impact:** P3 may now construct the spread on the P2 hourly base. P4
+may construct 5h-to-1h revisions only from non-null same-hour pairs. P6.1 still
+owns border-specific and countertrade feature rules. P3.4 must label the frozen
+persistence formula as ex-post unless separate publication evidence becomes
+available.
+
+**Evidence:** `research/evidence/p2_data_pipeline/availability_contract_2026-09-06.json`,
+`join_manifest_2026-09-06.json` and `quality_report_2026-09-06.md`.
+**Holdout:** locked, not requested, zero rows processed.
+**Supersedes:** None.
+
 ## 本次执行说明 / Operational clarifications
 
 ### E001 · Preserve both persistence and point-in-time integrity
@@ -380,7 +440,7 @@ All items begin **OPEN**. There is no confirmed external blocker, and lack of ve
 |---|---|---|---|
 | I01 | **RESOLVED by D023:** use hourly DK1 `RegulatingBalancePowerdata.ImbalancePriceEUR` in EUR/MWh as the ex-post balancing outcome | P1.3 complete | Official definition, single-price go-live evidence and full-development validation |
 | I02 | **RESOLVED by D020/D021:** 5h/1h are fixed-horizon snapshots; `TimestampUTC` belongs to Current; no row-level tick history; coverage is conditionally sufficient | P1.1 complete; exact cutoff continues in I03 | Official metadata + full development coverage/pairing report |
-| I03 | 决策 cutoff、预报可得时刻、outcome 发布延迟与 `y_t-1` 可用性？ | P2.3 / P3.4；信号前 | 有证据的时间线、as-of 规则、基准处理；未定数值不补猜 / Evidenced timeline and benchmark handling |
+| I03 | **PARTIALLY RESOLVED by D025:** last-pre-delivery cutoff frozen; fixed 5h/1h forecasts qualify; undocumented outcome delay keeps `y[t-1]` as ex-post reference | P2.3 complete; P3.4 baseline report remains | Register any availability-correct supplemental baseline before evaluation; do not promote unverified lags |
 | I04 | **RESOLVED by D021/D022/D023/D024:** use local-date request boundaries, UTC canonical keys and Danish-local time for DST interpretation across all P1 sources | P1 complete | Full development-boundary validation; P1.4 uses `HourUTC + PriceArea` or `HourUTC + PriceArea + ConnectedArea` as appropriate |
 | I05 | δ 的实际值、quantile interpolation、有效样本与 missing policy？ | P3.2 | Development-only 非零绝对 spread、样本数、算法、配置值和版本 |
 | I06 | **PARTIALLY RESOLVED by D024:** H1-A actual and realized flows are diagnostic; legacy day-ahead transmission fields and countertrade are conditional candidates; H1-B external forecast remains pending | P5.2 / P6.1 | Complete load-proxy access/timing evidence and border-specific feature rules without promoting actuals |

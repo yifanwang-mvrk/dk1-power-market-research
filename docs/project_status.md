@@ -8,10 +8,10 @@
 
 | Item | Current Status |
 |---|---|
-| Completed phase | P1 — Data Source Validation |
-| Current phase | P2 — Data Pipeline |
-| Current step | P2.1 — Implement reproducible development-data acquisition |
-| Next step | P2.2 — Preserve raw data and provenance |
+| Completed phase | P2 — Data Pipeline |
+| Current phase | P3 — Target Construction |
+| Current step | P3.1 — Build the balancing spread |
+| Next step | P3.2 — Freeze development-only delta |
 | Current milestone | Level A — CV-safe |
 | Milestone status | NOT ACHIEVED |
 | Holdout | LOCKED and unused |
@@ -19,10 +19,10 @@
 
 ## One Current Action / 当前唯一动作
 
-Build a date-bounded API client that cannot cross the development boundary and
-prove it on development-only samples with explicit failure handling.
+Construct the same-hour EUR/MWh balancing spread from the P2 hourly base while
+preserving the documented missing balancing outcome.
 
-实现不会越过 development 边界的 API client，并用 development-only 小样本和明确的失败处理证明它可重复运行。
+使用 P2 小时底表构造同小时 EUR/MWh balancing spread，并保留已记录的 balancing outcome 缺口。
 
 ## P1.1 Completion / Forecasts_Hour 核验结论
 
@@ -103,6 +103,38 @@ prove it on development-only samples with explicit failure handling.
   eligibility inventory are preserved under `research/evidence/p1_4_sources/`
 - Holdout remained locked and unused; missing values were never converted to zero
 
+## P2 Completion / Development Data Pipeline 完成结论
+
+**Status:** PASS — P2.1 through P2.5 completed 2026-09-06
+
+- P2.1 added a reusable Energi Data Service client that rejects pre-development,
+  holdout, non-DK1 and unbounded area requests before network access
+- A live DK1 development-only day sample returned all 24 expected hourly spot
+  rows; automated checks cover 429 retry handling and truncated responses
+- P2.2 preserved six exact P1 raw JSON responses with request, retrieval and
+  SHA-256 provenance; every current hash matches its P1 manifest
+- P2.3 standardized local-date request boundaries, UTC joins, Danish-local
+  interpretation, UTC offsets and repeated DST-hour occurrence
+- The decision anchor is `delivery_start_utc`; only information available
+  strictly before that anchor belongs to the last-pre-delivery snapshot
+- Non-null `Forecast5Hour` and `Forecast1Hour` values are eligible at that
+  snapshot under the official pre-delivery availability rule; no exact-minute
+  or complete-vintage claim is made
+- `ImbalancePriceEUR` remains an outcome; actual settlement fundamentals and
+  realized flows remain diagnostic only
+- Day-ahead transmission fields pass the timing gate but remain conditional on
+  P6.1 border/sign rules
+- Countertrade uses `PublicationDate < delivery_start_utc`; 7,469 of 7,751
+  stored rows pass, while 282 fail the cutoff and absent days remain unknown
+- Previous-hour spread/label persistence remains an ex-post reference because
+  the legacy outcome publication delay is undocumented
+- P2.4 produced a local 93-column hourly base with 21,887 unique DK1 hours
+- P2.5 passed all boundary, key, DST, coverage, unit and eligibility checks
+- Spot price has zero gaps; the single balancing gap at
+  `2022-10-30T00:00:00Z` remains null; holdout rows remain zero
+- Evidence: `research/evidence/p2_data_pipeline/`; local processed table:
+  `data/processed/p2/hourly_base_development.parquet`
+
 ## Completed Setup / 已完成搭建
 
 - [x] Formal local Git repository created
@@ -166,5 +198,6 @@ Earlier assistant-prepared P1.1 files remain outside the formal repository as re
 | 2026-09-06 | P1.2 `Elspotprices` completed with a pass | Current: P1.3; Next: P1.4 |
 | 2026-09-06 | P1.3 `RegulatingBalancePowerdata` completed with a conditional pass | Current: P1.4; Next: P2.1 |
 | 2026-09-06 | P1.4 fundamentals, cross-border and system-source inventory completed with a pass | Current: P2.1; Next: P2.2 |
+| 2026-09-06 | P2.1–P2.5 bounded acquisition, provenance, time normalization, hourly joining and quality gates completed | Current: P3.1; Next: P3.2 |
 
 Update this file after every completed work session. Every DONE status requires reviewed evidence.

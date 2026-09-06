@@ -1,0 +1,31 @@
+{
+  "source_organization": "Energinet",
+  "retrieved_at_utc": "2026-09-06T14:06:31.056276+00:00",
+  "request": {
+    "dataset": "Elspotprices",
+    "start_date": "2024-06-15",
+    "end_date_exclusive": "2024-06-16",
+    "filters": {
+      "PriceArea": [
+        "DK1"
+      ]
+    },
+    "sort": "HourUTC",
+    "limit": 0,
+    "timezone_name": "DK"
+  },
+  "request_url": "https://api.energidataservice.dk/dataset/Elspotprices?start=2024-06-15&end=2024-06-16&sort=HourUTC&limit=0&timezone=DK&filter=%7B%22PriceArea%22%3A%5B%22DK1%22%5D%7D",
+  "attempts": 1,
+  "response_headers": {
+    "Content-Type": "application/json; charset=utf-8",
+    "Last-Modified": "Sun, 06 Sep 2026 14:06:08 GMT"
+  },
+  "api_reported_total": 24,
+  "records_returned": 24,
+  "bytes": 3314,
+  "sha256": "8aafcab93518f7f17743ee99647e979a737a919dd576ee82b1ff6a2e2bb148df",
+  "local_file": "research/evidence/p2_data_pipeline/p2_1_sample_Elspotprices_DK1_2024-06-15.json",
+  "research_config": "config/research_config.yaml",
+  "git_head_before_run": "9197d160d36765a8c8b2e4fea81bd5441650f00b",
+  "holdout_state": "LOCKED_AND_NOT_REQUESTED"
+}

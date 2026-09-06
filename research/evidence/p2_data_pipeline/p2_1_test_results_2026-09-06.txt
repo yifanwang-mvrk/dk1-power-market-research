@@ -1,0 +1,14 @@
+test_rejects_truncated_payload (test_eds_api_client.FailureHandlingTests.test_rejects_truncated_payload) ... ok
+test_retries_429_then_succeeds (test_eds_api_client.FailureHandlingTests.test_retries_429_then_succeeds) ... ok
+test_accepts_development_boundary (test_eds_api_client.ScopeTests.test_accepts_development_boundary) ... ok
+test_rejects_holdout_before_network (test_eds_api_client.ScopeTests.test_rejects_holdout_before_network) ... ok
+test_rejects_missing_area_filter (test_eds_api_client.ScopeTests.test_rejects_missing_area_filter) ... ok
+test_rejects_non_dk1_filter (test_eds_api_client.ScopeTests.test_rejects_non_dk1_filter) ... ok
+test_development_has_expected_real_hours (test_p2_pipeline.TimeSpineTests.test_development_has_expected_real_hours) ... ok
+test_dst_fallback_hours_are_not_collapsed (test_p2_pipeline.TimeSpineTests.test_dst_fallback_hours_are_not_collapsed) ... ok
+test_holdout_is_absent (test_p2_pipeline.TimeSpineTests.test_holdout_is_absent) ... ok
+
+----------------------------------------------------------------------
+Ran 9 tests in 0.274s
+
+OK

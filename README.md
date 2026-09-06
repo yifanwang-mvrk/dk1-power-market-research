@@ -4,12 +4,14 @@ Independent, point-in-time research into whether renewable forecast revisions an
 
 ## Current Status
 
-Project foundation and official-source validation are complete. Reproducible
-development-data acquisition is next.
+Project foundation, official-source validation and the development data
+pipeline are complete. Target construction is next.
 
 - Repository structure and GitHub remote: created
 - Python environment: created and verified
 - Data validation: P1 complete; source roles and point-in-time eligibility inventoried
+- Data pipeline: P2 complete; bounded acquisition, raw provenance, timestamp
+  normalization, hourly joins and quality gates passed
 - Hypothesis testing: not started
 - Level A (CV-safe): not achieved
 - Locked holdout: unused
@@ -56,6 +58,32 @@ The holdout must not be accessed before the Level C unlock requirements are sati
 
 The P1.4 evidence, raw-file hashes and machine-readable eligibility inventory
 are preserved in [`research/evidence/p1_4_sources`](research/evidence/p1_4_sources/README.md).
+
+## Development Data Pipeline
+
+P2 produces a local, git-ignored hourly development table at
+`data/processed/p2/hourly_base_development.parquet`. It contains 21,887 unique
+DK1 delivery hours and preserves the documented single balancing-source gap.
+The committed audit evidence is under
+[`research/evidence/p2_data_pipeline`](research/evidence/p2_data_pipeline/README.md).
+
+- The API client rejects dates outside development and rejects non-DK1 requests
+  before contacting the source.
+- Raw JSON responses remain immutable; request details, retrieval times and
+  SHA-256 hashes provide provenance.
+- UTC is the join key; Danish local time, UTC offset and repeated-hour order are
+  retained for DST interpretation.
+- The decision cutoff is the last information snapshot before delivery starts.
+  Fixed 5h/1h forecasts qualify under the official pre-delivery availability
+  rule, while outcomes and settlement actuals remain quarantined.
+- P2 does not calculate spread, labels or forecast revisions. Those begin in P3
+  and P4.
+
+Rebuild the local P2 outputs with:
+
+```bash
+uv run python src/p2_pipeline.py
+```
 
 ## Research Principles
 

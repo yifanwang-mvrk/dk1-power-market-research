@@ -1,7 +1,7 @@
 # Data Dictionary
 
 **Project:** DK1 Short-Term Power Market Research
-**Status:** P1 completed; core, fundamental and system-source fields registered
+**Status:** P2 completed; source fields standardized and joined to the development hourly base
 **Last updated:** 2026-09-06
 
 ## Field Registry
@@ -14,16 +14,16 @@
 | Forecasts_Hour | ForecastType | Forecasted production category: Solar, Offshore Wind or Onshore Wind | text | Static category selector | decision_eligible (key) | Validated P1.1 |
 | Forecasts_Hour | ForecastDayAhead | Renewable-production forecast for the next day | MWh per hour | Generated at 17:50 and published at 18:00 Danish time according to official metadata | pending cutoff | Validated definition; outside primary H2 signal |
 | Forecasts_Hour | ForecastIntraday | Renewable-production forecast for the coming day at 06:00 Danish time | MWh per hour | Intraday horizon; exact historical eligibility depends on delivery hour and cutoff | pending cutoff | Excluded from primary H2 pending further evidence |
-| Forecasts_Hour | Forecast5Hour | Renewable-production forecast valid five hours ahead | MWh per hour | Fixed 5-hour horizon snapshot; exact minute timestamp is not stored | decision_eligible (conditional) | Validated for H2 subject to P2.3 cutoff |
-| Forecasts_Hour | Forecast1Hour | Renewable-production forecast valid one hour ahead | MWh per hour | Fixed 1-hour horizon snapshot; exact minute timestamp is not stored | decision_eligible (conditional) | Validated for H2 subject to P2.3 cutoff |
+| Forecasts_Hour | Forecast5Hour | Renewable-production forecast valid five hours ahead | MWh per hour | Fixed 5-hour horizon snapshot; exact minute timestamp is not stored | decision_eligible | P2.3: non-null value eligible at last-pre-delivery snapshot |
+| Forecasts_Hour | Forecast1Hour | Renewable-production forecast valid one hour ahead | MWh per hour | Fixed 1-hour horizon snapshot; exact minute timestamp is not stored | decision_eligible | P2.3: non-null value eligible at last-pre-delivery snapshot |
 | Forecasts_Hour | ForecastCurrent | Renewable-production forecast valid for the current delivery time | MWh per hour | Current-time forecast associated with TimestampUTC | diagnostic_only | Excluded from pre-delivery H2 signal |
 | Forecasts_Hour | TimestampUTC | UTC generation timestamp for ForecastCurrent | — | Current-forecast generation time; not the 5h or 1h publication time | diagnostic_only | Validated P1.1 |
 | Forecasts_Hour | TimestampDK | Danish-local generation timestamp for ForecastCurrent | — | Local equivalent of TimestampUTC | diagnostic_only | Validated P1.1; DST interpretation only |
 | Elspotprices | HourUTC | Start of the price delivery hour in UTC | — | Delivery interval; canonical join time | decision_eligible (key) | Validated P1.2 |
 | Elspotprices | HourDK | Start of the price delivery hour in Danish local time | — | Delivery interval; DST interpretation only | decision_eligible (key) | Validated P1.2; not sole join key |
 | Elspotprices | PriceArea | Bidding zone for the area price | text | Static area selector | decision_eligible (key) | Validated P1.2; use DK1 |
-| Elspotprices | SpotPriceDKK | Day-ahead spot price in the price area | DKK/MWh | Price for the delivery hour, formed in the preceding day-ahead market | decision_eligible (reference audit) | Validated P1.2; not selected for spread |
-| Elspotprices | SpotPriceEUR | Day-ahead spot price in the price area | EUR/MWh | Price for the delivery hour, formed in the preceding day-ahead market | decision_eligible (reference) | Validated P1.2; selected as P_DayAhead,t |
+| Elspotprices | SpotPriceDKK | Day-ahead spot price in the price area | DKK/MWh | Price for the delivery hour, formed in the preceding day-ahead market | decision_eligible (reference audit) | P2.3 timing passed; not selected for spread |
+| Elspotprices | SpotPriceEUR | Day-ahead spot price in the price area | EUR/MWh | Price for the delivery hour, formed in the preceding day-ahead market | decision_eligible (reference) | P2.3 timing passed; selected as P_DayAhead,t |
 | RegulatingBalancePowerdata | HourUTC | Start of the balancing delivery hour in UTC | — | Delivery interval; canonical outcome join time | outcome (key) | Validated P1.3 |
 | RegulatingBalancePowerdata | HourDK | Start of the balancing delivery hour in Danish local time | — | Delivery interval; DST interpretation only | outcome (key) | Validated P1.3; not sole join key |
 | RegulatingBalancePowerdata | PriceArea | Bidding zone for the balancing outcome | text | Static area selector | outcome (key) | Validated P1.3; use DK1 |
@@ -39,15 +39,15 @@
 | ProductionConsumptionSettlement | SolarPowerLt10kW_MWh + SolarPowerGe10Lt40kW_MWh + SolarPowerGe40kW_MWh + SolarPowerSelfConMWh | Total actual solar production, including estimated self-consumption | MWh | Settlement value for the completed delivery hour | diagnostic_only | Validated P1.4; summed without zero-filling |
 | ProductionConsumptionSettlement | ActualResidualLoadMWh (derived) | Gross consumption remaining after actual wind and solar | MWh | Ex-post derived value for the delivery hour | diagnostic_only | Validated P1.4; negative values preserved |
 | ProductionConsumptionSettlement | ExchangeNO/SE/GE/NL/GB/GreatBelt_MWh | Actual settled exchange; negative is export and positive is import | MWh | Settlement value for the completed delivery hour | diagnostic_only | Validated P1.4; GB historical nulls preserved |
-| Transmissionlines | ImportCapacity | Transfer capacity from connected area into DK1 | MWh | Capacity for the coming day, officially published before 10:00 | decision_eligible (conditional) | Validated P1.4; exact cutoff and border subset in P2.3/P6.1 |
-| Transmissionlines | ExportCapacity | Transfer capacity from DK1 to connected area | MWh | Capacity for the coming day, officially published before 10:00 | decision_eligible (conditional) | Validated P1.4; mixed source signs require P6.1 rule |
-| Transmissionlines | ScheduledExchangeDayAhead | Planned cross-border exchange from day-ahead price calculation | MWh | Day-ahead schedule; negative export, positive import | decision_eligible (conditional) | Validated P1.4; GB values unavailable in legacy extract |
+| Transmissionlines | ImportCapacity | Transfer capacity from connected area into DK1 | MWh | Capacity for the coming day, officially published before 10:00 | decision_eligible (conditional) | P2.3 timing passed; border subset remains P6.1 |
+| Transmissionlines | ExportCapacity | Transfer capacity from DK1 to connected area | MWh | Capacity for the coming day, officially published before 10:00 | decision_eligible (conditional) | P2.3 timing passed; mixed source signs require P6.1 rule |
+| Transmissionlines | ScheduledExchangeDayAhead | Planned cross-border exchange from day-ahead price calculation | MWh | Day-ahead schedule; negative export, positive import | decision_eligible (conditional) | P2.3 timing passed; GB values unavailable in legacy extract |
 | Transmissionlines | ScheduledExchangeIntraday | Final stored intraday scheduled exchange | MWh | Final intraday aggregate without historical vintage | diagnostic_only | Validated P1.4; not a point-in-time snapshot |
 | Transmissionlines | PhysicalExchangeNonvalidated | SCADA-based measured cross-border exchange | MWh per hour | Realized and nonvalidated delivery-hour value | diagnostic_only | Validated P1.4 |
 | Transmissionlines | PhysicalExchangeSettlement | Settled measured cross-border exchange | MWh | Realized settlement value after delivery | diagnostic_only | Validated P1.4 |
-| CountertradeIntraday | PublicationDate | Time when the source published the stored request version | — | Danish local publication time | decision_eligible (conditional key) | Validated P1.4; enforce exact cutoff in P2.3 |
-| CountertradeIntraday | VolumeUpMW | Net volume Energinet intended to buy in intraday | MW | Request version published before or around delivery | decision_eligible (conditional) | Partial coverage from 2023-04-18; versions overwritten |
-| CountertradeIntraday | VolumeDownMW | Net volume Energinet intended to sell in intraday | MW | Request version published before or around delivery | decision_eligible (conditional) | Partial coverage from 2023-04-18; versions overwritten |
+| CountertradeIntraday | PublicationDate | Time when the source published the stored request version | — | Danish local publication time converted to UTC | decision_eligible (conditional key) | P2.3: require PublicationDate < delivery_start; 282 stored rows fail |
+| CountertradeIntraday | VolumeUpMW | Net volume Energinet intended to buy in intraday | MW | Request version published before or around delivery | decision_eligible (conditional) | 7,469 stored rows pass cutoff; partial coverage and overwritten versions remain |
+| CountertradeIntraday | VolumeDownMW | Net volume Energinet intended to sell in intraday | MW | Request version published before or around delivery | decision_eligible (conditional) | 7,469 stored rows pass cutoff; partial coverage and overwritten versions remain |
 | PowerSystemRightNow | production / flow / activated aFRR fields | One-minute actual system state | mixed | Upscaled real-time SCADA values | diagnostic_only or lagged candidate | Registered P1.4; no same-hour final value in decision model |
 | Realtime Electricity Market / mFRR Request | timeStamp, mtuStart, area, value | Current mFRR amount sent to the activation optimization function | MW | Published shortly before each current MTU; period endpoint limited to seven days | unavailable_for_development | Registered P1.4; cannot reconstruct 2022–2024 |
 | MfrrReservesDK1 + mFRRCapacityMarket | demand / procured reserve / capacity price | mFRR capacity-market context | MW and EUR/MW | Legacy and successor daily procurement results | decision_eligible (conditional) | Registered P1.4; schema bridge and timing deferred to P6.1 |
@@ -58,9 +58,10 @@
 - `diagnostic_only`: useful for explanation but unavailable for the decision
 - `outcome`: known only after the delivery period
 
-`decision_eligible (conditional)` means the field is a pre-delivery horizon
-candidate, but the exact simulated decision cutoff must be locked in P2.3
-before signal evaluation.
+`decision_eligible (conditional)` now means timing may pass at the frozen
+last-pre-delivery cutoff while a source-specific gate still remains. For
+transmission that gate is P6.1 border/sign handling; for countertrade it is
+partial coverage, overwritten versions and the row-level publication filter.
 
 `external_candidate_pending_access_timing` and
 `unavailable_for_development` are source-inventory statuses. They prevent an
@@ -68,8 +69,24 @@ unverified or out-of-period source from being silently promoted into the
 model.
 
 `decision_eligible (reference)` means the field is an already-established
-pre-delivery benchmark used in the target definition. Exact availability
-mapping remains part of the P2.3 timestamp contract.
+pre-delivery benchmark used in the target definition and available at the
+P2.3 last-pre-delivery cutoff.
+
+## P2 Timestamp and Hourly-Base Contract
+
+- Decision anchor: `decision_time_utc = delivery_start_utc`
+- Availability rule: information must be available strictly before the anchor
+- Interpretation: last pre-delivery information snapshot; no executable
+  intraday trade or exact-minute vintage claim
+- Canonical base key: `delivery_start_utc + price_area`
+- Local-time fields: `delivery_start_local`, `local_wall_time`, `local_date`,
+  `local_hour`, `utc_offset_minutes`, `is_dst`, `local_hour_occurrence`
+- DST rule: repeated local hours remain separate UTC rows; `HourDK` is not a
+  unique key
+- Base-table size: 21,887 rows and 93 columns
+- Local processed file: `data/processed/p2/hourly_base_development.parquet`
+- P2 does not create spread, labels, delta or forecast-revision values
+- Evidence: `research/evidence/p2_data_pipeline/`
 
 ## P1.1 Dataset Contract
 

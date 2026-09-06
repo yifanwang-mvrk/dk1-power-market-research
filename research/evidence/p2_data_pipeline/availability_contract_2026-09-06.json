@@ -1,0 +1,108 @@
+{
+  "step": "P2.3",
+  "status": "PASS_WITH_CONSERVATIVE_EXCLUSIONS",
+  "decision_cutoff": {
+    "anchor": "delivery_start_utc",
+    "offset_minutes": 0,
+    "semantics": "Snapshot immediately before delivery starts; information must be available strictly before the anchor.",
+    "execution_claim": false,
+    "reason": "The source says fixed 1h/5h forecasts are released before delivery and may be updated until one minute before delivery; the stored data do not retain exact update versions. The delivery-start anchor is the earliest cutoff supported without fabricating a historical minute-level vintage."
+  },
+  "timestamp_mapping": {
+    "canonical_join_key": "delivery_start_utc",
+    "interpretation_timezone": "Europe/Copenhagen",
+    "source_hour_dk_use": "validation_only",
+    "dst_rule": "Retain both UTC-distinct repeated local hours and record local_hour_occurrence.",
+    "request_boundaries": "Local dates, start inclusive and end exclusive."
+  },
+  "field_availability": [
+    {
+      "source": "Forecasts_Hour",
+      "fields": [
+        "Forecast5Hour",
+        "Forecast1Hour"
+      ],
+      "class_at_cutoff": "decision_eligible",
+      "rule": "Use only non-null same-hour fixed-horizon values; no minute-level or tick-vintage claim."
+    },
+    {
+      "source": "Forecasts_Hour",
+      "fields": [
+        "ForecastCurrent",
+        "TimestampUTC",
+        "TimestampDK"
+      ],
+      "class_at_cutoff": "diagnostic_only",
+      "rule": "Timestamp fields describe ForecastCurrent, not the fixed 5h/1h snapshots."
+    },
+    {
+      "source": "Elspotprices",
+      "fields": [
+        "SpotPriceEUR",
+        "SpotPriceDKK"
+      ],
+      "class_at_cutoff": "decision_eligible_reference",
+      "rule": "Day-ahead market outcome is fixed before the delivery-hour cutoff."
+    },
+    {
+      "source": "RegulatingBalancePowerdata",
+      "fields": [
+        "ImbalancePriceEUR",
+        "ImbalanceMWh",
+        "mFRRUpActBal",
+        "mFRRDownActBal"
+      ],
+      "class_at_cutoff": "outcome",
+      "rule": "Never enter the decision-time feature set."
+    },
+    {
+      "source": "ProductionConsumptionSettlement",
+      "fields": [
+        "all settlement fields"
+      ],
+      "class_at_cutoff": "diagnostic_only",
+      "rule": "Released and revised after delivery; retain only for mechanism analysis."
+    },
+    {
+      "source": "Transmissionlines",
+      "fields": [
+        "ImportCapacity",
+        "ExportCapacity",
+        "ScheduledExchangeDayAhead"
+      ],
+      "class_at_cutoff": "decision_eligible_candidate",
+      "rule": "Timing passes at the delivery-start cutoff; border-specific signs and legacy nulls remain gated to P6.1."
+    },
+    {
+      "source": "Transmissionlines",
+      "fields": [
+        "ScheduledExchangeIntraday",
+        "PhysicalExchangeNonvalidated",
+        "PhysicalExchangeSettlement"
+      ],
+      "class_at_cutoff": "diagnostic_only",
+      "rule": "Final or realized values lack historical pre-cutoff vintages."
+    },
+    {
+      "source": "CountertradeIntraday",
+      "fields": [
+        "VolumeUpMW",
+        "VolumeDownMW"
+      ],
+      "class_at_cutoff": "conditional_decision_candidate",
+      "rule": "Use only rows with PublicationDate strictly before cutoff; absence is unknown, not zero, and overwritten prior versions cannot be reconstructed.",
+      "stored_rows": 7751,
+      "rows_published_before_cutoff": 7469,
+      "rows_not_available_by_cutoff": 282
+    },
+    {
+      "source": "RegulatingBalancePowerdata",
+      "fields": [
+        "previous-hour label/spread"
+      ],
+      "class_at_cutoff": "ex_post_reference_baseline_only",
+      "rule": "The legacy source has no documented historical publication delay; y[t-1] is not promoted to a decision-eligible input."
+    }
+  ],
+  "holdout": "LOCKED_AND_UNUSED"
+}
