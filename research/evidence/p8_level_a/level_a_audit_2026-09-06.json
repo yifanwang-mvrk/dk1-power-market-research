@@ -1,0 +1,29 @@
+{
+  "step": "P8.1",
+  "status": "PASS",
+  "milestone": "Level A - CV-safe",
+  "verdict": "ACHIEVED on the evidence gate; P8.2 factual-wording polish remains",
+  "audited_at_utc": "2026-09-06T18:45:00Z",
+  "git_head_audited": "2de4fe1",
+  "criteria": {
+    "A1_repository": {"verdict": "DONE", "evidence": "local git repo; private GitHub remote yifanwang-mvrk/dk1-power-market-research; main synced; 10 phase commits"},
+    "A2_professional_readme": {"verdict": "DONE", "evidence": "README.md; P8.2 adds the H2 result and Level A line"},
+    "A3_project_charter": {"verdict": "DONE", "evidence": "research/project_charter.md; P8.2 refreshes the status line"},
+    "A4_target_and_periods_frozen": {"verdict": "DONE", "evidence": "config/research_config.yaml periods + target + neutral_band status frozen; D001/D002/D004/D005/D022/D023/D026"},
+    "A5_core_data_fetched": {"verdict": "DONE", "evidence": "data/raw/p1_1..p1_3 full-development raw JSON; P1.1-P1.3 validation; P2 join of 21,887 hours; D020-D023"},
+    "A6_data_dictionary_pit_classes": {"verdict": "DONE", "evidence": "data/data_dictionary.md; every field carries decision_eligible / diagnostic_only / outcome; D006/D024"},
+    "A7_h2_revision_variables": {"verdict": "DONE", "evidence": "P4.2 src/p4_revision.py + data/processed/p4/revision_development.parquet; 21,615 wind hours; buckets frozen; D027"},
+    "A8_completed_hypothesis_test": {"verdict": "DONE", "evidence": "P4.3 H2 round-1 pre-registered (D027); conclusion SUPPORTED (weak, asymmetric) with limitations; hypotheses.md + p4_3_result_2026-09-06.md; D028"},
+    "A9_meaningful_chart": {"verdict": "DONE", "evidence": "research/evidence/p4_h2_revision/p4_3_revision_label_chart_2026-09-06.png"},
+    "A10_holdout_unused": {"verdict": "DONE", "evidence": "request boundaries end-exclusive at local 2024-07-01; limit=0 probes only; all processed tables max at 2024-06-30 21:00 UTC; P3/P4 loaders abort unless holdout locked and fetch-disabled; zero holdout rows"}
+  },
+  "criteria_met": 10,
+  "criteria_total": 10,
+  "carried_forward": {
+    "P8_2": "align README and charter wording with completed work (H2 result + Level A status) without overstating (D016/D018)",
+    "P4_4": "stricter rule-vs-baseline gate, chronological out-of-sample check, season/regime and cross-border conditioning of the H2 gradient"
+  },
+  "level_b": "NOT STARTED",
+  "level_c": "NOT STARTED",
+  "holdout": "LOCKED_AND_UNUSED"
+}

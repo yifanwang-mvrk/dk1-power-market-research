@@ -8,23 +8,25 @@
 
 | Item | Current Status |
 |---|---|
-| Completed phase | P4.1–P4.3 — H2 round-1 test complete (SUPPORTED, weak) |
-| Current phase | P8 — Level A packaging |
-| Current step | P8.1 — Audit all ten Level A criteria |
-| Next step | P8.2 — Finalise factual README / charter wording, then P4.4 |
-| Current milestone | Level A — CV-safe |
-| Milestone status | NOT ACHIEVED — all ten criteria now have evidence; P8 audit pending |
+| Completed phase | P8 — Level A packaging (audit + factual README/charter) |
+| Current phase | P4.4 — H2 first-round conditioning and failure analysis (Level B) |
+| Current step | P4.4 — stricter baseline gate + chronological OOS + regime conditioning |
+| Next step | P5 — H1 residual-load mechanism research |
+| Current milestone | Level B — Interview Ready |
+| Milestone status | NOT STARTED (Level A achieved 2026-09-06) |
 | Holdout | LOCKED and unused |
 | Blocker | None |
 
 ## One Current Action / 当前唯一动作
 
-Audit the ten Level A criteria against committed evidence (P8.1): confirm each is
-met, then finalise the README and charter so their wording matches completed work
-(P8.2). Only after the audit passes does the milestone move to ACHIEVED.
+Start P4.4: re-test the H2 wind-revision gradient with a stricter rule-vs-baseline
+gate (beat a directional baseline or use a proper scoring rule), a chronological
+development-only train/validation split, and conditioning on season and
+hour-of-day regime. Retain the round-1 record unchanged.
 
-按已提交证据逐项核对 Level A 十条（P8.1）：确认每条都满足，然后校订 README 和
-charter 使措辞与实际完成的工作一致（P8.2）。审核通过后里程碑才改为 ACHIEVED。
+开始 P4.4：用更严的规则对基准门槛（打赢一个也做方向判断的基准，或用 proper
+scoring rule）、开发期内按时间排序的训练/验证切分、以及按季节和时段 regime 分层，
+重新检验 H2 风电修正梯度。round-1 记录原样保留。
 
 ## P1.1 Completion / Forecasts_Hour 核验结论
 
@@ -233,6 +235,21 @@ in-sample / descriptive; ran exactly as pre-registered (D027)
 - Evidence: `research/evidence/p4_h2_revision/` (`p4_3_*` files);
   `research/hypotheses.md` (H2 section)
 
+## P8 Completion / Level A Packaging 完成结论
+
+**Status:** PASS — Level A (CV-safe) ACHIEVED 2026-09-06
+
+- P8.1 audited all ten Level A criteria against committed evidence at
+  `git HEAD 2de4fe1`; verdict **10/10 met**. Evidence:
+  `research/evidence/p8_level_a/level_a_audit_2026-09-06.md` and `.json`
+- Holdout confirmed unused: request boundaries end-exclusive at local
+  2024-07-01, near-boundary probes use `limit=0`, all processed tables max at
+  2024-06-30 21:00 UTC, and the P3/P4 loaders abort unless the holdout is locked
+- P8.2 aligned `README.md` and `research/project_charter.md` with completed work:
+  added the H2 round-1 result and its limitations and the Level A status, with no
+  profitable-strategy or executable-P&L language (D016/D018)
+- Level B and Level C: not started
+
 ## Completed Setup / 已完成搭建
 
 - [x] Formal local Git repository created
@@ -268,9 +285,9 @@ in-sample / descriptive; ran exactly as pre-registered (D027)
 | A9 | At least one meaningful chart | DONE — `p4_3_revision_label_chart_2026-09-06.png` (label share by wind-revision quintile) |
 | A10 | Holdout completely unused | MAINTAINED |
 
-**Level A: NOT ACHIEVED — all ten criteria now have committed evidence; the P8.1 audit is the remaining gate**
-**Level B: NOT ACHIEVED**
-**Level C: NOT ACHIEVED**
+**Level A: ACHIEVED 2026-09-06 — 10/10 criteria audited (P8.1); see `research/evidence/p8_level_a/`**
+**Level B: NOT STARTED**
+**Level C: NOT STARTED**
 
 ## Frozen Research Controls / 冻结研究规则
 
@@ -301,5 +318,6 @@ Earlier assistant-prepared P1.1 files remain outside the formal repository as re
 | 2026-09-06 | P4.1 H2 round-1 test pre-registered (wind primary, solar secondary; signed-quantile buckets; Spearman + transparent rule; gate = majority + hour-of-week) | Current: P4.2; Next: P4.3 |
 | 2026-09-06 | P4.2 wind/solar 5h-to-1h revisions built on the P2 base; forecast moves every hour (0 wind hours with 5h==1h); quintile edges and rule threshold frozen; no outcome joined | Current: P4.3; Next: P4.4 |
 | 2026-09-06 | P4.3 H2 round-1 test run as pre-registered: SUPPORTED (weak, asymmetric) — monotone contingency gradient, Spearman -0.096 (CI excludes 0), rule marginally beats availability-safe baselines. D028. Level A A8 + A9 met | Current: P8.1; Next: P8.2 then P4.4 |
+| 2026-09-06 | P8.1 audited all ten Level A criteria (10/10) and P8.2 aligned README/charter wording — **Level A (CV-safe) ACHIEVED** | Current: P4.4; Next: P5 (Level B) |
 
 Update this file after every completed work session. Every DONE status requires reviewed evidence.

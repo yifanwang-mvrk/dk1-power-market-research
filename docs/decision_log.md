@@ -52,6 +52,7 @@ Source: the complete 31-section final Blueprint response and the owner's subsequ
 | D026 | P3 balancing spread, frozen Q25 delta and baseline contracts | FROZEN |
 | D027 | P4.1 H2 round-1 pre-registered test specification | IMPLEMENTATION NOTE |
 | D028 | P4.3 H2 round-1 result: supported, weak and asymmetric | RESEARCH FINDING |
+| D029 | P8 Level A (CV-safe) acceptance | MILESTONE |
 | E001–E003 | 执行说明 / Execution clarifications | IMPLEMENTATION NOTE |
 | I01–I08 | 字段、参数和可用性 / Fields, parameters and availability | TRACKED — see current table |
 
@@ -582,6 +583,39 @@ hour-of-day regime and cross-border conditioning of the gradient.
 
 **Holdout implications / 留出期:** None. In-sample development test; the loader
 aborts unless the holdout stays locked. Zero holdout rows read.
+
+**Supersedes / 替代:** None.
+
+## D029 · Level A (CV-safe) acceptance
+
+**日期 / Date:** 2026-09-06
+**状态 / Status:** MILESTONE
+**Related step / 对应步骤:** P8.1, P8.2
+
+**决定 / Decision:** All ten Level A criteria are audited as met against committed
+evidence at `git HEAD 2de4fe1` (P8.1). `README.md` and
+`research/project_charter.md` are updated to state the Level A status and the H2
+round-1 result with its limitations, using no profitable-strategy or
+executable-P&L language (P8.2). The milestone board reads **Level A — ACHIEVED**.
+
+**理由 / Rationale:** D017 requires evidence, not task counts, for each
+criterion. The P8.1 audit records a file or result for every one of A1–A10,
+including the holdout non-use verification. A8 is met by a genuinely
+pre-registered H2 round-1 test with a written conclusion; a null would have
+qualified equally.
+
+**未采用 / Alternative considered:** Declaring Level A on scaffolding alone
+(prohibited by D017); or delaying the milestone until Level B work is underway
+(the criteria are an evidence gate, not a quality ceiling).
+
+**Evidence / 证据:** `research/evidence/p8_level_a/level_a_audit_2026-09-06.md`
+and `.json`.
+
+**Impact / 影响:** The project may now use the Level A public wording in
+`docs/project_handbook.md` section 16. Level B (P4.4 -> P5 -> P6 -> P7 -> P9) is
+the next milestone. The holdout stays locked until the Level C unlock gate.
+
+**Holdout implications / 留出期:** None. A10 confirms zero holdout use.
 
 **Supersedes / 替代:** None.
 

@@ -4,8 +4,9 @@ Independent, point-in-time research into whether renewable forecast revisions an
 
 ## Current Status
 
-Project foundation, official-source validation, the development data pipeline
-and target construction are complete. H2 forecast-revision testing is next.
+**Level A (CV-safe) is achieved.** The foundation, official-source validation,
+the development data pipeline, the frozen target and one pre-registered
+hypothesis test are complete. Level B is next.
 
 - Repository structure and GitHub remote: created
 - Python environment: created and verified
@@ -14,8 +15,9 @@ and target construction are complete. H2 forecast-revision testing is next.
   normalization, hourly joins and quality gates passed
 - Target construction: P3 complete; the balancing spread, development-only
   Q25 neutral band, three outcome labels and baseline contracts are frozen
-- Hypothesis testing: not started
-- Level A (CV-safe): not achieved
+- Hypothesis testing: H2 round 1 complete — pre-registered, then run once;
+  result **supported but weak** (see below)
+- Level A (CV-safe): **achieved** (all ten criteria audited, P8.1)
 - Locked holdout: unused
 
 ## Research Question
@@ -117,6 +119,44 @@ Rebuild and validate the local P3 target with:
 
 ```bash
 uv run python src/p3_target.py
+```
+
+## H2 — First Hypothesis Test
+
+The primary hypothesis (H2) asks whether the 5h-to-1h renewable forecast
+revision carries information about the direction of balancing pressure. The
+round-1 test was **pre-registered in full** — variable, expected direction,
+buckets, statistic, baselines and the pass/fail bar were fixed before the
+revision variable was crossed with any outcome
+([`research/hypotheses.md`](research/hypotheses.md),
+[evidence](research/evidence/p4_h2_revision/README.md)).
+
+- **Revision variable (P4.2):** `wind_revision = (Offshore + Onshore)
+  (Forecast1Hour - Forecast5Hour)`, MWh, same delivery hour, non-null pairs
+  only. Available for 21,615 of 21,887 development hours. The wind forecast is
+  revised in essentially every hour, so the variable carries real information.
+- **Result (P4.3), in-sample / descriptive:** **supported, but a weak and
+  asymmetric effect.** As the wind revision goes from most negative to most
+  positive, `P(DOWN)` rises from 27.3% to 38.7% and `P(UP)` falls from 24.7% to
+  17.2%, monotonically across all five revision quintiles — the predicted
+  mechanism. The rank association is real but small (Spearman -0.10, 95%
+  bootstrap CI [-0.11, -0.08]). A transparent threshold rule beats the
+  availability-safe baselines on balanced accuracy and macro-F1 but not on plain
+  accuracy, and trails the ex-post persistence reference; its directional skill
+  is real on the `DOWN` side and essentially absent on the `UP` side.
+- **Solar** revisions show the same direction, weaker, and are reported
+  separately as "conditionally supported — solar only, needs replication".
+- This is not a deployable or profitable rule. A chronological out-of-sample
+  check, a stricter baseline gate and regime / cross-border conditioning are the
+  Level B work.
+
+![Balancing-pressure label share by wind-revision quintile](research/evidence/p4_h2_revision/p4_3_revision_label_chart_2026-09-06.png)
+
+Reproduce with:
+
+```bash
+uv run python src/p4_revision.py   # build revisions, freeze buckets
+uv run python src/p4_test.py       # run the pre-registered round-1 test
 ```
 
 ## Research Principles
