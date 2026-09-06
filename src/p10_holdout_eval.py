@@ -4,8 +4,8 @@ Unlocks the holdout in the research config, fetches the 2024-07-01..2024-12-31
 DK1 data for the datasets the frozen model needs, builds the holdout feature
 table with the frozen recipe (frozen delta, frozen thresholds), evaluates the
 frozen logistic model once against the mandatory baselines, and re-locks the
-config as ``state: evaluated``.  This runs only after D036 owner approval and
-only once.
+config as ``state: evaluated``.  This runs only after the D036 unlock record and
+owner approval; the resulting research decision is D037. It runs only once.
 """
 
 from __future__ import annotations
@@ -509,7 +509,7 @@ def _write_md(evidence_dir: Path, r: dict[str, Any]) -> None:
     cov = r["coverage"]
     text = f"""# P10.3 — Locked-Holdout Evaluation
 
-**Status:** COMPLETE — {RUN_DATE} — one owner-approved evaluation (D036)
+**Status:** COMPLETE — {RUN_DATE} — one owner-approved evaluation (D037)
 **Holdout window:** {r['holdout_window_local']}
 **Holdout:** EVALUATED ONCE. Config re-locked as `state: evaluated`.
 

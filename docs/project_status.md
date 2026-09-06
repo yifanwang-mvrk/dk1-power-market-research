@@ -466,7 +466,7 @@ mechanism attenuated but did not vanish out of sample
 
 **Level A: ACHIEVED 2026-09-06 — 10/10 criteria audited (P8.1); see `research/evidence/p8_level_a/`**
 **Level B: ACHIEVED 2026-09-06 — 10/10 criteria audited (P9.2); see `research/evidence/p9_level_b/`**
-**Level C: IN PROGRESS — P10.1 model frozen; P10.2 unlock gate next; P10.3 holdout evaluation needs owner sign-off**
+**Level C: ACHIEVED 2026-09-06 — P10.3 evaluated the frozen specification once; P10.4 closed the MVP**
 
 ## Level C Evidence Board / Level C 证据板
 
@@ -511,7 +511,7 @@ mechanism attenuated but did not vanish out of sample
 - Mandatory baselines: majority class and persistence (persistence is ex-post reference; hour-of-week training majority is the availability-safe supplement)
 - Primary MVP hypothesis: H2 renewable forecast revision
 - No executable intraday P&L claim
-- Holdout access remains prohibited
+- Holdout reuse is prohibited after the single owner-approved P10.3 evaluation
 
 ## Prepared Reference / 参考版本
 

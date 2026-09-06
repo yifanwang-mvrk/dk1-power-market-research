@@ -38,16 +38,17 @@ balancing-pressure proxy, **not an executable intraday P&L**.
   buckets, statistic, baselines and the pass/fail bar — was written down and
   committed before the revision variable touched any outcome. This collapses a
   large researcher-degrees-of-freedom space to one procedure.
-- **A locked holdout.** 2024-07-01 to 2024-12-31 has never been requested,
-  fetched, inspected or analysed. Every pipeline loader aborts unless the holdout
-  stays locked. All development request boundaries end exclusive at local
-  2024-07-01.
+- **A locked holdout.** Before the owner-approved P10.3 evaluation, 2024-07-01 to
+  2024-12-31 had never been requested, fetched, inspected or analysed. Every
+  development pipeline loader enforced that boundary. It was then evaluated
+  once under the frozen protocol and closed; all development request boundaries
+  remain end-exclusive at local 2024-07-01.
 - **Mandatory naive baselines.** Every directional result is compared with a
   majority-class baseline and an hour-of-week training-majority baseline;
   persistence (`y_hat_t = y_(t-1)`) is reported as an ex-post reference because
   the legacy source does not document its publication delay.
 - **Reproducible.** One script per phase, hash-checked inputs, committed JSON
-  evidence and quality gates, 40 automated tests.
+  evidence and quality gates, 50 automated tests.
 
 ## 3. Data and target
 
@@ -227,6 +228,10 @@ machine-verified, and the frozen model was evaluated **once** on
 - The model has no demand-shock, outage or realized-flow information — hourly
   balancing outcomes are dominated by what the decision-eligible inputs cannot
   see.
+- P10.1 used the 2024 H1 development slice to choose the calibration method as
+  well as to describe model-selection performance. Treat that slice as
+  development/model-selection evidence rather than a fully independent final
+  validation; P10.3 is the independent frozen-specification test.
 - The round-1 rule-vs-baseline gate rewards attempting all three classes; a
   stricter test would require beating a directional baseline or a proper scoring
   rule.

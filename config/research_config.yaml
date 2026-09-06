@@ -181,7 +181,7 @@ signal_engine:  # P7 / D033 — transparent rule, research judgment only (D016)
   down_pressure_realized_down_rate: 0.400  # vs 0.329 base rate
 
 level_c_model:  # P10.1 / D035 / I08 — frozen before the holdout unlock
-  status: frozen_pending_holdout
+  status: frozen_and_holdout_evaluated_once
   model: multinomial LogisticRegression (lbfgs), class_weight=balanced, C=1.0
   candidate_C_grid: [0.05, 0.1, 0.25, 0.5, 1.0]
   selection_metric: calibration-slice macro-F1 (grid nearly flat)

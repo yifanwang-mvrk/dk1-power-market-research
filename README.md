@@ -27,6 +27,7 @@ result, not an edge.
   0.333 / 0.329), with **no probability skill** and far below the ex-post
   persistence reference. Not a deployable edge.
 - Research memo: [`research/r01_research_memo.md`](research/r01_research_memo.md)
+- Final repository audit: [`docs/final_project_audit_2026-09-06.md`](docs/final_project_audit_2026-09-06.md)
 - Levels A, B and C all audited; holdout closed
 
 ## Research Question

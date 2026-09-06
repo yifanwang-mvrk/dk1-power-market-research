@@ -1,6 +1,6 @@
 # P10.3 — Locked-Holdout Evaluation
 
-**Status:** COMPLETE — 2026-09-06 — one owner-approved evaluation (D036)
+**Status:** COMPLETE — 2026-09-06 — one owner-approved evaluation (D037)
 **Holdout window:** 2024-07-01 .. 2025-01-01 (exclusive)
 **Holdout:** EVALUATED ONCE. Config re-locked as `state: evaluated`.
 
