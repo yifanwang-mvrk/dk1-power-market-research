@@ -1,0 +1,27 @@
+{
+  "step": "P4.2",
+  "status": "PASS",
+  "created_at_utc": "2026-09-06T18:22:04.403566+00:00",
+  "git_head_before_run": "e90afc5b36b4c70210728a7a792b832600a5588b",
+  "input_file": "data/processed/p2/hourly_base_development.parquet",
+  "input_sha256": "cb69be3091d71e27a157ec3e529878cfaed74f3d9f734ebaa9db56d3a695e66d",
+  "output_file": "data/processed/p4/revision_development.parquet",
+  "output_sha256": "9ad9b58df4636129267dc9729c4ffc47b0b819820c711e3677d533cf92c6a6e8",
+  "rows": 21887,
+  "columns": 40,
+  "critical_checks": {
+    "input_hash_matches_frozen_p2": true,
+    "rows_equal_p2": true,
+    "key_unique": true,
+    "dk1_only": true,
+    "no_holdout_rows": true,
+    "revision_null_iff_horizon_null": true,
+    "wind_revision_null_iff_any_wind_horizon_null": true,
+    "wind_quintile_edges_strictly_increasing": true,
+    "wind_quintile_covers_all_available": true,
+    "output_has_no_outcome_columns": true,
+    "normalized_only_at_or_above_floor": true,
+    "no_outcome_comparison_performed": true
+  },
+  "holdout": "LOCKED_AND_UNUSED"
+}

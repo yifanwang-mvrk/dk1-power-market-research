@@ -10,8 +10,8 @@
 |---|---|
 | Completed phase | P3 — Target Construction |
 | Current phase | P4 — H2 Renewable Forecast Revision |
-| Current step | P4.2 — Build wind/solar 5h-to-1h revisions on the P2 base |
-| Next step | P4.3 — Run the pre-registered round-1 test and chart |
+| Current step | P4.3 — Run the pre-registered round-1 test and chart |
+| Next step | P4.4 — First-round conditioning and failure analysis |
 | Current milestone | Level A — CV-safe |
 | Milestone status | NOT ACHIEVED |
 | Holdout | LOCKED and unused |
@@ -19,14 +19,16 @@
 
 ## One Current Action / 当前唯一动作
 
-Build the wind and solar 5h-to-1h revision variables on the P2 hourly base per
-the frozen P4.1 spec: same-hour non-null pairs only, the `5h == 1h` and coverage
-diagnostics, and the frozen five-quantile / ten-decile bucket edges — before any
-revision-outcome comparison.
+Run the pre-registered P4.1 round-1 test: join the frozen P4.2 revisions to the
+P3 labels and signed spread, build the bucket-by-label contingency table, the
+Spearman association with a bootstrap CI, and the transparent rule scored against
+the majority and hour-of-week baselines, plus one chart. Then write the
+supported / conditionally supported / null conclusion.
 
-按冻结的 P4.1 规格，在 P2 小时底表上构造 wind 和 solar 的 5h→1h revision 变量：
-只用同小时非空配对，产出 `5h == 1h` 与覆盖率诊断，并冻结五分位 / 十分位分箱边界，
-然后再做任何 revision 与结果的比较。
+跑预登记的 P4.1 round-1 检验：把冻结的 P4.2 revision 与 P3 标签和带符号 spread 连接，
+做 桶 × 标签 列联表、带 bootstrap 置信区间的 Spearman 关联、以及对照 majority 和
+hour-of-week 基准评分的透明规则，加一张图。然后写 supported / conditionally
+supported / null 结论。
 
 ## P1.1 Completion / Forecasts_Hour 核验结论
 
@@ -190,6 +192,27 @@ variable was constructed
 - Evidence: `research/evidence/p4_h2_revision/` and
   `research/hypotheses.md` (H2 section)
 
+## P4.2 Completion / Revision Build 完成结论
+
+**Status:** PASS — revision variables built on the frozen P2 base 2026-09-06; no
+outcome joined
+
+- `src/p4_revision.py` builds per-type and wind-aggregate 5h-to-1h revisions from
+  decision-eligible forecast fields only; `data/processed/p4/revision_development.parquet`
+  (21,887 rows, 40 columns), 12/12 critical checks
+- Wind-aggregate revision available for 21,615 hours (98.8%); 272 dropped for a
+  missing horizon and never zero-filled (D021)
+- R1 diagnostic: the wind forecast moves in essentially every hour —
+  `Forecast5Hour == Forecast1Hour` exactly in 0 wind-aggregate hours, only 0.6%
+  within +/-1 MWh; the revision variable carries real information
+- Solar has `5h == 1h` exactly in 4,676 hours (21.6%, night 0 -> 0); the solar
+  secondary test uses the both-horizons-positive subset (14,837 hours)
+- Frozen signed `wind_revision` quintile edges (MWh): -101.100 / -27.250 /
+  +42.125 / +163.683 (five equal groups of 4,323); rule threshold
+  `c` = Q60 of `abs(wind_revision)` = 128.083 MWh; normalization floor 276.575 MWh
+- Output table carries no outcome column; no revision-outcome statistic computed
+- Evidence: `research/evidence/p4_h2_revision/` (`p4_2_*` files)
+
 ## Completed Setup / 已完成搭建
 
 - [x] Formal local Git repository created
@@ -220,7 +243,7 @@ variable was constructed
 | A4 | Target, development and holdout config | DONE — periods, target fields and the frozen Q25 delta (5.9956075 EUR/MWh) all in research config |
 | A5 | Forecast, day-ahead and balancing data | DONE — all three core sources validated with documented conditions |
 | A6 | Data Dictionary and PIT classification | DONE — core and P1.4 source fields registered by eligibility class |
-| A7 | H2 revision variables | IN PROGRESS — round-1 test pre-registered (P4.1); variables built in P4.2 |
+| A7 | H2 revision variables | DONE — wind and solar 5h-to-1h revisions built and diagnosed on the P2 base (P4.2); buckets frozen |
 | A8 | At least one completed hypothesis test | NOT STARTED |
 | A9 | At least one meaningful chart | NOT STARTED |
 | A10 | Holdout completely unused | MAINTAINED |
@@ -256,5 +279,6 @@ Earlier assistant-prepared P1.1 files remain outside the formal repository as re
 | 2026-09-06 | P2.1–P2.5 bounded acquisition, provenance, time normalization, hourly joining and quality gates completed | Current: P3.1; Next: P3.2 |
 | 2026-09-06 | P3.1–P3.4 balancing spread built, Q25 delta frozen at 5.9956075 EUR/MWh, three labels assigned, baseline contracts fixed (D026) | Current: P4.1; Next: P4.2 |
 | 2026-09-06 | P4.1 H2 round-1 test pre-registered (wind primary, solar secondary; signed-quantile buckets; Spearman + transparent rule; gate = majority + hour-of-week) | Current: P4.2; Next: P4.3 |
+| 2026-09-06 | P4.2 wind/solar 5h-to-1h revisions built on the P2 base; forecast moves every hour (0 wind hours with 5h==1h); quintile edges and rule threshold frozen; no outcome joined | Current: P4.3; Next: P4.4 |
 
 Update this file after every completed work session. Every DONE status requires reviewed evidence.

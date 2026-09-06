@@ -1,6 +1,7 @@
 # P4 H2 Renewable Forecast Revision Evidence
 
-**Status:** P4.1 pre-registration recorded 2026-09-06; testing not started
+**Status:** P4.1 pre-registration and P4.2 revision build complete 2026-09-06;
+round-1 test (P4.3) not started
 **Holdout:** LOCKED AND UNUSED
 
 ## P4.1 — Pre-registered test specification
@@ -37,14 +38,32 @@ What is fixed in advance:
   macro-F1. Otherwise the result is conditionally supported (mechanism only) or
   rejected / null, and is retained in full.
 
-What P4.2 adds: the development-derived numbers only (bucket edges, group sizes,
-coverage, the `5h == 1h` diagnostic, the normalization floor). The procedure does
-not change.
+## P4.2 — Revision build and diagnostics
+
+`src/p4_revision.py` builds the revisions on the frozen P2 hourly base, joins no
+outcome, and writes `p4_2_revision_build_2026-09-06.json`,
+`p4_2_bucket_freeze_2026-09-06.json`, `p4_2_diagnostics_2026-09-06.md`,
+`revision_audit_sample_2026-09-06.csv` and `quality_report_2026-09-06.json`
+(12/12 critical checks). Local table: `data/processed/p4/revision_development.parquet`.
+
+Headline results:
+
+- Wind aggregate revision available for 21,615 of 21,887 development hours
+  (98.8%); 272 dropped for a missing horizon (D021, never zero-filled).
+- The wind forecast moves in essentially every hour: `Forecast5Hour ==
+  Forecast1Hour` exactly in 0 wind-aggregate hours; only 0.6% of hours have
+  `abs(wind_revision) <= 1 MWh`. The revision variable carries real information.
+- Solar has `5h == 1h` exactly in 4,676 hours (21.6%, night 0 -> 0); the solar
+  secondary test uses the both-horizons-positive subset (14,837 hours).
+- Frozen signed `wind_revision` quintile edges (MWh): -101.100 / -27.250 /
+  +42.125 / +163.683, five equal groups of 4,323.
+- Frozen transparent-rule threshold `c` = Q60 of `abs(wind_revision)` =
+  128.083 MWh. Normalization floor for `wind_forecast_5h` = 276.575 MWh.
+- Output table carries no outcome column; no revision-outcome statistic computed.
 
 ## Next steps
 
 | Step | Action |
 |---|---|
-| P4.2 | Build wind and solar 5h-to-1h revisions on the P2 base; report the `5h == 1h` and coverage diagnostics; freeze the bucket edges |
-| P4.3 | Run the pre-registered round-1 test and produce the chart |
+| P4.3 | Join the frozen revisions to the P3 labels/spread; run the pre-registered contingency table, Spearman association and transparent rule; produce the chart |
 | P4.4 | First-round conditioning and failure analysis |

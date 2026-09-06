@@ -1,0 +1,113 @@
+{
+  "step": "P4.2",
+  "status": "PASS",
+  "created_at_utc": "2026-09-06T18:22:04.336434+00:00",
+  "outcome_joined": false,
+  "revision_formula": "Forecast1Hour - Forecast5Hour per HourUTC + PriceArea + ForecastType",
+  "wind_aggregate_rule": "offshore + onshore, only when all four horizon fields are non-null",
+  "total_development_hours": 21887,
+  "per_forecast_type": {
+    "offshore_wind": {
+      "available_pairs": 21667,
+      "dropped_missing_horizon": 220,
+      "five_h_equals_one_h_exact": 13,
+      "five_h_equals_one_h_share_of_available": 0.0005999907693727789,
+      "near_zero_bands": {
+        "exactly_zero": {
+          "count": 13,
+          "share": 0.0005999907693727789
+        },
+        "abs_le_1_mwh": {
+          "count": 335,
+          "share": 0.015461300595375456
+        },
+        "abs_le_5_mwh": {
+          "count": 1592,
+          "share": 0.07347579268011262
+        },
+        "abs_le_10_mwh": {
+          "count": 3125,
+          "share": 0.14422855032999493
+        }
+      }
+    },
+    "onshore_wind": {
+      "available_pairs": 21637,
+      "dropped_missing_horizon": 250,
+      "five_h_equals_one_h_exact": 2,
+      "five_h_equals_one_h_share_of_available": 9.243425613532376e-05,
+      "near_zero_bands": {
+        "exactly_zero": {
+          "count": 2,
+          "share": 9.243425613532376e-05
+        },
+        "abs_le_1_mwh": {
+          "count": 214,
+          "share": 0.009890465406479641
+        },
+        "abs_le_5_mwh": {
+          "count": 997,
+          "share": 0.04607847668345889
+        },
+        "abs_le_10_mwh": {
+          "count": 1912,
+          "share": 0.0883671488653695
+        }
+      }
+    },
+    "solar": {
+      "available_pairs": 21664,
+      "dropped_missing_horizon": 223,
+      "five_h_equals_one_h_exact": 4676,
+      "five_h_equals_one_h_share_of_available": 0.21584194977843427,
+      "near_zero_bands": {
+        "exactly_zero": {
+          "count": 4676,
+          "share": 0.21584194977843427
+        },
+        "abs_le_1_mwh": {
+          "count": 10945,
+          "share": 0.5052160265878878
+        },
+        "abs_le_5_mwh": {
+          "count": 12839,
+          "share": 0.5926421713441654
+        },
+        "abs_le_10_mwh": {
+          "count": 14062,
+          "share": 0.6490952732644018
+        }
+      }
+    }
+  },
+  "wind_aggregate": {
+    "available_pairs": 21615,
+    "dropped_missing_any_wind_horizon": 272,
+    "neither_wind_forecast_updated_exact": 0,
+    "neither_wind_forecast_updated_share": 0.0,
+    "near_zero_bands": {
+      "exactly_zero": {
+        "count": 0,
+        "share": 0.0
+      },
+      "abs_le_1_mwh": {
+        "count": 137,
+        "share": 0.006338191071015498
+      },
+      "abs_le_5_mwh": {
+        "count": 643,
+        "share": 0.02974786028221143
+      },
+      "abs_le_10_mwh": {
+        "count": 1341,
+        "share": 0.06204024982650937
+      }
+    }
+  },
+  "solar_sample_split": {
+    "all_numeric_pairs": 21664,
+    "both_horizons_positive": 14837,
+    "zero_or_missing_daylight": 6827
+  },
+  "holdout": "LOCKED_AND_UNUSED"
+}

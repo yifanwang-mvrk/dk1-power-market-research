@@ -1,0 +1,203 @@
+{
+  "frozen_at_utc": "2026-09-06T18:22:04.331411+00:00",
+  "development_period": {
+    "start_date": "2022-01-01",
+    "end_date_inclusive": "2024-06-30"
+  },
+  "input_file": "data/processed/p2/hourly_base_development.parquet",
+  "input_sha256": "cb69be3091d71e27a157ec3e529878cfaed74f3d9f734ebaa9db56d3a695e66d",
+  "normalization_floor_mwh": 276.57500319999997,
+  "wind_revision": {
+    "variable": "wind_revision_mwh",
+    "available_observations": 21615,
+    "quantile_scheme": {
+      "requested_quantiles": [
+        0.2,
+        0.4,
+        0.6,
+        0.8
+      ],
+      "interior_edges": [
+        -101.1000048,
+        -27.2500088,
+        42.1249724,
+        163.6833984
+      ],
+      "tie_handling": "edges strictly increasing",
+      "group_sizes": {
+        "1": 4323,
+        "2": 4323,
+        "3": 4323,
+        "4": 4323,
+        "5": 4323
+      }
+    },
+    "decile_scheme": {
+      "requested_quantiles": [
+        0.1,
+        0.2,
+        0.3,
+        0.4,
+        0.5,
+        0.6,
+        0.7,
+        0.8,
+        0.9
+      ],
+      "interior_edges": [
+        -172.1666496,
+        -101.1000048,
+        -58.958325,
+        -27.2500088,
+        3.83334,
+        42.1249724,
+        93.0000064,
+        163.6833984,
+        274.15011
+      ],
+      "tie_handling": "edges strictly increasing",
+      "group_sizes": {
+        "1": 2162,
+        "2": 2161,
+        "3": 2162,
+        "4": 2161,
+        "5": 2161,
+        "6": 2162,
+        "7": 2161,
+        "8": 2162,
+        "9": 2161,
+        "10": 2162
+      }
+    },
+    "rule_threshold_c": {
+      "definition": "Q60 of abs(wind_revision_mwh), development only",
+      "quantile": 0.6,
+      "value_mwh": 128.08339840000008
+    }
+  },
+  "solar_revision_all_pairs": {
+    "variable": "solar_revision_mwh",
+    "available_observations": 21664,
+    "quantile_scheme": {
+      "requested_quantiles": [
+        0.2,
+        0.4,
+        0.6,
+        0.8
+      ],
+      "interior_edges": [
+        -3.7732506,
+        0.0,
+        0.002083,
+        7.2994998
+      ],
+      "tie_handling": "edges strictly increasing",
+      "group_sizes": {
+        "1": 4333,
+        "2": 8027,
+        "3": 693,
+        "4": 4278,
+        "5": 4333
+      }
+    },
+    "decile_scheme": {
+      "requested_quantiles": [
+        0.1,
+        0.2,
+        0.3,
+        0.4,
+        0.5,
+        0.6,
+        0.7,
+        0.8,
+        0.9
+      ],
+      "interior_edges": [
+        -31.7391685,
+        -3.7732506,
+        -0.0312916,
+        0.0,
+        0.002083,
+        0.0912917,
+        7.2994998,
+        53.6755632
+      ],
+      "tie_handling": "duplicate quantile edges collapsed from 9 to 8 interior cut points (mass point near zero)",
+      "group_sizes": {
+        "1": 2167,
+        "2": 2166,
+        "3": 2166,
+        "4": 5861,
+        "5": 693,
+        "6": 2112,
+        "7": 2166,
+        "8": 2166,
+        "9": 2167
+      }
+    }
+  },
+  "solar_revision_both_positive": {
+    "variable": "solar_revision_mwh_both_positive",
+    "available_observations": 14837,
+    "quantile_scheme": {
+      "requested_quantiles": [
+        0.2,
+        0.4,
+        0.6,
+        0.8
+      ],
+      "interior_edges": [
+        -15.9451576,
+        -0.0660832,
+        0.1755864,
+        29.247241
+      ],
+      "tie_handling": "edges strictly increasing",
+      "group_sizes": {
+        "1": 2968,
+        "2": 2967,
+        "3": 2967,
+        "4": 2967,
+        "5": 2968
+      }
+    },
+    "decile_scheme": {
+      "requested_quantiles": [
+        0.1,
+        0.2,
+        0.3,
+        0.4,
+        0.5,
+        0.6,
+        0.7,
+        0.8,
+        0.9
+      ],
+      "interior_edges": [
+        -55.2119814,
+        -15.9451576,
+        -2.8436466,
+        -0.0660832,
+        0.0,
+        0.1755864,
+        6.3979258,
+        29.247241,
+        89.238662
+      ],
+      "tie_handling": "edges strictly increasing",
+      "group_sizes": {
+        "1": 1484,
+        "2": 1484,
+        "3": 1483,
+        "4": 1484,
+        "5": 1811,
+        "6": 1156,
+        "7": 1484,
+        "8": 1483,
+        "9": 1484,
+        "10": 1484
+      }
+    }
+  },
+  "holdout": "LOCKED_AND_UNUSED"
+}
