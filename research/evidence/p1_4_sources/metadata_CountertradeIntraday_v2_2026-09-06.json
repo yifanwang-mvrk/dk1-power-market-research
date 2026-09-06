@@ -1,0 +1,94 @@
+{
+  "datasetId": 133,
+  "datasetName": "CountertradeIntraday_v2",
+  "title": "Countertrade Procured in Intraday",
+  "description": "This dataset provides countertrade data in 15-minute resolution, and replaced the hourly dataset [Countertrade Procured in Intraday (Discontinued)](https://www.energidataservice.dk/tso-electricity/CountertradeIntraday) on 15 October, 2025.\n\n---\n\nThe volumes published below are the net volumes requested to be traded in DK1 and may differ from countertrade data published as Change in Cross-Border Exchange [13.1.B] on ENTSO-E Transparency Platform ([Transparency Platform](https://newtransparency.entsoe.eu/transmission/countertrading?appState=%7B%22sa%22%3A%5B%22BZN%7C10YDK-1--------W%22%5D%2C%22st%22%3A%22BZN%22%2C%22mm%22%3Atrue%2C%22ma%22%3Afalse%2C%22sp%22%3A%22FULL%22%2C%22dt%22%3A%22TABLE%22%2C%22df%22%3A%5B%222025-09-09%22%2C%222025-09-09%22%5D%2C%22tz%22%3A%22CET%22%7D)), as the data on ENTSO-E Transparency Platform reflects the actual traded volumes on the border.\n\nThe volumes to be traded are also published on NUCS and can be found here: [NUCS - Countertrade to be procured in intraday](https://www.nucs.net/transmission-domain/counterTrade/show?name=&defaultValue=false&viewType=TABLE&areaType=BZN&atch=false&areaSelectType=USER_SELECTED&biddingZone.values=CTY%7C10Y1001A1001A65H!BZN%7C10YDK-1--------W&biddingZone.values=CTY%7C10Y1001A1001A65H!BZN%7C10YDK-2--------M&sender.values=10X1001A1001A248&sender.values=10X1001A1001A38Y).\nAccording to Energinet’s methodology for procurement of countertrading energy, the volumes published on NUCS/EDS, prior to the trading is initiated, reflect the energy Energinet intends to trade in the intraday market. Consequently, the publication does not guarantee that the energy is, in effect, traded.\n",
+  "organizationName": "tso-electricity",
+  "updateFrequency": "P1D",
+  "comment": "Volumes published after intraday gate closure time (ID GCT), or shortly before ID GCT that cannot be traded in the intraday market, either due to the 10 minutes publication requirement, lack of liquidity in the market or trading time, will be handled in the balancing market (only relevant for unexpected countertrade requests).\n\nEnerginet will procure the structural countertrade volume between 15:00 – 21:00 (D-1) for delivery period (H24(D-1)-H23(D)). On Energidataservice hour 23:00 is the hour from 23:00-24:00.\n\nSee [Modhandel](https://energinet.dk/el/elmarkedet/modhandel/) for more information on Energinet's methodology for procurement of countertrading energy.\n\n---\n**API Request Frequency** \\\nThis dataset is only updated when new countertrade is requested. This can result in multiple updates per day or gaps of several days between updates. When new volumes are published, the data is overwritten and as a result historical versions are not available. If no countertrade has been requested, no data will be published on the given day. It is valid for several days to pass, without any data. \\\nTo get the most up-to-date data, calling the API with a dynamic timestamp such as [start=now](https://api.energidataservice.dk/dataset/CountertradeIntraday_v2?start=now) is a good approach. Making a request every 15 minutes or so is sufficient to ensure getting the latest data.",
+  "caution": "",
+  "filterColumn": "TimeUTC",
+  "author": "Energinet",
+  "resolution": "15 minutes (PT15M)",
+  "columns": [
+    {
+      "dbColumn": "TimeUTC",
+      "dataType": "datetime",
+      "sortOrder": 1,
+      "primaryKeyIndex": 1,
+      "displayName": "Time UTC",
+      "unit": "",
+      "description": "A date and time shown in _UTC time zone_. It is the \"from\" timestamp for the period in which the values are valid. The dataset resolution sets the length of the interval.",
+      "comment": "Please note that the _format_ shown in the example applies to data downloaded as JSON or fetched through the API.\nThe format is slightly different when it is shown on screen or downloaded manually as CSV or XLSX. This is mainly due to readability and consideration for Excel users.\n\n**In preview (in the GUI)** all timestamps are shown as (display convention)\nYYYY-MM-DD hh:mmZ\ne.g. 2017-07-14 08:00Z. \nThat is without the seconds. The Z will remind viewers that this is UTC.\n\nIn **download (CSV and XLSX)** the date time are exported as\nYYYY-MM-DD hh:mm\ne.g. 2017-07-14 08:00.\nThat is without the “T” and the “Z” and the seconds. Excel will recognize it as date-time. The user must remember the convention about time zones.\n\nIn **download (JSON and API)** the datetime is exported as\nYYYY-MM-DDThh:mm:ss\ne.g. 2017-07-14T08:00:00.\nThat is without the \"Z\".",
+      "example": "2017-07-14T08:00",
+      "columnSize": 17.0
+    },
+    {
+      "dbColumn": "TimeDK",
+      "dataType": "datetime",
+      "sortOrder": 2,
+      "displayName": "Time DK",
+      "unit": "",
+      "description": "A date and time shown in _DK time zone_. It is the \"from\" timestamp for the period in which the values are valid. The dataset resolution sets the length of the interval.",
+      "comment": "Please note that the _format_ shown in the example applies to data downloaded as JSON or fetched through the API.\nThe format is slightly different when it is shown on screen or downloaded manually as CSV or XLSX. This is mainly due to readability and consideration for Excel users.\n\n**In preview (in the GUI)** all timestamps are shown as (display convention)\nYYYY-MM-DD hh:mmZ\ne.g. 2017-07-14 08:00Z. \nPlease note that there is no time zone indicator, showing that this is local (Danish) time.\n\nIn **download (CSV and XLSX)** the date time are exported as\nYYYY-MM-DD hh:mm\ne.g. 2017-07-14 08:00.\nThat is without the “T” and the seconds. Excel will recognize it as date-time. The user must remember that this is local (Danish) time..\n\nIn **download (JSON and API)** the datetime is exported as\nYYYY-MM-DDThh:mm:ss\ne.g. 2017-07-14T08:00:00.\n",
+      "example": "2017-07-14T08:00",
+      "columnSize": 16.0
+    },
+    {
+      "dbColumn": "Version",
+      "dataType": "string",
+      "sortOrder": 3,
+      "displayName": "Version",
+      "unit": "text",
+      "description": "The volumes can be updated several times during a day. The version will indicate how many times the volumes have been updated.",
+      "comment": "\n ",
+      "example": "Final",
+      "columnSize": 20.0
+    },
+    {
+      "dbColumn": "VolumeUpMW",
+      "dataType": "number",
+      "sortOrder": 4,
+      "displayName": "Volume (Up) [MW]",
+      "unit": "MW",
+      "description": "Net volumes which Energinet will attempt to buy in the intraday marked. Please note that hour 23:00 is the hour from 23:00-24:00.",
+      "comment": "",
+      "example": "0,0",
+      "columnSize": 9.1
+    },
+    {
+      "dbColumn": "VolumeDownMW",
+      "dataType": "number",
+      "sortOrder": 5,
+      "displayName": "Volume (Down) [MW]",
+      "unit": "MW",
+      "description": "Net volumes which Energinet will attempt to sell in the intraday marked. Please note that hour 23:00 is the hour from 23:00-24:00.",
+      "comment": "",
+      "example": "0,0",
+      "columnSize": 9.1
+    },
+    {
+      "dbColumn": "PublicationDate",
+      "dataType": "datetime",
+      "sortOrder": 6,
+      "displayName": "Publication Date",
+      "unit": "",
+      "description": "Publication date is the date and time of when the document was created at source. \nA date and time shown in DK time zone (CET)",
+      "comment": "",
+      "example": "24.01.2024 17.12.49",
+      "columnSize": 19.0
+    }
+  ],
+  "tags": [
+    "15 Minute",
+    "Active",
+    "Daily (P1D)",
+    "Price Area"
+  ],
+  "dataFrom": "2025-10-15T00:00:00",
+  "dataTo": "2026-09-07T23:45:00",
+  "lastDataUpdate": "2026-09-06T13:53:58",
+  "lastMetadataUpdate": "2026-05-11T10:09:46",
+  "published": "2025-09-02T00:00:00",
+  "active": true
+}

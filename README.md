@@ -4,11 +4,12 @@ Independent, point-in-time research into whether renewable forecast revisions an
 
 ## Current Status
 
-Project foundation is complete. Official-source validation is in progress.
+Project foundation and official-source validation are complete. Reproducible
+development-data acquisition is next.
 
 - Repository structure and GitHub remote: created
 - Python environment: created and verified
-- Data validation: P1.1 conditionally passed; P1.2 passed; P1.3 conditionally passed; P1.4 current
+- Data validation: P1 complete; source roles and point-in-time eligibility inventoried
 - Hypothesis testing: not started
 - Level A (CV-safe): not achieved
 - Locked holdout: unused
@@ -34,6 +35,27 @@ outcome rather than an executable trading price.
 - Locked holdout: 2024-07-01 to 2024-12-31
 
 The holdout must not be accessed before the Level C unlock requirements are satisfied.
+
+## Validated Source Roles
+
+- Renewable fixed-horizon forecasts: `Forecasts_Hour`, conditionally eligible
+  subject to the P2.3 decision-cutoff contract
+- Day-ahead reference: `Elspotprices.SpotPriceEUR`, validated across all
+  21,887 development hours
+- Balancing outcome: `RegulatingBalancePowerdata.ImbalancePriceEUR`, with one
+  documented missing development hour preserved
+- Actual residual load and realized exchange:
+  `ProductionConsumptionSettlement`, complete but diagnostic only because it
+  is settlement data published after delivery
+- Day-ahead cross-border capacity and schedule: `Transmissionlines`,
+  conditional candidates with border-specific null/sign rules still required
+- Countertrade: partial-period conditional candidate; historical versions are
+  not fully reconstructable
+- H1-B historical load forecast: external ENTSO-E candidate pending access and
+  timing evidence
+
+The P1.4 evidence, raw-file hashes and machine-readable eligibility inventory
+are preserved in [`research/evidence/p1_4_sources`](research/evidence/p1_4_sources/README.md).
 
 ## Research Principles
 

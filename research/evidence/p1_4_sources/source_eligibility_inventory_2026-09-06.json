@@ -1,0 +1,194 @@
+[
+  {
+    "research_role": "H1-A actual residual load",
+    "source": "ProductionConsumptionSettlement",
+    "fields": [
+      "GrossConsumptionMWh",
+      "OffshoreWindLt100MW_MWh",
+      "OffshoreWindGe100MW_MWh",
+      "OnshoreWindLt50kW_MWh",
+      "OnshoreWindGe50kW_MWh",
+      "SolarPowerLt10kW_MWh",
+      "SolarPowerGe10Lt40kW_MWh",
+      "SolarPowerGe40kW_MWh",
+      "SolarPowerSelfConMWh"
+    ],
+    "development_coverage": "complete",
+    "eligibility": "diagnostic_only",
+    "decision": "selected",
+    "evidence": [
+      "research/evidence/p1_4_sources/metadata_ProductionConsumptionSettlement_2026-09-06.json",
+      "research/evidence/p1_4_sources/development_validation_2026-09-06.json"
+    ],
+    "why": "Settlement demand, generation and physical exchange are revised ex-post actuals; they explain outcomes but were unavailable at the decision cutoff."
+  },
+  {
+    "research_role": "H1-B decision-time load proxy",
+    "source": "ENTSO-E day-ahead total load forecast",
+    "fields": [
+      "day-ahead total load forecast"
+    ],
+    "development_coverage": "not retrieved; external access and timing not established",
+    "eligibility": "external_candidate_pending_access_timing",
+    "decision": "registered_for_P5.2",
+    "evidence": [
+      "https://transparency.entsoe.eu/",
+      "https://gitlab.entsoe.eu/transparency/xml-examples/"
+    ],
+    "why": "No validated Energi Data Service historical load forecast was identified."
+  },
+  {
+    "research_role": "H3 day-ahead interconnector state",
+    "source": "Transmissionlines",
+    "fields": [
+      "ImportCapacity",
+      "ExportCapacity",
+      "ScheduledExchangeDayAhead"
+    ],
+    "development_coverage": "validated by connection",
+    "eligibility": "conditional_decision_candidate",
+    "decision": "selected_for_P6.1_cutoff_mapping",
+    "evidence": [
+      "research/evidence/p1_4_sources/metadata_Transmissionlines_2026-09-06.json",
+      "research/evidence/p1_4_sources/development_validation_2026-09-06.json"
+    ],
+    "why": "Day-ahead capacities and day-ahead schedules are fixed before delivery in the source contract, subject to P2.3 cutoff mapping and border-specific null/sign handling in P6.1. Final intraday schedules and physical flows lack historical vintages or are realized outcomes."
+  },
+  {
+    "research_role": "H3 realized physical exchange",
+    "source": "ProductionConsumptionSettlement",
+    "fields": [
+      "ExchangeNO_MWh",
+      "ExchangeSE_MWh",
+      "ExchangeGE_MWh",
+      "ExchangeNL_MWh",
+      "ExchangeGB_MWh",
+      "ExchangeGreatBelt_MWh"
+    ],
+    "development_coverage": "complete except source-defined GB null history",
+    "eligibility": "diagnostic_only",
+    "decision": "selected",
+    "evidence": [
+      "research/evidence/p1_4_sources/metadata_ProductionConsumptionSettlement_2026-09-06.json",
+      "research/evidence/p1_4_sources/development_validation_2026-09-06.json"
+    ],
+    "why": "Settlement flows are realized and revised after delivery; GB nulls remain null."
+  },
+  {
+    "research_role": "H3 intraday countertrade request",
+    "source": "CountertradeIntraday",
+    "fields": [
+      "VolumeUpMW",
+      "VolumeDownMW",
+      "PublicationDate",
+      "Version"
+    ],
+    "development_coverage": "partial from 2023-04-18",
+    "eligibility": "conditional_decision_candidate",
+    "decision": "registered_for_P2.3_and_P6.1",
+    "evidence": [
+      "research/evidence/p1_4_sources/metadata_CountertradeIntraday_2026-09-06.json",
+      "research/evidence/p1_4_sources/development_validation_2026-09-06.json"
+    ],
+    "why": "The legacy rows carry publication time and many final snapshots existed before delivery, but coverage starts in April 2023 and later versions overwrite history. P2.3 must enforce the final decision cutoff and must not invent missing days as zero."
+  },
+  {
+    "research_role": "H3 intraday countertrade successor",
+    "source": "CountertradeIntraday_v2",
+    "fields": [
+      "VolumeUpMW",
+      "VolumeDownMW",
+      "PublicationDate",
+      "Version"
+    ],
+    "development_coverage": "none; starts 2025-10-15",
+    "eligibility": "unavailable_for_development",
+    "decision": "excluded",
+    "evidence": [
+      "research/evidence/p1_4_sources/metadata_CountertradeIntraday_v2_2026-09-06.json"
+    ],
+    "why": "The source begins after the locked development period."
+  },
+  {
+    "research_role": "actual cross-border alternative",
+    "source": "ForeignExchange",
+    "fields": [
+      "country-specific import and export MWh"
+    ],
+    "development_coverage": "available",
+    "eligibility": "diagnostic_only",
+    "decision": "registered_alternative",
+    "evidence": [
+      "research/evidence/p1_4_sources/metadata_ForeignExchange_2026-09-06.json"
+    ],
+    "why": "Actual exchange is useful for explanation but not known before delivery."
+  },
+  {
+    "research_role": "real-time actual system state",
+    "source": "PowerSystemRightNow / ElectricityBalanceNonv",
+    "fields": [
+      "load",
+      "generation",
+      "exchange",
+      "activated reserves"
+    ],
+    "development_coverage": "historical actuals available",
+    "eligibility": "diagnostic_only_or_lagged_candidate",
+    "decision": "not_selected_for_MVP",
+    "evidence": [
+      "research/evidence/p1_4_sources/metadata_PowerSystemRightNow_2026-09-06.json",
+      "research/evidence/p1_4_sources/metadata_ElectricityBalanceNonv_2026-09-06.json"
+    ],
+    "why": "Same-hour values are realized; only observations strictly before the cutoff could qualify."
+  },
+  {
+    "research_role": "live mFRR request",
+    "source": "Energinet Realtime Electricity Market Data / mFRR Request",
+    "fields": [
+      "timeStamp",
+      "mtuStart",
+      "area",
+      "value"
+    ],
+    "development_coverage": "unavailable; period endpoint retains at most seven days",
+    "eligibility": "unavailable_for_development",
+    "decision": "excluded",
+    "evidence": [
+      "https://www.energidataservice.dk/datasets/realtime-electricity-market"
+    ],
+    "why": "The live service cannot reconstruct the locked 2022-2024 development history."
+  },
+  {
+    "research_role": "registered reserve context",
+    "source": "MfrrReservesDK1 + mFRRCapacityMarket",
+    "fields": [
+      "demand",
+      "procured reserve",
+      "capacity price"
+    ],
+    "development_coverage": "legacy/successor bridge available from 2022 through 2024",
+    "eligibility": "decision_eligible_candidate",
+    "decision": "deferred_beyond_level_A",
+    "evidence": [
+      "research/evidence/p1_4_sources/metadata_MfrrReservesDK1_2026-09-06.json",
+      "research/evidence/p1_4_sources/metadata_mFRRCapacityMarket_2026-09-06.json"
+    ],
+    "why": "Capacity is procured before delivery, but schema bridging and exact availability remain for P6.1."
+  },
+  {
+    "research_role": "future H3 successor sources",
+    "source": "ENTSO-E / JAO",
+    "fields": [
+      "day-ahead scheduled exchange",
+      "day-ahead transfer capacity"
+    ],
+    "development_coverage": "not retrieved in P1.4",
+    "eligibility": "external_candidate_pending_access_timing",
+    "decision": "registered_successor",
+    "evidence": [
+      "https://transparency.entsoe.eu/",
+      "https://www.jao.eu/"
+    ],
+    "why": "Official replacements matter for future extensions after Transmissionlines was discontinued."
+  }
+]

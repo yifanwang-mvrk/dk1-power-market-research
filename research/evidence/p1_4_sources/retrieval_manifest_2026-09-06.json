@@ -1,0 +1,74 @@
+{
+  "created_at_utc": "2026-09-06T12:40:09.279695+00:00",
+  "source_organization": "Energinet",
+  "license": "CC BY 4.0",
+  "metadata_base_url": "https://api.energidataservice.dk/meta/Dataset/{dataset_name}",
+  "holdout_records": 0,
+  "files": [
+    {
+      "file": "research/evidence/p1_4_sources/metadata_CountertradeIntraday_2026-09-06.json",
+      "bytes": 6347,
+      "sha256": "70a2e390254a0e7298451d81c10ee535f8e1eb39f1cc976d4f6274e3b0ba9e7e"
+    },
+    {
+      "file": "research/evidence/p1_4_sources/metadata_CountertradeIntraday_v2_2026-09-06.json",
+      "bytes": 7870,
+      "sha256": "3ba6d11d4f0ef1d749dc5ae0b79fd4804ca5fcfecf55b9e3cc8d46d374c52a18"
+    },
+    {
+      "file": "research/evidence/p1_4_sources/metadata_ElectricityBalanceNonv_2026-09-06.json",
+      "bytes": 13318,
+      "sha256": "4034ecde59b001c39fdc3e83e9e0f006d60d8c1caedce16b5e893fd848ac0247"
+    },
+    {
+      "file": "research/evidence/p1_4_sources/metadata_ForeignExchange_2026-09-06.json",
+      "bytes": 7702,
+      "sha256": "f2646784bd68ec11668e8144c39054a0c14750c85a2ade6cd7c772ea8a749cd4"
+    },
+    {
+      "file": "research/evidence/p1_4_sources/metadata_MfrrReservesDK1_2026-09-06.json",
+      "bytes": 11855,
+      "sha256": "9f7ae2c144653e980ee6afc992666a05b82a3be841c96649c3ae0e935a0c065d"
+    },
+    {
+      "file": "research/evidence/p1_4_sources/metadata_PowerSystemRightNow_2026-09-06.json",
+      "bytes": 12212,
+      "sha256": "1f63e68bee8087c5229d795b4c012dd7fe940c744223d6b253fe6727eb42b9da"
+    },
+    {
+      "file": "research/evidence/p1_4_sources/metadata_ProductionConsumptionSettlement_2026-09-06.json",
+      "bytes": 17500,
+      "sha256": "5bbdc419d6f62c14acf859cf31928095fcaeb5fd437b816b1ea7ad9e7b7b5334"
+    },
+    {
+      "file": "research/evidence/p1_4_sources/metadata_Transmissionlines_2026-09-06.json",
+      "bytes": 14763,
+      "sha256": "8a4c9623df4d46e6ebb0829ed29d6c6e720ddd6bc77c8e048463c8cc36c48334"
+    },
+    {
+      "file": "research/evidence/p1_4_sources/metadata_mFRRCapacityMarket_2026-09-06.json",
+      "bytes": 9475,
+      "sha256": "a0fd71b5994d189dd6d1fb4225b67b39086e51ee3c1f50be6762ac4c6403f11b"
+    },
+    {
+      "file": "research/evidence/p1_4_sources/sample_CountertradeIntraday_first_last.json",
+      "bytes": 4382,
+      "sha256": "9fcad977530e79523cdc04f6185aeef1e0f530e4721c163439eb79fe3f79cb36"
+    },
+    {
+      "file": "research/evidence/p1_4_sources/sample_ProductionConsumptionSettlement_DK1_2024-06-15.json",
+      "bytes": 26342,
+      "sha256": "bb4a9b72158a3231f6e7b4563987939bfbab39ebc8dfa591c502712fb2bdc8b6"
+    },
+    {
+      "file": "research/evidence/p1_4_sources/sample_Transmissionlines_DK1_2024-06-15.json",
+      "bytes": 85999,
+      "sha256": "723d44efbaee8c0fd70ba963c1ce433d217f75abc006d90a42afefe6b5bba5cd"
+    },
+    {
+      "file": "research/evidence/p1_4_sources/dataset_catalog_2026-09-06.json",
+      "bytes": 53691,
+      "sha256": "28e8fa5a2affc22eddb5303c996903291fa239df0f12dbfeac058f55670146d7"
+    }
+  ]
+}

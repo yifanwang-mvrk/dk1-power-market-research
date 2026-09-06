@@ -1,0 +1,93 @@
+{
+  "datasetId": 86,
+  "datasetName": "CountertradeIntraday",
+  "title": "Countertrade Procured in Intraday (Discontinued – see description)",
+  "description": "The dataset has been discontinued. For data published after 2025-10-14 see [Countertrade Procured in Intraday](https://www.energidataservice.dk/tso-electricity/CountertradeIntraday_v2).\n\nThe volumes published below are the new volumes. The net volumes are requested to be traded in DK1 and may differ from countertrade data that is published as Change in Cross-Border Exchange [13.1.B] on [ENTSO-E Transparency Platform](https://transparency.entsoe.eu/congestion-management/r2/countertrading/show).",
+  "organizationName": "tso-electricity",
+  "updateFrequency": "N/A",
+  "comment": "Volumes published after Intraday gate closure time (ID GCT), or shortly before ID GCT cannot be traded in the Intraday market, either due to the 10 minutes publication requirement, lack of liquidity in the market or trading time. It will be handled in the balancing market. This is only relevant for unexpected countertrade requests. \n\nEnerginet will procure the structural countertrade volume between 15:00 - 21:00 (D-1) for delivery period (H24(D-1)-H23(D)). On Energi Data Service hour 23:00 is the hour from 23:00-24:00.\n\nThis dataset is only updated when new trades are requested. It is valid for several days to pass, without any data.",
+  "caution": "",
+  "filterColumn": "HourUTC",
+  "author": "Energinet",
+  "resolution": "1 hour (PT1H)",
+  "columns": [
+    {
+      "dbColumn": "HourUTC",
+      "dataType": "datetime",
+      "sortOrder": 1,
+      "primaryKeyIndex": 1,
+      "displayName": "Hour UTC",
+      "unit": "",
+      "description": "A date and time (interval), shown in _UTC time zone_, where the values are valid. 00:00 o’clock is the first hour of a given day interval  00:00 - 00:59 and 01:00 covers the second hour (interval) of the day and so forth. Please note: The naming is based on the length of the interval of the finest grain of the resolution.",
+      "comment": "Please note that the _format_ shown in the example applies to data downloaded as JSON or fetched through the API.\r\nThe format is slightly different when it is shown on screen or downloaded manually as CSV or XLSX. This is mainly due to readability and consideration for Excel users.\r\n\r\n**In preview (in the GUI)** all timestamps are shown as (display convention)\r\nYYYY-MM-DD hh:mmZ\r\ne.g. 2017-07-14 08:00Z. \r\nThat is without the seconds. The Z will remind viewers that this is UTC.\r\n\r\nIn **download (CSV and XLSX)** the datetime is exported as\r\nYYYY-MM-DD hh:mm\r\ne.g. 2017-07-14 08:00.\r\nThat is without the “T” and the “Z” and the seconds. Excel will recognize it as date-time. The user must remember the convention about time zones.\r\n\r\nIn **download (JSON and API)** the datetime is exported as\r\nYYYY-MM-DDThh:mm:ss\r\ne.g. 2017-07-14T08:00:00.\r\nThat is without the \"Z\".",
+      "example": "2017-07-14T08:00:00",
+      "columnSize": 17.0,
+      "validationRules": "Always full hours, i.e. minutes and seconds are 00"
+    },
+    {
+      "dbColumn": "HourDK",
+      "dataType": "datetime",
+      "sortOrder": 2,
+      "displayName": "Hour DK",
+      "unit": "",
+      "description": "A date and time (interval), shown in _Danish time zone_, where the values are valid. 00:00 o’clock is the first hour of a given day, interval 00:00 - 00:59, and 01:00 covers the second hour period (interval) of the day and so forth. ",
+      "comment": "On one normal day there will be 24 intervals.\n\nWhen daylight saving times shifts there will be either 23 or 25 intervals.\n\nPlease note that the _format_ shown in the example applies to data downloaded as JSON or fetched through the API.\nThe format is slightly different when it is shown on screen or downloaded manually as CSV or XLSX. This is mainly due to readability and consideration for Excel users.\n\n**In preview (in the GUI)** all timestamps are shown as (display convention)\nYYYY-MM-DD hh:mm\ne.g. 2017-07-14 08:00. \nPlease note that there is no time zone indicator, showing that this is local (Danish) time.\n\nIn **download (CSV and XLSX)** the datetime is exported as\nYYYY-MM-DD hh:mm\ne.g. 2017-07-14 08:00.\nThat is without the “T” and the seconds. Excel will recognize it as date-time. The user must remember that this is local (Danish) time.\n\nIn **download (JSON and API)** the datetime is exported as\nYYYY-MM-DDThh:mm:ss\ne.g. 2017-07-14T08:00:00.",
+      "example": "2017-07-14T08:00:00",
+      "columnSize": 17.0,
+      "validationRules": "Always full hours, i.e. minutes and seconds are 00"
+    },
+    {
+      "dbColumn": "Version",
+      "dataType": "string",
+      "sortOrder": 3,
+      "displayName": "Version",
+      "unit": "text",
+      "description": "The volumes can be updated several times during a day. The version will indicate how many times the volumes have been updated.",
+      "comment": " \n  ",
+      "example": "1",
+      "columnSize": 20.0
+    },
+    {
+      "dbColumn": "VolumeUpMW",
+      "dataType": "number",
+      "sortOrder": 4,
+      "displayName": "Volume (Up) [MW]",
+      "unit": "MW",
+      "description": "Net volumes which Energinet will attempt to buy in the intraday marked. Please note that hour 23:00 is the hour from 23:00-24:00.",
+      "comment": "",
+      "example": "0,0",
+      "columnSize": 9.1
+    },
+    {
+      "dbColumn": "VolumeDownMW",
+      "dataType": "number",
+      "sortOrder": 5,
+      "displayName": "Volume (Down) [MW]",
+      "unit": "MW",
+      "description": "Net volumes which Energinet will attempt to sell in the intraday marked. Please note that hour 23:00 is the hour from 23:00-24:00.",
+      "comment": "",
+      "example": "0,0",
+      "columnSize": 9.1
+    },
+    {
+      "dbColumn": "PublicationDate",
+      "dataType": "datetime",
+      "sortOrder": 6,
+      "displayName": "Publication Date",
+      "unit": "",
+      "description": "Publication date is the date and time for publication of the volumes.",
+      "comment": "",
+      "example": "24.01.2024 17.12.49",
+      "columnSize": 19.0
+    }
+  ],
+  "tags": [
+    "Discontinued",
+    "Hour",
+    "Price Area"
+  ],
+  "dataFrom": "2023-04-18T00:00:00",
+  "lastMetadataUpdate": "2026-01-08T11:14:35",
+  "published": "2023-04-21T00:00:00",
+  "active": true
+}

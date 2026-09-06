@@ -47,6 +47,7 @@ Source: the complete 31-section final Blueprint response and the owner's subsequ
 | D021 | Forecast gaps, values and DST handling | FROZEN |
 | D022 | Elspotprices SpotPriceEUR as day-ahead reference | FROZEN |
 | D023 | RegulatingBalancePowerdata ImbalancePriceEUR as balancing outcome | FROZEN |
+| D024 | P1.4 fundamental and system-source eligibility | FROZEN |
 | E001–E003 | 执行说明 / Execution clarifications | IMPLEMENTATION NOTE |
 | I01–I08 | 字段、参数和可用性 / Fields, parameters and availability | TRACKED — see current table |
 
@@ -298,6 +299,52 @@ Source: the complete 31-section final Blueprint response and the owner's subsequ
 
 **影响 / Impact:** The balancing side of D001 is now implemented and registered. P2 must preserve one absent full row at `2022-10-30T00:00:00Z` as missing and must retain zero, negative and extreme prices without automatic deletion. The source has 21,886 of 21,887 expected hours, no duplicate key and no holdout row, so P1.3 is a conditional pass. The legacy metadata gives no exact historical publication delay; I03/P2.3 must resolve or conservatively handle any lagged-outcome baseline. This field measures balancing pressure and is not executable trading P&L. **Evidence:** `research/evidence/p1_3_regulating_balance_power/development_validation_2026-09-06.md`. **Holdout:** remained locked and unused.
 
+## D024 · Register P1.4 fundamental and system sources by point-in-time eligibility
+
+**日期 / Date:** 2026-09-06
+
+**状态 / Status:** FROZEN
+
+**决定 / Decision:** Use `ProductionConsumptionSettlement` for H1-A actual
+wind, actual solar, gross consumption, actual residual load and realized
+cross-border diagnostics. Classify all settlement-derived values as
+`diagnostic_only`. Register `Transmissionlines.ImportCapacity`,
+`ExportCapacity` and `ScheduledExchangeDayAhead` as conditional pre-delivery
+candidates for H3, with exact cutoff mapping in P2.3 and border-specific rules
+in P6.1. Classify final intraday schedules and physical exchanges as
+`diagnostic_only`. Register legacy `CountertradeIntraday` as a partial-period
+conditional candidate and its 2025 successor as unavailable for development.
+Register the ENTSO-E day-ahead total-load forecast as an external H1-B
+candidate pending P5.2 access and timing evidence.
+
+**理由 / Rationale:** The actual-settlement extract covers all 21,887 DK1
+development hours and supports complete residual-load construction, but its
+9–15 day delay and later revisions make it unavailable to a pre-delivery
+decision. `Transmissionlines` covers all development hours and six DK1
+connections; official metadata states that coming-day capacity is published
+before 10:00 and that day-ahead schedules result from the spot calculation.
+However, the legacy source contains mixed `ExportCapacity` signs and all GB
+day-ahead fields are null. Countertrade retains publication time in 7,751 final
+rows, of which 7,447 were published at least one hour before delivery, but its
+coverage starts on 2023-04-18 and earlier versions are overwritten.
+
+**未采用 / Alternative:** Actual load, renewable generation, final intraday
+schedules or physical flows were not promoted into a decision model merely
+because historical rows exist. GB nulls, missing countertrade days and
+positive export-capacity records were not replaced with zero or silently
+normalized. The external ENTSO-E load forecast was not claimed available
+without access and publication evidence.
+
+**影响 / Impact:** P1.4 is complete with a machine-readable source and
+eligibility inventory, including unavailable inputs. P2 may build a bounded
+development pipeline without reopening source discovery. P2.3 must enforce the
+decision cutoff; P5.2 must finish H1-B eligibility; P6.1 must select usable
+borders and document capacity signs, nulls and any reserve-source bridge.
+**Evidence:** `research/evidence/p1_4_sources/development_validation_2026-09-06.md`
+and `source_eligibility_inventory_2026-09-06.json`. **Holdout:** all requests
+ended at local 2024-07-01 00:00 exclusive; zero holdout rows were requested or
+inspected.
+
 ## 本次执行说明 / Operational clarifications
 
 ### E001 · Preserve both persistence and point-in-time integrity
@@ -334,9 +381,9 @@ All items begin **OPEN**. There is no confirmed external blocker, and lack of ve
 | I01 | **RESOLVED by D023:** use hourly DK1 `RegulatingBalancePowerdata.ImbalancePriceEUR` in EUR/MWh as the ex-post balancing outcome | P1.3 complete | Official definition, single-price go-live evidence and full-development validation |
 | I02 | **RESOLVED by D020/D021:** 5h/1h are fixed-horizon snapshots; `TimestampUTC` belongs to Current; no row-level tick history; coverage is conditionally sufficient | P1.1 complete; exact cutoff continues in I03 | Official metadata + full development coverage/pairing report |
 | I03 | 决策 cutoff、预报可得时刻、outcome 发布延迟与 `y_t-1` 可用性？ | P2.3 / P3.4；信号前 | 有证据的时间线、as-of 规则、基准处理；未定数值不补猜 / Evidenced timeline and benchmark handling |
-| I04 | **PARTIALLY RESOLVED by D021/D022/D023:** use local-date request boundaries, `HourUTC` as canonical join key and `HourDK` for DST interpretation; confirm the same contract for P1.4 sources | P1.4; P2 抓取前 | Remaining-source boundary checks without changing frozen calendar dates |
+| I04 | **RESOLVED by D021/D022/D023/D024:** use local-date request boundaries, UTC canonical keys and Danish-local time for DST interpretation across all P1 sources | P1 complete | Full development-boundary validation; P1.4 uses `HourUTC + PriceArea` or `HourUTC + PriceArea + ConnectedArea` as appropriate |
 | I05 | δ 的实际值、quantile interpolation、有效样本与 missing policy？ | P3.2 | Development-only 非零绝对 spread、样本数、算法、配置值和版本 |
-| I06 | H1-B load proxy、H3 exchange / capacity / flow 哪些可用？ | P1.4 / P5.2 / P6.1 | 逐字段资格；缺失时明确 conditional / diagnostic / unavailable |
+| I06 | **PARTIALLY RESOLVED by D024:** H1-A actual and realized flows are diagnostic; legacy day-ahead transmission fields and countertrade are conditional candidates; H1-B external forecast remains pending | P5.2 / P6.1 | Complete load-proxy access/timing evidence and border-specific feature rules without promoting actuals |
 | I07 | Regime bins、strong revision、rule thresholds、confidence / No Trade 如何定义？ | P4 / P7；对应测试前 | Development-only 预登记规格、理由和版本 |
 | I08 | Logistic Regression、时间训练/验证、校准和 Brier / undefined metric conventions？ | P10.1；解锁前 | 固定时间切分、模型与校准参数、评估与敏感性计划 |
 

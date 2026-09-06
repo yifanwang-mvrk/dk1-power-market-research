@@ -8,10 +8,10 @@
 
 | Item | Current Status |
 |---|---|
-| Completed phase | P0 — Project Control & Environment |
-| Current phase | P1 — Data Source Validation |
-| Current step | P1.4 — Validate fundamentals and system sources |
-| Next step | P2.1 — Implement reproducible development-data acquisition |
+| Completed phase | P1 — Data Source Validation |
+| Current phase | P2 — Data Pipeline |
+| Current step | P2.1 — Implement reproducible development-data acquisition |
+| Next step | P2.2 — Preserve raw data and provenance |
 | Current milestone | Level A — CV-safe |
 | Milestone status | NOT ACHIEVED |
 | Holdout | LOCKED and unused |
@@ -19,10 +19,10 @@
 
 ## One Current Action / 当前唯一动作
 
-Validate candidate demand, generation, cross-border and system-condition
-sources, including field meaning and point-in-time eligibility.
+Build a date-bounded API client that cannot cross the development boundary and
+prove it on development-only samples with explicit failure handling.
 
-核验需求、发电、跨境和系统条件候选来源，包括字段含义和 point-in-time 资格。
+实现不会越过 development 边界的 API client，并用 development-only 小样本和明确的失败处理证明它可重复运行。
 
 ## P1.1 Completion / Forecasts_Hour 核验结论
 
@@ -73,6 +73,36 @@ sources, including field meaning and point-in-time eligibility.
 - Exact historical publication delay is undocumented and remains under I03/P2.3
 - Outcome is a balancing-pressure proxy, not executable trading P&L
 
+## P1.4 Completion / Fundamentals and System Sources 核验结论
+
+**Status:** PASS — completed 2026-09-06
+
+- `ProductionConsumptionSettlement` passed all development-boundary, key and
+  completeness checks with 21,887 DK1 hours and zero holdout rows
+- Actual wind, actual solar and actual residual load were defined for H1-A and
+  classified `diagnostic_only` because settlement values arrive after delivery
+- Negative actual residual load occurs in 5,974 hours and is preserved as a
+  physical observation rather than treated as missing
+- Actual cross-border settlement fields are diagnostic; GB source-defined
+  historical nulls remain null
+- `Transmissionlines` covers all development hours and six DK1 connections
+- Day-ahead capacities and `ScheduledExchangeDayAhead` are conditional
+  decision candidates pending exact P2.3 cutoff mapping and P6.1 border rules
+- Mixed `ExportCapacity` signs and unavailable GB day-ahead fields are
+  documented conditions, not silently repaired
+- Final intraday schedules and physical exchange are diagnostic only
+- Legacy `CountertradeIntraday` is a partial-period conditional candidate:
+  7,447 of 7,751 final rows were published at least one hour before delivery,
+  while overwritten earlier versions cannot be reconstructed
+- The 2025 countertrade successor is unavailable for the development period
+- No validated Energi Data Service historical load forecast was identified;
+  the ENTSO-E day-ahead load forecast remains an external P5.2 candidate
+- Reserve-capacity and real-time sources were registered with explicit
+  candidate or diagnostic status; no unvalidated field was promoted
+- A reproducible validator, raw-data manifests and a machine-readable source
+  eligibility inventory are preserved under `research/evidence/p1_4_sources/`
+- Holdout remained locked and unused; missing values were never converted to zero
+
 ## Completed Setup / 已完成搭建
 
 - [x] Formal local Git repository created
@@ -102,7 +132,7 @@ sources, including field meaning and point-in-time eligibility.
 | A3 | Project Charter | DONE |
 | A4 | Target, development and holdout config | DONE |
 | A5 | Forecast, day-ahead and balancing data | DONE — all three core sources validated with documented conditions |
-| A6 | Data Dictionary and PIT classification | DONE — core forecast, reference and outcome fields registered |
+| A6 | Data Dictionary and PIT classification | DONE — core and P1.4 source fields registered by eligibility class |
 | A7 | H2 revision variables | NOT STARTED |
 | A8 | At least one completed hypothesis test | NOT STARTED |
 | A9 | At least one meaningful chart | NOT STARTED |
@@ -135,5 +165,6 @@ Earlier assistant-prepared P1.1 files remain outside the formal repository as re
 | 2026-09-06 | P1.1 `Forecasts_Hour` completed with a conditional pass | Current: P1.2; Next: P1.3 |
 | 2026-09-06 | P1.2 `Elspotprices` completed with a pass | Current: P1.3; Next: P1.4 |
 | 2026-09-06 | P1.3 `RegulatingBalancePowerdata` completed with a conditional pass | Current: P1.4; Next: P2.1 |
+| 2026-09-06 | P1.4 fundamentals, cross-border and system-source inventory completed with a pass | Current: P2.1; Next: P2.2 |
 
 Update this file after every completed work session. Every DONE status requires reviewed evidence.

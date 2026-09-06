@@ -1,0 +1,48 @@
+{
+  "created_at_utc": "2026-09-06T12:40:08.848367+00:00",
+  "development_boundary": {
+    "start_local_inclusive": "2022-01-01",
+    "end_local_exclusive": "2024-07-01",
+    "timezone": "Europe/Copenhagen"
+  },
+  "holdout": {
+    "start_local": "2024-07-01",
+    "state": "LOCKED",
+    "records_requested": 0
+  },
+  "files": [
+    {
+      "dataset": "ProductionConsumptionSettlement",
+      "source_url": "https://api.energidataservice.dk/dataset/ProductionConsumptionSettlement?start=2022-01-01&end=2024-07-01&filter=%7B%22PriceArea%22%3A%5B%22DK1%22%5D%7D&sort=HourUTC&limit=0",
+      "local_file": "data/raw/p1_4_validation/ProductionConsumptionSettlement_DK1_development_2022-01-01_2024-06-30.json",
+      "git_ignored": true,
+      "bytes": 23691524,
+      "sha256": "10a6042e5750b68701bebf838d41d5d7da7b2b5a01495d2bdb8781eb55fcf52e",
+      "records": 21887,
+      "first_hour_utc": "2021-12-31T23:00:00",
+      "last_hour_utc": "2024-06-30T21:00:00"
+    },
+    {
+      "dataset": "Transmissionlines",
+      "source_url": "https://api.energidataservice.dk/dataset/Transmissionlines?start=2022-01-01&end=2024-07-01&filter=%7B%22PriceArea%22%3A%5B%22DK1%22%5D%7D&sort=HourUTC%2CConnectedArea&limit=0",
+      "local_file": "data/raw/p1_4_validation/Transmissionlines_DK1_development_2022-01-01_2024-06-30.json",
+      "git_ignored": true,
+      "bytes": 69857084,
+      "sha256": "623ca67ce1832b1069243e15437ebfa54efc1f0ef419063a3f87d00c883f72b8",
+      "records": 114809,
+      "first_hour_utc": "2021-12-31T23:00:00",
+      "last_hour_utc": "2024-06-30T21:00:00"
+    },
+    {
+      "dataset": "CountertradeIntraday",
+      "source_url": "https://api.energidataservice.dk/dataset/CountertradeIntraday?start=2023-04-18&end=2024-07-01&sort=HourUTC&limit=0",
+      "local_file": "data/raw/p1_4_validation/CountertradeIntraday_development_overlap_2023-04-18_2024-06-30.json",
+      "git_ignored": true,
+      "bytes": 1662010,
+      "sha256": "eead53324ef5dce83d34517c4f651610dffa1c164e75a85a0506374ebd0d40ed",
+      "records": 7751,
+      "first_hour_utc": "2023-04-17T22:00:00",
+      "last_hour_utc": "2024-06-28T21:00:00"
+    }
+  ]
+}

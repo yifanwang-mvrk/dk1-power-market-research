@@ -42,6 +42,44 @@ point_in_time:
     - outcome
   decision_cutoff: null
 
+source_eligibility:
+  actual_residual_load:
+    dataset: ProductionConsumptionSettlement
+    fields:
+      demand: GrossConsumptionMWh
+      wind:
+        - OffshoreWindLt100MW_MWh
+        - OffshoreWindGe100MW_MWh
+        - OnshoreWindLt50kW_MWh
+        - OnshoreWindGe50kW_MWh
+      solar:
+        - SolarPowerLt10kW_MWh
+        - SolarPowerGe10Lt40kW_MWh
+        - SolarPowerGe40kW_MWh
+        - SolarPowerSelfConMWh
+    class: diagnostic_only
+  cross_border_day_ahead:
+    dataset: Transmissionlines
+    fields:
+      - ImportCapacity
+      - ExportCapacity
+      - ScheduledExchangeDayAhead
+    class: decision_eligible_candidate
+    exact_cutoff_gate: P2.3
+    border_handling_gate: P6.1
+  realized_exchange:
+    dataset: ProductionConsumptionSettlement
+    class: diagnostic_only
+  countertrade:
+    dataset: CountertradeIntraday
+    class: conditional_decision_candidate
+    development_coverage_start: "2023-04-18"
+    exact_cutoff_gate: P2.3
+  load_forecast_proxy:
+    dataset: ENTSO-E day-ahead total load forecast
+    class: external_candidate_pending_access_timing
+    eligibility_gate: P5.2
+
 baselines:
   majority_class:
     enabled: true

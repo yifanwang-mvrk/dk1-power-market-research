@@ -1,7 +1,7 @@
 # Data Dictionary
 
 **Project:** DK1 Short-Term Power Market Research
-**Status:** P1.1-P1.3 completed; forecast, day-ahead and balancing sources registered
+**Status:** P1 completed; core, fundamental and system-source fields registered
 **Last updated:** 2026-09-06
 
 ## Field Registry
@@ -33,6 +33,24 @@
 | RegulatingBalancePowerdata | ImbalanceMWh | Imbalance remaining after TSO activation of mFRR, aFRR and FCR | MWh | Ex-post physical-system diagnostic | outcome (diagnostic) | Validated P1.3; do not infer official direction from sign alone |
 | RegulatingBalancePowerdata | mFRRUpActBal | Danish mFRR activation for upward balancing | MWh | Ex-post activation volume | outcome (diagnostic) | Validated definition P1.3 |
 | RegulatingBalancePowerdata | mFRRDownActBal | Danish mFRR activation for downward balancing | MWh | Ex-post activation volume | outcome (diagnostic) | Validated definition P1.3 |
+| ProductionConsumptionSettlement | GrossConsumptionMWh | Gross electricity consumption including grid losses and self-consumption | MWh | Settlement value for the completed delivery hour | diagnostic_only | Validated P1.4; H1-A demand component |
+| ProductionConsumptionSettlement | OffshoreWindLt100MW_MWh + OffshoreWindGe100MW_MWh | Total actual offshore wind production across the two capacity bands | MWh | Settlement value for the completed delivery hour | diagnostic_only | Validated P1.4; summed without zero-filling |
+| ProductionConsumptionSettlement | OnshoreWindLt50kW_MWh + OnshoreWindGe50kW_MWh | Total actual onshore wind production across the two capacity bands | MWh | Settlement value for the completed delivery hour | diagnostic_only | Validated P1.4; summed without zero-filling |
+| ProductionConsumptionSettlement | SolarPowerLt10kW_MWh + SolarPowerGe10Lt40kW_MWh + SolarPowerGe40kW_MWh + SolarPowerSelfConMWh | Total actual solar production, including estimated self-consumption | MWh | Settlement value for the completed delivery hour | diagnostic_only | Validated P1.4; summed without zero-filling |
+| ProductionConsumptionSettlement | ActualResidualLoadMWh (derived) | Gross consumption remaining after actual wind and solar | MWh | Ex-post derived value for the delivery hour | diagnostic_only | Validated P1.4; negative values preserved |
+| ProductionConsumptionSettlement | ExchangeNO/SE/GE/NL/GB/GreatBelt_MWh | Actual settled exchange; negative is export and positive is import | MWh | Settlement value for the completed delivery hour | diagnostic_only | Validated P1.4; GB historical nulls preserved |
+| Transmissionlines | ImportCapacity | Transfer capacity from connected area into DK1 | MWh | Capacity for the coming day, officially published before 10:00 | decision_eligible (conditional) | Validated P1.4; exact cutoff and border subset in P2.3/P6.1 |
+| Transmissionlines | ExportCapacity | Transfer capacity from DK1 to connected area | MWh | Capacity for the coming day, officially published before 10:00 | decision_eligible (conditional) | Validated P1.4; mixed source signs require P6.1 rule |
+| Transmissionlines | ScheduledExchangeDayAhead | Planned cross-border exchange from day-ahead price calculation | MWh | Day-ahead schedule; negative export, positive import | decision_eligible (conditional) | Validated P1.4; GB values unavailable in legacy extract |
+| Transmissionlines | ScheduledExchangeIntraday | Final stored intraday scheduled exchange | MWh | Final intraday aggregate without historical vintage | diagnostic_only | Validated P1.4; not a point-in-time snapshot |
+| Transmissionlines | PhysicalExchangeNonvalidated | SCADA-based measured cross-border exchange | MWh per hour | Realized and nonvalidated delivery-hour value | diagnostic_only | Validated P1.4 |
+| Transmissionlines | PhysicalExchangeSettlement | Settled measured cross-border exchange | MWh | Realized settlement value after delivery | diagnostic_only | Validated P1.4 |
+| CountertradeIntraday | PublicationDate | Time when the source published the stored request version | — | Danish local publication time | decision_eligible (conditional key) | Validated P1.4; enforce exact cutoff in P2.3 |
+| CountertradeIntraday | VolumeUpMW | Net volume Energinet intended to buy in intraday | MW | Request version published before or around delivery | decision_eligible (conditional) | Partial coverage from 2023-04-18; versions overwritten |
+| CountertradeIntraday | VolumeDownMW | Net volume Energinet intended to sell in intraday | MW | Request version published before or around delivery | decision_eligible (conditional) | Partial coverage from 2023-04-18; versions overwritten |
+| PowerSystemRightNow | production / flow / activated aFRR fields | One-minute actual system state | mixed | Upscaled real-time SCADA values | diagnostic_only or lagged candidate | Registered P1.4; no same-hour final value in decision model |
+| Realtime Electricity Market / mFRR Request | timeStamp, mtuStart, area, value | Current mFRR amount sent to the activation optimization function | MW | Published shortly before each current MTU; period endpoint limited to seven days | unavailable_for_development | Registered P1.4; cannot reconstruct 2022–2024 |
+| MfrrReservesDK1 + mFRRCapacityMarket | demand / procured reserve / capacity price | mFRR capacity-market context | MW and EUR/MW | Legacy and successor daily procurement results | decision_eligible (conditional) | Registered P1.4; schema bridge and timing deferred to P6.1 |
 
 ## Point-in-Time Classes
 
@@ -43,6 +61,11 @@
 `decision_eligible (conditional)` means the field is a pre-delivery horizon
 candidate, but the exact simulated decision cutoff must be locked in P2.3
 before signal evaluation.
+
+`external_candidate_pending_access_timing` and
+`unavailable_for_development` are source-inventory statuses. They prevent an
+unverified or out-of-period source from being silently promoted into the
+model.
 
 `decision_eligible (reference)` means the field is an already-established
 pre-delivery benchmark used in the target definition. Exact availability
@@ -160,6 +183,46 @@ the same gap. Across all returned rows, `ImbalancePriceEUR` matches the Up
 price only in 5,290 hours, the Down price only in 7,900, and both prices in
 8,696; it matches neither in zero hours. The complete evidence is recorded in
 `research/evidence/p1_3_regulating_balance_power/development_validation_2026-09-06.md`.
+
+## P1.4 Source and Eligibility Contract
+
+- `ProductionConsumptionSettlement` is the selected H1-A actual-fundamentals
+  source. Its 21,887 DK1 development hours are complete, but settlement delay
+  and later revisions make all actual-derived fields diagnostic only.
+- Actual wind sums two offshore and two onshore capacity bands. Actual solar
+  sums three grid-production bands plus solar self-consumption. Residual load
+  is gross consumption minus these two totals.
+- Negative actual residual load is a possible physical state and remains in
+  the data. It is not an error code or substitute for missingness.
+- `Transmissionlines` provides hourly records for DE, DK2, GB, NL, NO2 and SE3
+  across all development hours. Its official primary key is
+  `HourUTC + PriceArea + ConnectedArea`.
+- Import/export capacity and day-ahead scheduled exchange are conditional
+  decision candidates. Exact cutoff mapping belongs to P2.3; border-specific
+  availability, sign normalization and feature construction belong to P6.1.
+- GB's legacy day-ahead fields are null in returned rows, and
+  `ExportCapacity` contains mixed signs. Preserve both facts and define any
+  later usable-border subset explicitly.
+- Final intraday schedule and physical exchange are diagnostic only. The
+  `ProductionConsumptionSettlement` exchange fields are the selected
+  settlement-flow diagnostic; `ForeignExchange` is a registered alternative.
+- Legacy `CountertradeIntraday` covers only part of development. Of 7,751
+  final rows, 7,447 were published at least one hour before delivery, but the
+  API overwrites earlier versions. It remains a conditional candidate and
+  missing request days are not automatically zero.
+- `CountertradeIntraday_v2` begins after development and is unavailable for
+  this study period.
+- No historical Energi Data Service day-ahead load forecast passed P1.4. The
+  ENTSO-E day-ahead total-load forecast is registered for P5.2 as an external
+  candidate pending access and publication-timing evidence.
+- `PowerSystemRightNow` and `ElectricityBalanceNonv` are actual-state sources;
+  only an explicitly lagged observation strictly before the cutoff could be
+  reconsidered later. The separate live mFRR Request service retains at most
+  seven days and is unavailable for 2022–2024. Reserve-capacity sources are
+  registered conditional candidates outside the Level A requirement.
+
+Complete evidence and the machine-readable inventory are under
+`research/evidence/p1_4_sources/`.
 
 ## Registration Rules
 
