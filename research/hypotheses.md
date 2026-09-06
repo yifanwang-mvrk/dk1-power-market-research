@@ -2,7 +2,7 @@
 
 **Project:** DK1 Short-Term Power Market Research
 **Status:** Pre-registered; testing not started
-**Last updated:** 2026-09-05
+**Last updated:** 2026-09-06
 
 ## H1 — Residual Load and System Tightness
 
@@ -23,7 +23,7 @@ Actual demand and actual renewable production may explain past outcomes but cann
 
 ## H2 — Renewable Forecast Revision
 
-**Status:** Not started
+**Status:** Data basis conditionally validated; testing not started
 **Role:** Primary MVP hypothesis
 
 ### Question
@@ -38,7 +38,10 @@ A positive wind revision means expected wind production increased as delivery ap
 
 ### Point-in-Time Constraint
 
-The forecast horizons, publication timing and historical availability must be validated before constructing the revision variable.
+P1.1 established same-hour fixed-horizon fields with approximately 99% numeric
+pair coverage in the development period. Use them only with the documented
+missingness, zero-value and DST rules. The exact simulated decision cutoff
+remains to be locked in P2.3; no complete tick-by-tick vintage claim is allowed.
 
 ## H3 — Cross-Border and System Conditions
 

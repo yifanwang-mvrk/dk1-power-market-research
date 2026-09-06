@@ -1,0 +1,89 @@
+{
+  "tags": [
+    "Data"
+  ],
+  "summary": "Gets data from dataset",
+  "description": "Date format: yyyy, yyyy-MM, yyyy-MM-dd, yyyy-MM-ddTHH:mm.\r\n            If no datetime boundaries are set and limit is not set, the limit defaults to 100.",
+  "parameters": [
+    {
+      "name": "datasetName",
+      "in": "path",
+      "description": "Name of dataset",
+      "required": true,
+      "schema": {
+        "type": "string"
+      }
+    },
+    {
+      "name": "start",
+      "in": "query",
+      "description": "Start of period - incl. Either fixed value or dynamic - Now, StartOfDay, StartOfMonth or StartOfYear {+|-} iso period. Ex Now-PT12H",
+      "schema": {
+        "type": "string"
+      }
+    },
+    {
+      "name": "end",
+      "in": "query",
+      "description": "End of period - excl.",
+      "schema": {
+        "type": "string"
+      }
+    },
+    {
+      "name": "columns",
+      "in": "query",
+      "description": "Comma separated list of columns. Leave blank to include all columns",
+      "schema": {
+        "type": "string"
+      }
+    },
+    {
+      "name": "filter",
+      "in": "query",
+      "description": "JSON string ex. {\"PriceArea\": [\"DK1\",\"SE3\"]}.",
+      "schema": {
+        "type": "string"
+      }
+    },
+    {
+      "name": "sort",
+      "in": "query",
+      "description": "Comma separated list of columns to sort by. Ex HourUTC, PriceArea. \r\n            If left blank the dataset is sorted by the unique key",
+      "schema": {
+        "type": "string"
+      }
+    },
+    {
+      "name": "offset",
+      "in": "query",
+      "description": "Read from position",
+      "schema": {
+        "type": "integer",
+        "format": "int32"
+      }
+    },
+    {
+      "name": "limit",
+      "in": "query",
+      "description": "Number of records returned (default 100). 0 returns all values",
+      "schema": {
+        "type": "integer",
+        "format": "int32"
+      }
+    },
+    {
+      "name": "timezone",
+      "in": "query",
+      "description": "DK (default) or UTC. For interpretation of fixed time values.",
+      "schema": {
+        "type": "string"
+      }
+    }
+  ],
+  "responses": {
+    "200": {
+      "description": "OK"
+    }
+  }
+}

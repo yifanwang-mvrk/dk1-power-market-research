@@ -1,0 +1,113 @@
+{
+  "source_file": "research/evidence/p1_1_forecasts_hour/sample_dk1_2024-06-15_2024-06-16.json",
+  "api_reported_total": 72,
+  "records_returned": 72,
+  "columns": [
+    "HourUTC",
+    "HourDK",
+    "PriceArea",
+    "ForecastType",
+    "ForecastDayAhead",
+    "ForecastIntraday",
+    "Forecast5Hour",
+    "Forecast1Hour",
+    "ForecastCurrent",
+    "TimestampUTC",
+    "TimestampDK"
+  ],
+  "expected_columns_present": true,
+  "hour_utc_min": "2024-06-15T00:00:00",
+  "hour_utc_max": "2024-06-15T23:00:00",
+  "distinct_delivery_hours": 24,
+  "price_area_counts": {
+    "DK1": 72
+  },
+  "forecast_type_counts": {
+    "Offshore Wind": 24,
+    "Onshore Wind": 24,
+    "Solar": 24
+  },
+  "official_primary_key": [
+    "HourUTC",
+    "PriceArea",
+    "ForecastType"
+  ],
+  "unique_primary_keys": 72,
+  "duplicate_primary_key_rows": 0,
+  "null_counts": {
+    "HourUTC": 0,
+    "HourDK": 0,
+    "PriceArea": 0,
+    "ForecastType": 0,
+    "ForecastDayAhead": 0,
+    "ForecastIntraday": 0,
+    "Forecast5Hour": 0,
+    "Forecast1Hour": 0,
+    "ForecastCurrent": 0,
+    "TimestampUTC": 0,
+    "TimestampDK": 0
+  },
+  "zero_counts_by_forecast_type": {
+    "Offshore Wind": {
+      "ForecastDayAhead": 0,
+      "ForecastIntraday": 0,
+      "Forecast5Hour": 0,
+      "Forecast1Hour": 0,
+      "ForecastCurrent": 0
+    },
+    "Onshore Wind": {
+      "ForecastDayAhead": 0,
+      "ForecastIntraday": 0,
+      "Forecast5Hour": 0,
+      "Forecast1Hour": 0,
+      "ForecastCurrent": 0
+    },
+    "Solar": {
+      "ForecastDayAhead": 0,
+      "ForecastIntraday": 1,
+      "Forecast5Hour": 0,
+      "Forecast1Hour": 0,
+      "ForecastCurrent": 2
+    }
+  },
+  "5h_to_1h_pairing_by_forecast_type": {
+    "Offshore Wind": {
+      "rows": 24,
+      "5h_and_1h_non_null": 24,
+      "5h_and_1h_both_positive": 24,
+      "5h_or_1h_zero": 0
+    },
+    "Onshore Wind": {
+      "rows": 24,
+      "5h_and_1h_non_null": 24,
+      "5h_and_1h_both_positive": 24,
+      "5h_or_1h_zero": 0
+    },
+    "Solar": {
+      "rows": 24,
+      "5h_and_1h_non_null": 24,
+      "5h_and_1h_both_positive": 24,
+      "5h_or_1h_zero": 0
+    }
+  },
+  "current_timestamp_position_by_forecast_type": {
+    "Offshore Wind": {
+      "timestamp_before_delivery_start": 0,
+      "timestamp_at_or_after_delivery_start": 24
+    },
+    "Onshore Wind": {
+      "timestamp_before_delivery_start": 11,
+      "timestamp_at_or_after_delivery_start": 13
+    },
+    "Solar": {
+      "timestamp_before_delivery_start": 24,
+      "timestamp_at_or_after_delivery_start": 0
+    }
+  },
+  "interpretation_limits": [
+    "A non-null or positive value does not prove point-in-time eligibility.",
+    "TimestampUTC describes ForecastCurrent, not Forecast1Hour or Forecast5Hour.",
+    "A one-day sample cannot establish development-period coverage.",
+    "Zero and missing must not be treated as equivalent without evidence."
+  ]
+}

@@ -238,6 +238,34 @@ Source: the complete 31-section final Blueprint response and the owner's subsequ
 
 **影响 / Impact:** 本次 P0.1 完成，当前待执行 P1.1；P0.2 的 repo/environment 未完成，P2 前落实。不为新想法反复改变冻结 MVP。/ Preserve one explicit next step. **Source:** Post-freeze control-system discussion and current user request.
 
+## D020 · Accept Forecasts_Hour for fixed-horizon H2 with conditions
+
+**日期 / Date:** 2026-09-06
+
+**状态 / Status:** IMPLEMENTATION NOTE
+
+**决定 / Decision:** `Forecast5Hour` and `Forecast1Hour` may support the primary 5h-to-1h H2 as fixed-horizon snapshots within the same `HourUTC + PriceArea + ForecastType` row. The exact simulated decision cutoff must be locked in P2.3. Do not claim complete tick-by-tick forecast-vintage reconstruction.
+
+**理由 / Rationale:** Official metadata defines the two horizons separately, the full development extract stores them in the same primary-key row, and approximately 99% of expected DK1 delivery hours have a non-null pair. `TimestampUTC` applies only to `ForecastCurrent`, while the primary key contains no publication timestamp and permits a maximum of one row per key.
+
+**未采用 / Alternative:** Treating `TimestampUTC` as the 1h/5h publication time, describing API refreshes as retained vintages, or abandoning H2 solely because exact minute timestamps are absent.
+
+**影响 / Impact:** H2 data feasibility receives a conditional pass. `ForecastCurrent` and `TimestampUTC` stay outside the pre-delivery signal; `ForecastIntraday` also stays outside the primary H2 signal pending separate availability evidence. **Evidence:** `research/evidence/p1_1_forecasts_hour/development_validation_2026-09-06.md`. **Related item:** I02; exact cutoff continues under I03. **Holdout:** remained locked and unused.
+
+## D021 · Preserve Forecasts_Hour gaps, zeros and DST explicitly
+
+**日期 / Date:** 2026-09-06
+
+**状态 / Status:** FROZEN
+
+**决定 / Decision:** Use `HourUTC` as the canonical join key and `HourDK` for interpretation and DST checks. Do not create rows for absent hours or impute missing forecasts as zero. Calculate revision only when 5h and 1h are both non-null. Preserve observed zeros and negatives with quality flags; report a Solar sensitivity restricted to pairs where both horizons are positive.
+
+**理由 / Rationale:** The full local-date development boundary contains 21,887 expected hours. Whole-row coverage is above 99.7%, but a confirmed April 2024 gap and additional row-level nulls remain. Fall-back dates contain 25 unique UTC hours but only 24 unique local clock labels. Solar zeros are frequent and season-dependent, and a small number of negative wind forecasts conflict with the official `>0` validation note.
+
+**未采用 / Alternative:** Filling absent hours with zero, using `HourDK` alone as the key, silently clipping negative forecasts, or treating all Solar zero pairs as either valid or missing without sensitivity reporting.
+
+**影响 / Impact:** P2 must retain raw values and generate missing, zero, negative and DST flags. P4 must disclose the primary sample denominator and Solar sensitivity denominator. **Evidence:** `research/evidence/p1_1_forecasts_hour/development_validation_2026-09-06.md`. **Holdout:** remained locked and unused.
+
 ## 本次执行说明 / Operational clarifications
 
 ### E001 · Preserve both persistence and point-in-time integrity
@@ -272,7 +300,7 @@ All items begin **OPEN**. There is no confirmed external blocker, and lack of ve
 | ID | 问题 / Question | 解决步骤 / Gate | 需要的证据 / Evidence required |
 |---|---|---|---|
 | I01 | 哪个历史 DK1 balancing/regulating 字段构成单一目标价格？/ Which exact historical price field? | P1.3，P3 前 | 字段定义、规则适用日期、单位、hour mapping；不能结果导向挑选 / Definition, dates, units and mapping |
-| I02 | Forecast horizon、`TimestampUTC`、Current / Intraday、版本留存和历史覆盖如何解释？ | P1.1 | 官方 metadata + development 样本 + pairing / availability 说明 |
+| I02 | **RESOLVED by D020/D021:** 5h/1h are fixed-horizon snapshots; `TimestampUTC` belongs to Current; no row-level tick history; coverage is conditionally sufficient | P1.1 complete; exact cutoff continues in I03 | Official metadata + full development coverage/pairing report |
 | I03 | 决策 cutoff、预报可得时刻、outcome 发布延迟与 `y_t-1` 可用性？ | P2.3 / P3.4；信号前 | 有证据的时间线、as-of 规则、基准处理；未定数值不补猜 / Evidenced timeline and benchmark handling |
 | I04 | 日期按 UTC 还是当地交割日？DST 和 API endpoints 是否包含边界？ | P1；P2 抓取前 | 明确日期语义、UTC 映射、范围测试，不改变冻结日历日期 / Boundary contract and checks |
 | I05 | δ 的实际值、quantile interpolation、有效样本与 missing policy？ | P3.2 | Development-only 非零绝对 spread、样本数、算法、配置值和版本 |

@@ -1,0 +1,28 @@
+{
+  "retrieved_at_utc": "2026-09-05T20:55:10.644082+00:00",
+  "source_organization": "Energinet",
+  "dataset": "Forecasts_Hour",
+  "scope": "official metadata and API contract only; no holdout data",
+  "files": [
+    {
+      "file": "metadata_2026-09-05.json",
+      "source_url": "https://api.energidataservice.dk/meta/Dataset/Forecasts_Hour",
+      "sha256": "2bd2f7dd9136ee14fa9783b475d621b4ac03c813df8bfdf0a9ebd250fe1d82d1",
+      "bytes": 7716
+    },
+    {
+      "file": "api_query_contract_2026-09-05.json",
+      "source_url": "https://api.energidataservice.dk/swagger/public/swagger.json#/Data/get_dataset__datasetName_",
+      "sha256": "534df397d2e6d96b01529ab744cf51c3b6e896d71731298b50300a9a1c803793",
+      "bytes": 2183
+    },
+    {
+      "file": "sample_dk1_2024-01-15_2024-01-16.json",
+      "source_url": "https://api.energidataservice.dk/dataset/Forecasts_Hour?start=2024-01-15&end=2024-01-16&filter={\"PriceArea\":[\"DK1\"]}&sort=HourUTC,PriceArea,ForecastType&limit=0&timezone=UTC",
+      "sha256": "9758f4a1da3350a15974cfea228fadb43e533432d2778738aec34895e3638e6d",
+      "bytes": 23531,
+      "date_boundary": "start inclusive, end exclusive",
+      "holdout_accessed": false
+    }
+  ]
+}

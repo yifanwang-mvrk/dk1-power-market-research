@@ -1,0 +1,356 @@
+{
+  "validation_status": "CONDITIONAL PASS",
+  "h2_5h_to_1h_feasibility": "FEASIBLE WITH DOCUMENTED CONDITIONS",
+  "raw_source_file": "data/raw/p1_1_validation/Forecasts_Hour_DK1_development_2022-01-01_2024-06-30.json",
+  "metadata_source_file": "research/evidence/p1_1_forecasts_hour/metadata_2026-09-05.json",
+  "dataset": {
+    "dataset_id": 40,
+    "dataset_name": "Forecasts_Hour",
+    "title": "Forecast Wind and Solar Power, Hour Resolution",
+    "author": "Energinet",
+    "active": true,
+    "resolution": "1 hour (PT1H)",
+    "update_frequency": "PT5M",
+    "data_from": "2019-10-31T00:00:00",
+    "primary_key": [
+      "HourUTC",
+      "PriceArea",
+      "ForecastType"
+    ],
+    "fields": [
+      {
+        "field": "HourUTC",
+        "unit": "",
+        "description": "A date and time (interval), shown in _UTC time zone_, where the values are valid. 00:00 o\u2019clock is the first hour of a given day interval  00:00 - 00:59 and 01:00 covers the second hour (interval) of the day and so forth. Please note: The naming is based on the length of the interval of the finest grain of the resolution.",
+        "primary_key_index": 1
+      },
+      {
+        "field": "HourDK",
+        "unit": "",
+        "description": "A date and time (interval), shown in _Danish time zone_, where the values are valid. 00:00 o\u2019clock is the first hour of a given day, interval 00:00 - 00:59, and 01:00 covers the second hour period (interval) of the day and so forth. ",
+        "primary_key_index": null
+      },
+      {
+        "field": "PriceArea",
+        "unit": "",
+        "description": "Same as bidding zone. Denmark is divided in two price areas (bidding zones) divided by the Great Belt. DK1 is west of the Great Belt and DK2 is east of the Great Belt.",
+        "primary_key_index": 2
+      },
+      {
+        "field": "ForecastType",
+        "unit": "text",
+        "description": "Solar, Offshore Wind or Onshore wind",
+        "primary_key_index": 3
+      },
+      {
+        "field": "ForecastDayAhead",
+        "unit": "MWh per hour",
+        "description": "Forecast for the next day is published at 18:00 Danish time zone. The forecast is generated at 17:50 Danish time zone.",
+        "primary_key_index": null
+      },
+      {
+        "field": "ForecastIntraday",
+        "unit": "MWh per hour",
+        "description": "The forecast for the coming day at 6am Danish time zone.  Also published at ENTSO-E tranparency platform.",
+        "primary_key_index": null
+      },
+      {
+        "field": "Forecast5Hour",
+        "unit": "MWh per hour",
+        "description": "The forecast valid 5 hours ahead in time. ",
+        "primary_key_index": null
+      },
+      {
+        "field": "Forecast1Hour",
+        "unit": "MWh per hour",
+        "description": "The forecast valid 1 hours ahead in time. ",
+        "primary_key_index": null
+      },
+      {
+        "field": "ForecastCurrent",
+        "unit": "MWh per hour",
+        "description": "The forecast valid for the current time.  ",
+        "primary_key_index": null
+      },
+      {
+        "field": "TimestampUTC",
+        "unit": "",
+        "description": "UTC timestamp at which the \"current forecast\" was done.",
+        "primary_key_index": null
+      },
+      {
+        "field": "TimestampDK",
+        "unit": "",
+        "description": "Timestamp (in the _Danish time zone_) at which the \"current forecast\" was done.",
+        "primary_key_index": null
+      }
+    ]
+  },
+  "scope": {
+    "development_start_local_inclusive": "2022-01-01",
+    "development_end_local_inclusive": "2024-06-30",
+    "request_end_local_exclusive": "2024-07-01",
+    "boundary_timezone": "Europe/Copenhagen",
+    "expected_delivery_hours": 21887,
+    "records_returned": 65499,
+    "first_hour_utc": "2021-12-31T23:00:00+00:00",
+    "last_hour_utc": "2024-06-30T21:00:00+00:00",
+    "first_hour_local": "2022-01-01T00:00:00+01:00",
+    "last_hour_local": "2024-06-30T23:00:00+02:00",
+    "holdout_start_utc": "2024-06-30T22:00:00+00:00",
+    "records_at_or_after_holdout_start": 0,
+    "price_areas": [
+      "DK1"
+    ]
+  },
+  "overall_duplicate_key_rows": 0,
+  "forecast_types": {
+    "Offshore Wind": {
+      "rows": 21830,
+      "expected_hours": 21887,
+      "whole_row_missing_hours": 57,
+      "whole_row_coverage_pct": 99.7396,
+      "missing_intervals": [
+        {
+          "start_utc": "2024-04-12T22:00:00+00:00",
+          "end_utc_inclusive": "2024-04-15T06:00:00+00:00",
+          "start_local": "2024-04-13T00:00:00+02:00",
+          "end_local_inclusive": "2024-04-15T08:00:00+02:00",
+          "hours": 57
+        }
+      ],
+      "duplicate_key_rows": 0,
+      "null_counts": {
+        "ForecastDayAhead": 63,
+        "ForecastIntraday": 5975,
+        "Forecast5Hour": 103,
+        "Forecast1Hour": 109,
+        "ForecastCurrent": 0
+      },
+      "zero_counts": {
+        "ForecastDayAhead": 2,
+        "ForecastIntraday": 6,
+        "Forecast5Hour": 11,
+        "Forecast1Hour": 42,
+        "ForecastCurrent": 73
+      },
+      "negative_counts": {
+        "ForecastDayAhead": 0,
+        "ForecastIntraday": 0,
+        "Forecast5Hour": 0,
+        "Forecast1Hour": 0,
+        "ForecastCurrent": 0
+      },
+      "5h_1h_both_non_null": 21667,
+      "5h_1h_pair_coverage_vs_expected_pct": 98.9948,
+      "5h_1h_both_positive": 21619,
+      "5h_or_1h_zero": 48
+    },
+    "Onshore Wind": {
+      "rows": 21830,
+      "expected_hours": 21887,
+      "whole_row_missing_hours": 57,
+      "whole_row_coverage_pct": 99.7396,
+      "missing_intervals": [
+        {
+          "start_utc": "2024-04-12T22:00:00+00:00",
+          "end_utc_inclusive": "2024-04-15T06:00:00+00:00",
+          "start_local": "2024-04-13T00:00:00+02:00",
+          "end_local_inclusive": "2024-04-15T08:00:00+02:00",
+          "hours": 57
+        }
+      ],
+      "duplicate_key_rows": 0,
+      "null_counts": {
+        "ForecastDayAhead": 63,
+        "ForecastIntraday": 5975,
+        "Forecast5Hour": 119,
+        "Forecast1Hour": 127,
+        "ForecastCurrent": 0
+      },
+      "zero_counts": {
+        "ForecastDayAhead": 0,
+        "ForecastIntraday": 0,
+        "Forecast5Hour": 0,
+        "Forecast1Hour": 0,
+        "ForecastCurrent": 0
+      },
+      "negative_counts": {
+        "ForecastDayAhead": 0,
+        "ForecastIntraday": 0,
+        "Forecast5Hour": 11,
+        "Forecast1Hour": 8,
+        "ForecastCurrent": 3
+      },
+      "5h_1h_both_non_null": 21637,
+      "5h_1h_pair_coverage_vs_expected_pct": 98.8578,
+      "5h_1h_both_positive": 21618,
+      "5h_or_1h_zero": 0
+    },
+    "Solar": {
+      "rows": 21839,
+      "expected_hours": 21887,
+      "whole_row_missing_hours": 48,
+      "whole_row_coverage_pct": 99.7807,
+      "missing_intervals": [
+        {
+          "start_utc": "2024-04-12T22:00:00+00:00",
+          "end_utc_inclusive": "2024-04-14T21:00:00+00:00",
+          "start_local": "2024-04-13T00:00:00+02:00",
+          "end_local_inclusive": "2024-04-14T23:00:00+02:00",
+          "hours": 48
+        }
+      ],
+      "duplicate_key_rows": 0,
+      "null_counts": {
+        "ForecastDayAhead": 48,
+        "ForecastIntraday": 5984,
+        "Forecast5Hour": 110,
+        "Forecast1Hour": 118,
+        "ForecastCurrent": 0
+      },
+      "zero_counts": {
+        "ForecastDayAhead": 6447,
+        "ForecastIntraday": 2970,
+        "Forecast5Hour": 6025,
+        "Forecast1Hour": 4615,
+        "ForecastCurrent": 4020
+      },
+      "negative_counts": {
+        "ForecastDayAhead": 0,
+        "ForecastIntraday": 0,
+        "Forecast5Hour": 0,
+        "Forecast1Hour": 0,
+        "ForecastCurrent": 0
+      },
+      "5h_1h_both_non_null": 21664,
+      "5h_1h_pair_coverage_vs_expected_pct": 98.9811,
+      "5h_1h_both_positive": 14837,
+      "5h_or_1h_zero": 6854
+    }
+  },
+  "dst_checks": [
+    {
+      "local_date": "2022-03-27",
+      "expected_hours": 23,
+      "Offshore Wind": {
+        "rows": 23,
+        "unique_hour_utc": 23,
+        "unique_hour_dk": 23
+      },
+      "Onshore Wind": {
+        "rows": 23,
+        "unique_hour_utc": 23,
+        "unique_hour_dk": 23
+      },
+      "Solar": {
+        "rows": 23,
+        "unique_hour_utc": 23,
+        "unique_hour_dk": 23
+      }
+    },
+    {
+      "local_date": "2022-10-30",
+      "expected_hours": 25,
+      "Offshore Wind": {
+        "rows": 25,
+        "unique_hour_utc": 25,
+        "unique_hour_dk": 24
+      },
+      "Onshore Wind": {
+        "rows": 25,
+        "unique_hour_utc": 25,
+        "unique_hour_dk": 24
+      },
+      "Solar": {
+        "rows": 25,
+        "unique_hour_utc": 25,
+        "unique_hour_dk": 24
+      }
+    },
+    {
+      "local_date": "2023-03-26",
+      "expected_hours": 23,
+      "Offshore Wind": {
+        "rows": 23,
+        "unique_hour_utc": 23,
+        "unique_hour_dk": 23
+      },
+      "Onshore Wind": {
+        "rows": 23,
+        "unique_hour_utc": 23,
+        "unique_hour_dk": 23
+      },
+      "Solar": {
+        "rows": 23,
+        "unique_hour_utc": 23,
+        "unique_hour_dk": 23
+      }
+    },
+    {
+      "local_date": "2023-10-29",
+      "expected_hours": 25,
+      "Offshore Wind": {
+        "rows": 25,
+        "unique_hour_utc": 25,
+        "unique_hour_dk": 24
+      },
+      "Onshore Wind": {
+        "rows": 25,
+        "unique_hour_utc": 25,
+        "unique_hour_dk": 24
+      },
+      "Solar": {
+        "rows": 25,
+        "unique_hour_utc": 25,
+        "unique_hour_dk": 24
+      }
+    },
+    {
+      "local_date": "2024-03-31",
+      "expected_hours": 23,
+      "Offshore Wind": {
+        "rows": 23,
+        "unique_hour_utc": 23,
+        "unique_hour_dk": 23
+      },
+      "Onshore Wind": {
+        "rows": 23,
+        "unique_hour_utc": 23,
+        "unique_hour_dk": 23
+      },
+      "Solar": {
+        "rows": 23,
+        "unique_hour_utc": 23,
+        "unique_hour_dk": 23
+      }
+    }
+  ],
+  "versioning_evidence": {
+    "timestamp_utc_in_primary_key": false,
+    "maximum_rows_per_primary_key": 1,
+    "wide_horizon_columns": [
+      "Forecast5Hour",
+      "Forecast1Hour"
+    ],
+    "finding": "The extract retains one row per delivery hour, area and forecast type. It does not contain row-level tick-by-tick publication history."
+  },
+  "p1_1_rules": [
+    "Join and deduplicate with HourUTC, PriceArea and ForecastType.",
+    "Use HourDK for interpretation and DST checks, not as the sole join key.",
+    "Compute 5h-to-1h revision only when both horizon values are non-null in the same primary-key row.",
+    "Do not create rows for absent hours and do not impute absent or null forecasts as zero.",
+    "Preserve observed zero and negative values and attach quality flags; do not silently coerce them.",
+    "For Solar, report a sensitivity view restricted to pairs where both horizon values are positive.",
+    "Treat Forecast5Hour and Forecast1Hour as fixed-horizon snapshots, not complete forecast-vintage history.",
+    "Exclude ForecastCurrent and TimestampUTC from the pre-delivery H2 signal.",
+    "Keep ForecastIntraday outside the primary H2 signal until its historical availability is separately evidenced.",
+    "Lock the exact simulated decision cutoff in P2.3 before signal evaluation."
+  ],
+  "open_limits": [
+    "Exact minute-level publication timestamps for Forecast5Hour and Forecast1Hour are not stored in the dataset.",
+    "The official >0 validation rule conflicts with observed zeros and a small number of negative wind forecasts.",
+    "Thor offshore wind farm data is excluded by the official source.",
+    "Known April 2024 missing data is confirmed, with type-specific observed gap lengths."
+  ]
+}

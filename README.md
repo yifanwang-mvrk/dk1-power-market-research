@@ -4,11 +4,11 @@ Independent, point-in-time research into whether renewable forecast revisions an
 
 ## Current Status
 
-Project setup is in progress.
+Project foundation is complete. Official-source validation is in progress.
 
-- Repository structure: created
-- Python environment: created
-- Data validation: not started
+- Repository structure and GitHub remote: created
+- Python environment: created and verified
+- Data validation: P1.1 `Forecasts_Hour` conditionally passed; P1.2 current
 - Hypothesis testing: not started
 - Level A (CV-safe): not achieved
 - Locked holdout: unused

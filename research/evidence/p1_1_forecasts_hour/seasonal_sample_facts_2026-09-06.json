@@ -1,0 +1,66 @@
+{
+  "samples": [
+    {
+      "file": "sample_dk1_2024-01-15_2024-01-16.json",
+      "records": 72,
+      "delivery_hours": 24,
+      "duplicate_key_rows": 0,
+      "solar_5h_zero": 7,
+      "solar_1h_zero": 7,
+      "solar_5h_or_1h_zero": 7,
+      "solar_zero_hours_dk": [
+        "01:00",
+        "02:00",
+        "03:00",
+        "21:00",
+        "22:00",
+        "23:00",
+        "00:00"
+      ]
+    },
+    {
+      "file": "sample_dk1_2024-04-05_2024-04-06.json",
+      "records": 72,
+      "delivery_hours": 24,
+      "duplicate_key_rows": 0,
+      "solar_5h_zero": 7,
+      "solar_1h_zero": 8,
+      "solar_5h_or_1h_zero": 8,
+      "solar_zero_hours_dk": [
+        "02:00",
+        "03:00",
+        "04:00",
+        "21:00",
+        "22:00",
+        "23:00",
+        "00:00",
+        "01:00"
+      ]
+    },
+    {
+      "file": "sample_dk1_2024-06-15_2024-06-16.json",
+      "records": 72,
+      "delivery_hours": 24,
+      "duplicate_key_rows": 0,
+      "solar_5h_zero": 0,
+      "solar_1h_zero": 0,
+      "solar_5h_or_1h_zero": 0,
+      "solar_zero_hours_dk": []
+    },
+    {
+      "file": "sample_dk1_2024-04-13_2024-04-14.json",
+      "records": 0,
+      "delivery_hours": 0,
+      "duplicate_key_rows": 0,
+      "solar_5h_zero": null,
+      "solar_1h_zero": null,
+      "solar_5h_or_1h_zero": null,
+      "solar_zero_hours_dk": []
+    }
+  ],
+  "interpretation_boundary": [
+    "Zero is not automatically missing.",
+    "Zero is not automatically a validated forecast.",
+    "This report does not establish point-in-time eligibility."
+  ]
+}

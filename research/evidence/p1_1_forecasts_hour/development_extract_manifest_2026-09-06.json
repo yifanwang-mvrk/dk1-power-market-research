@@ -1,0 +1,26 @@
+{
+  "retrieved_at_utc": "2026-09-06T10:00:03.811885+00:00",
+  "source_organization": "Energinet",
+  "dataset": "Forecasts_Hour",
+  "request": {
+    "base_url": "https://api.energidataservice.dk/dataset/Forecasts_Hour",
+    "start": "2022-01-01",
+    "end_exclusive": "2024-07-01",
+    "timezone": "DK",
+    "filter": {
+      "PriceArea": [
+        "DK1"
+      ]
+    },
+    "sort": "HourUTC,PriceArea,ForecastType",
+    "limit": 0
+  },
+  "local_file": "data/raw/p1_1_validation/Forecasts_Hour_DK1_development_2022-01-01_2024-06-30.json",
+  "git_ignored": true,
+  "bytes": 21235673,
+  "sha256": "f36338f4ec736d6de29e658d994dc9e5acb295a6d99b2f0a14301548181f49ee",
+  "records": 65499,
+  "first_local_delivery_hour": "2022-01-01T00:00:00+01:00",
+  "last_local_delivery_hour": "2024-06-30T23:00:00+02:00",
+  "holdout_records": 0
+}
