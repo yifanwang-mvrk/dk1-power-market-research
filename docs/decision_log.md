@@ -57,6 +57,7 @@ Source: the complete 31-section final Blueprint response and the owner's subsequ
 | D031 | P5 H1: weak threshold-like mechanism; H1-B interim proxy registered | RESEARCH FINDING |
 | D032 | P6 H3: diagnostic conditioning only; no decision-eligible cross-border signal | RESEARCH FINDING |
 | D033 | P7 transparent signal engine: modest DOWN-side edge, negligible UP side | RESEARCH FINDING |
+| D034 | P9 Level B (Interview Ready) acceptance | MILESTONE |
 | E001–E003 | 执行说明 / Execution clarifications | IMPLEMENTATION NOTE |
 | I01–I08 | 字段、参数和可用性 / Fields, parameters and availability | TRACKED — see current table |
 
@@ -838,6 +839,44 @@ loader aborts unless the holdout is locked. Zero holdout rows read.
 
 **Supersedes / 替代:** None. Partially resolves I07 (round-1 rule thresholds and
 confidence mapping; regime tuning and a probabilistic confidence scale remain).
+
+## D034 · Level B (Interview Ready) acceptance
+
+**日期 / Date:** 2026-09-06
+**状态 / Status:** MILESTONE
+**Related step / 对应步骤:** P9.1, P9.2
+
+**决定 / Decision:** All ten Level B criteria are audited as met against committed
+evidence at `git HEAD fe53475` (P9.2). `research/r01_research_memo.md` v1.0 is
+written (P9.1). `README.md` and `research/project_charter.md` state the Level B
+status, the H1/H2/H3 results and the transparent signal with no
+deployable-signal or profit language. The milestone board reads **Level B —
+ACHIEVED**.
+
+**理由 / Rationale:** D017 requires file or result evidence for each criterion.
+All three hypotheses were tested one full round with written conclusions
+(including conditional and diagnostic-only outcomes); the transparent signal,
+confidence, risk framing, Market State Cards, the first Market Journal entry, the
+baseline scorecard and the research memo are all committed.
+
+**未采用 / Alternative considered:** Declaring Level B on the H2 work alone
+(H1/H3 rounds and the signal engine are explicit B criteria); or delaying until
+Level C modelling begins (the criteria are an evidence and explanation gate).
+
+**Evidence / 证据:** `research/evidence/p9_level_b/level_b_audit_2026-09-06.md`
+and `.json`; `research/r01_research_memo.md`.
+
+**Impact / 影响:** The project may use the Level B public wording in
+`docs/project_handbook.md` section 16 ("translating hypotheses into directional
+views, confidence levels and explicit risk/invalidation conditions"). Level C
+(P10: logistic regression, calibration, the locked-holdout unlock and one
+out-of-sample evaluation) is the final MVP milestone. The holdout stays locked
+until the P10.2 unlock gate.
+
+**Holdout implications / 留出期:** None. Every Level B result is development-only
+and in-sample; zero holdout rows read.
+
+**Supersedes / 替代:** None.
 
 ## 本次执行说明 / Operational clarifications
 

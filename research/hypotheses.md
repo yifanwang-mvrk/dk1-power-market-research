@@ -1,8 +1,9 @@
 # Hypothesis Registry
 
 **Project:** DK1 Short-Term Power Market Research
-**Status:** H2 round-1 complete (supported, weak — P4.3); H1 and H3 sources
-registered, testing not started
+**Status:** Level B achieved — H2 conditionally supported, H1 weak
+threshold-like, H3 diagnostic-only; transparent signal engine built. Level C
+(logistic model + locked holdout) next. See `research/r01_research_memo.md`.
 **Last updated:** 2026-09-06
 
 ## H1 — Residual Load and System Tightness

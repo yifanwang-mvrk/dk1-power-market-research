@@ -4,20 +4,24 @@ Independent, point-in-time research into whether renewable forecast revisions an
 
 ## Current Status
 
-**Level A (CV-safe) is achieved.** The foundation, official-source validation,
-the development data pipeline, the frozen target and one pre-registered
-hypothesis test are complete. Level B is next.
+**Level B (Interview Ready) is achieved.** All three hypotheses have been tested
+one full round, a transparent signal engine with confidence and risk framing is
+built, and a research memo is written. Level C (the locked-holdout evaluation) is
+the last MVP milestone.
 
-- Repository structure and GitHub remote: created
-- Python environment: created and verified
-- Data validation: P1 complete; source roles and point-in-time eligibility inventoried
-- Data pipeline: P2 complete; bounded acquisition, raw provenance, timestamp
-  normalization, hourly joins and quality gates passed
-- Target construction: P3 complete; the balancing spread, development-only
-  Q25 neutral band, three outcome labels and baseline contracts are frozen
-- Hypothesis testing: H2 round 1 complete — pre-registered, then run once;
-  result **supported but weak** (see below)
-- Level A (CV-safe): **achieved** (all ten criteria audited, P8.1)
+- Data foundation: P1–P3 complete — validated official sources, a point-in-time
+  hourly pipeline (21,887 development hours), a frozen three-class target
+  (`δ = 5.9956075 EUR/MWh`)
+- **H2** renewable forecast revision (primary): pre-registered, then tested and
+  conditioned — **conditionally supported** (real by permutation, weak,
+  DOWN-side only, fails at low wind, unproven out of time)
+- **H1** residual load: weak, threshold-like, diagnostic; a decision-eligible
+  proxy is registered
+- **H3** cross-border: diagnostic conditioning only — no decision-eligible signal
+- **Signal engine:** a transparent rule → UP PRESSURE / DOWN PRESSURE / NO TRADE
+  with confidence and invalidation; active in 33% of hours, a modest DOWN-side edge
+- Research memo: [`research/r01_research_memo.md`](research/r01_research_memo.md)
+- Level A audited (P8.1), Level B audited (P9.2); Level C not started
 - Locked holdout: unused
 
 ## Research Question
@@ -146,17 +150,25 @@ revision variable was crossed with any outcome
   is real on the `DOWN` side and essentially absent on the `UP` side.
 - **Solar** revisions show the same direction, weaker, and are reported
   separately as "conditionally supported — solar only, needs replication".
-- This is not a deployable or profitable rule. A chronological out-of-sample
-  check, a stricter baseline gate and regime / cross-border conditioning are the
-  Level B work.
+- **Conditioning (P4.4):** a permutation null confirms the edge is real (not
+  chance); it holds across season and hour-of-day; it **fails at low expected
+  wind**; and it did **not reproduce** on a 2024 H1 chronological hold-back.
+- **H1 and H2 are complementary.** H1 (residual load) is weak and threshold-like
+  but picks up exactly in the tight, wind-poor hours where H2 fails.
+- This is not a deployable or profitable rule. The locked-holdout evaluation
+  (Level C) is the real out-of-sample test.
 
 ![Balancing-pressure label share by wind-revision quintile](research/evidence/p4_h2_revision/p4_3_revision_label_chart_2026-09-06.png)
 
-Reproduce with:
+Reproduce the full hypothesis and signal chain with:
 
 ```bash
-uv run python src/p4_revision.py   # build revisions, freeze buckets
-uv run python src/p4_test.py       # run the pre-registered round-1 test
+uv run python src/p4_revision.py       # build revisions, freeze buckets
+uv run python src/p4_test.py           # pre-registered H2 round-1 test
+uv run python src/p4_conditioning.py   # H2 regime / time / permutation stress tests
+uv run python src/p5_residual_load.py  # H1-A mechanism + H1-B proxy
+uv run python src/p6_cross_border.py   # H3 cross-border conditioning
+uv run python src/p7_signal_engine.py  # transparent signal, cards, journal
 ```
 
 ## Research Principles

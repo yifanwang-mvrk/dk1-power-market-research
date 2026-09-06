@@ -1,0 +1,25 @@
+{
+  "step": "P9.2",
+  "status": "PASS",
+  "milestone": "Level B - Interview Ready",
+  "verdict": "ACHIEVED",
+  "audited_at_utc": "2026-09-06T20:00:00Z",
+  "git_head_audited": "fe53475",
+  "criteria": {
+    "B1_h2_complete_first_round": {"verdict": "DONE", "evidence": "P4.1-P4.4; D027/D028/D030; conditionally supported"},
+    "B2_h1_mechanism_and_h1b_eligibility": {"verdict": "DONE", "evidence": "P5.1 H1-A diagnostic weak threshold-like; P5.2 H1-B ELIGIBLE_INTERIM_PROXY; D031"},
+    "B3_h3_preliminary_conditioning": {"verdict": "DONE", "evidence": "P6; D032; diagnostic conditioning only, no decision-eligible signal"},
+    "B4_transparent_rule_signal": {"verdict": "DONE", "evidence": "P7.1; D033; decision table, decision-eligible inputs only, thresholds pre-declared"},
+    "B5_confidence_with_basis": {"verdict": "DONE", "evidence": "P7.2; Low/Medium, no High; P4.3/P5.1 basis stated"},
+    "B6_risk_invalidation_per_view": {"verdict": "DONE", "evidence": "P7.2 and each Market State Card"},
+    "B7_market_state_card": {"verdict": "DONE", "evidence": "4 cards on real development hours, retrospective outcomes, labelled not-live"},
+    "B8_first_market_journal_entry": {"verdict": "DONE", "evidence": "journal/market_journal.md J001"},
+    "B9_short_research_memo": {"verdict": "DONE", "evidence": "research/r01_research_memo.md v1.0"},
+    "B10_baseline_comparison_scorecard": {"verdict": "DONE", "evidence": "P7.3 scorecard vs majority, hour-of-week, persistence; collated in the memo"}
+  },
+  "criteria_met": 10,
+  "criteria_total": 10,
+  "level_c": "NOT STARTED",
+  "next": "P10 - logistic regression + calibration in development, then the Level C locked-holdout unlock and evaluation",
+  "holdout": "LOCKED_AND_UNUSED"
+}

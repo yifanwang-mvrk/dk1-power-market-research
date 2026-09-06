@@ -2,8 +2,9 @@
 
 **Project:** DK1 Short-Term Power Market Research
 **Version:** MVP v1
-**Status:** Frozen design; Level A (CV-safe) achieved — H2 round-1 test complete
-(supported but weak); Level B next
+**Status:** Frozen design; Level B (Interview Ready) achieved — all three
+hypotheses tested one round, transparent signal engine and research memo
+complete; Level C (locked-holdout evaluation) next
 **Owner:** Yifan Wang
 
 ## Mission

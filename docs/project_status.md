@@ -8,25 +8,25 @@
 
 | Item | Current Status |
 |---|---|
-| Completed phase | P7 — Signal engine (rule, confidence, cards, journal) |
-| Current phase | P9 — Level B research memo and audit |
-| Current step | P9.1 — compile `research/r01_research_memo.md` |
-| Next step | P9.2 — audit Level B and practise explaining the findings |
-| Current milestone | Level B — Interview Ready |
-| Milestone status | IN PROGRESS (Level A done; B1–B8 done; P9 memo remains) |
+| Completed phase | P9 — Level B memo and audit |
+| Current phase | P10 — Level C (logistic model, calibration, holdout) |
+| Current step | P10.1 — fit logistic regression + calibration within development |
+| Next step | P10.2 — freeze the final spec and pass the holdout-unlock gate |
+| Current milestone | Level C — MVP Complete |
+| Milestone status | NOT STARTED (Level B achieved 2026-09-06) |
 | Holdout | LOCKED and unused |
 | Blocker | None |
 
 ## One Current Action / 当前唯一动作
 
-Start P9.1: compile `research/r01_research_memo.md` — the H1 / H2 / H3 results and
-their limitations, the transparent signal and its baseline comparison, the risk
-and invalidation framing, and what Level C (the logistic model and the
-locked-holdout test) will decide. Publish it as a shareable memo.
+Start P10.1: fit a logistic regression on decision-eligible features (H2 wind
+revision, H1-B residual-load proxy, time context) with a time-ordered
+development-only train/validation split and probability calibration. Record the
+temporal split, model selection and calibration plan before the holdout unlock.
 
-开始 P9.1：撰写 `research/r01_research_memo.md` —— H1/H2/H3 的结果与局限、透明信号
-及其基准对比、风险与失效条件、以及 Level C（逻辑回归 + 解锁 holdout 检验）要判定
-什么。产出一份可分享的备忘录。
+开始 P10.1：用 decision-eligible 特征（H2 风电修正、H1-B 净负荷代理、时间上下文）
+拟合逻辑回归，采用开发期内按时间排序的训练/验证切分和概率校准。在解锁 holdout 前
+记录时间切分、模型选择和校准方案。
 
 ## P1.1 Completion / Forecasts_Hour 核验结论
 
@@ -327,6 +327,21 @@ tercile scheme declared before crossing outcomes
 - Chart `p7_signal_vs_label_chart_2026-09-06.png`
 - Evidence: `research/evidence/p7_signal_engine/`
 
+## P9 Completion / Level B 完成结论
+
+**Status:** PASS — **Level B (Interview Ready) ACHIEVED 2026-09-06**
+
+- P9.1: `research/r01_research_memo.md` v1.0 — question, method (PIT integrity,
+  frozen target, pre-registration, locked holdout), H1/H2/H3 results and
+  limitations, the transparent signal and its baseline comparison, risk /
+  invalidation, and what Level C decides
+- P9.2: audited all ten Level B criteria against committed evidence at
+  `git HEAD fe53475`; **10/10 met**. Evidence:
+  `research/evidence/p9_level_b/level_b_audit_2026-09-06.md` and `.json`
+- README and charter aligned with Level B (no deployable-signal or profit
+  language, D016/D018); Decision D034
+- Level C not started
+
 ## P8 Completion / Level A Packaging 完成结论
 
 **Status:** PASS — Level A (CV-safe) ACHIEVED 2026-09-06
@@ -378,7 +393,7 @@ tercile scheme declared before crossing outcomes
 | A10 | Holdout completely unused | MAINTAINED |
 
 **Level A: ACHIEVED 2026-09-06 — 10/10 criteria audited (P8.1); see `research/evidence/p8_level_a/`**
-**Level B: IN PROGRESS**
+**Level B: ACHIEVED 2026-09-06 — 10/10 criteria audited (P9.2); see `research/evidence/p9_level_b/`**
 **Level C: NOT STARTED**
 
 ## Level B Evidence Board / Level B 证据板
@@ -393,10 +408,10 @@ tercile scheme declared before crossing outcomes
 | B6 | Risk / invalidation per view | DONE — P7.2 |
 | B7 | Market State Card (>= 1 real development example) | DONE — 4 cards, P7.3 |
 | B8 | First Market Journal entry | DONE — `journal/market_journal.md` J001 |
-| B9 | Short research memo (`research/r01_research_memo.md`) | NOT STARTED — P9 |
-| B10 | Majority + persistence baseline comparison in scorecard form | DONE — P7.3 scorecard; memo will collate |
+| B9 | Short research memo (`research/r01_research_memo.md`) | DONE — v1.0, P9.1 |
+| B10 | Majority + persistence baseline comparison in scorecard form | DONE — P7.3 scorecard; collated in the memo |
 
-**Level B: IN PROGRESS — B1–B8 done; P9 memo (B9) is the last item**
+**Level B: ACHIEVED 2026-09-06 — 10/10 criteria audited (P9.2); see `research/evidence/p9_level_b/`**
 
 ## Frozen Research Controls / 冻结研究规则
 
@@ -432,5 +447,6 @@ Earlier assistant-prepared P1.1 files remain outside the formal repository as re
 | 2026-09-06 | P5.1–P5.2 H1: H1-A weak threshold-like mechanism (diagnostic), concentrated where H2 fails; H1-B interim climatology proxy registered (tracks actual RL +0.92, weak spread association). D031. Level B B2 done | Current: P6.1; Next: P6.2 |
 | 2026-09-06 | P6.1–P6.2 H3: decision-eligible day-ahead cross-border capacity/schedule does not condition the H2 gradient; realized net-import flow shows weak diagnostic steepening. D032. Level B B3 done | Current: P7.1; Next: P7.2 |
 | 2026-09-06 | P7.1–P7.3 transparent signal engine: DOWN PRESSURE realizes DOWN 40% vs 33% base (+7pp), UP side negligible, active 33%, marginally beats availability-safe baselines; 4 State Cards + Journal J001. D033. Level B B4–B8 done | Current: P9.1; Next: P9.2 |
+| 2026-09-06 | P9.1 research memo r01 v1.0 written; P9.2 audited all ten Level B criteria (10/10) — **Level B (Interview Ready) ACHIEVED**. D034 | Current: P10.1; Next: P10.2 |
 
 Update this file after every completed work session. Every DONE status requires reviewed evidence.
