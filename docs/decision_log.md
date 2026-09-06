@@ -56,6 +56,7 @@ Source: the complete 31-section final Blueprint response and the owner's subsequ
 | D030 | P4.4 H2 conditioning: conditionally supported, two failure conditions | RESEARCH FINDING |
 | D031 | P5 H1: weak threshold-like mechanism; H1-B interim proxy registered | RESEARCH FINDING |
 | D032 | P6 H3: diagnostic conditioning only; no decision-eligible cross-border signal | RESEARCH FINDING |
+| D033 | P7 transparent signal engine: modest DOWN-side edge, negligible UP side | RESEARCH FINDING |
 | E001–E003 | 执行说明 / Execution clarifications | IMPLEMENTATION NOTE |
 | I01–I08 | 字段、参数和可用性 / Fields, parameters and availability | TRACKED — see current table |
 
@@ -780,6 +781,64 @@ loader aborts unless the holdout is locked. Zero holdout rows read.
 
 **Supersedes / 替代:** None.
 
+## D033 · P7 transparent rule-based signal engine
+
+**日期 / Date:** 2026-09-06
+**状态 / Status:** RESEARCH FINDING (does not change any frozen design)
+**Related step / 对应步骤:** P7.1–P7.3
+**Related open item / 对应 I 编号:** I07 (rule thresholds, confidence, No Trade)
+
+**决定 / Decision:** A small, fully stated decision table over decision-eligible
+inputs only. Each hypothesis speaks only where it has evidence:
+
+- **H2 view:** `DOWN` if `wind_revision > h2_strong_cut` (top 20% of
+  `abs(wind_revision)`, 222.6 MWh) and `wind_forecast_5h > 861.4 MWh` (P4.4 blind
+  spot); H2 never emits `UP` (P4.3: the UP side has no skill).
+- **H1 view:** `UP` if `residual_load_known > 1855.7 MWh` (top 20% of the H1-B
+  proxy); H1 never emits `DOWN` (P5.1 supported only the tight, UP side).
+- **Combination:** `DOWN PRESSURE` (MEDIUM) when H2 fires and H1 is not tight;
+  `UP PRESSURE` (LOW) when H1 is very tight and H2 is silent; `NO TRADE` on
+  conflict, on silence, or on a missing input. **No case supports High
+  confidence.**
+
+**结论 / Finding (in-sample, development):** The engine takes an active view in
+32.7% of hours (7,154 active, 14,732 No Trade). It marginally beats the
+availability-safe baselines on balanced accuracy (0.347 vs majority 0.333,
+hour-of-week 0.344) but loses on plain accuracy (0.413 vs ~0.47) and sits far
+below the ex-post persistence reference. The value is on the DOWN side:
+`DOWN PRESSURE` hours realize `DOWN` 40.0% of the time vs a 32.9% base rate
+(+7 pp); `UP PRESSURE` hours realize `UP` 21.2% vs 19.9% (+1.3 pp, negligible).
+MEDIUM-confidence active views hit 0.40 (three-class) vs 0.21 for LOW —
+the confidence tiering is meaningful.
+
+**理由 / Rationale:** The transparent-rule stage (D013 modelling order,
+Blueprint §16) must use only eligible information and stay explainable. Thresholds
+are pre-declared from decision-eligible distributions (not tuned on outcomes).
+Restricting each hypothesis to its evidenced side keeps the rule honest about the
+P4.3 asymmetry and the P5.1 threshold behaviour.
+
+**未采用 / Not done:** No H3 input (P6: no decision-eligible signal). No
+probabilistic output (P10). No claim of a deployable or profitable rule (D016);
+the artefacts (Market State Cards, Journal J001) are labelled retrospective.
+
+**Impact / 影响:** Level B B4–B8 (rule signal, confidence, risk/invalidation,
+Market State Card, first Market Journal entry) are complete. P9 compiles the
+research memo; P10 fits the logistic model and runs the Level C holdout test.
+
+**Evidence / 证据:**
+`research/evidence/p7_signal_engine/p7_signal_engine_2026-09-06.json` and `.md`,
+`market_state_card_1..4_2026-09-06.md`,
+`p7_signal_vs_label_chart_2026-09-06.png`,
+`p7_quality_report_2026-09-06.json` (9/9); `journal/market_journal.md` (J001);
+`src/p7_signal_engine.py`; `tests/test_p7_signal_engine.py`;
+`config/research_config.yaml` `signal_engine`.
+
+**Holdout implications / 留出期:** None. In-sample development analysis; the
+loader aborts unless the holdout is locked. Zero holdout rows read.
+
+**Supersedes / 替代:** None. Partially resolves I07 (round-1 rule thresholds and
+confidence mapping; regime tuning and a probabilistic confidence scale remain).
+
 ## 本次执行说明 / Operational clarifications
 
 ### E001 · Preserve both persistence and point-in-time integrity
@@ -819,7 +878,7 @@ All items begin **OPEN**. There is no confirmed external blocker, and lack of ve
 | I04 | **RESOLVED by D021/D022/D023/D024:** use local-date request boundaries, UTC canonical keys and Danish-local time for DST interpretation across all P1 sources | P1 complete | Full development-boundary validation; P1.4 uses `HourUTC + PriceArea` or `HourUTC + PriceArea + ConnectedArea` as appropriate |
 | I05 | **RESOLVED by D026:** δ = 5.9956075 EUR/MWh — pandas linear-interpolation Q25 of 15,392 nonzero absolute development spreads; the 1 missing and 6,494 observed-zero spreads are excluded; frozen in config before holdout access | P3.2 complete | Nonzero-absolute development population, count, quantile method, config value and pandas/numpy versions recorded in `config/research_config.yaml` and `p3_2_delta_freeze_2026-09-06.json` |
 | I06 | **PARTIALLY RESOLVED by D024 + D031:** H1-A actuals and realized flows are diagnostic; P5.2 registered a decision-eligible `residual_load_known_proxy` (climatology − 5h renewable forecast) as an interim eligible input; the ENTSO-E day-ahead load forecast is still pending external access; legacy day-ahead transmission fields and countertrade remain conditional candidates for P6.1 | P6.1 (borders); external access (ENTSO-E) | Border-specific feature rules without promoting actuals; ENTSO-E access + timing evidence to supersede the interim proxy |
-| I07 | **PARTIALLY RESOLVED by D027:** the H2 round-1 method and revision buckets are pre-registered (signed quantiles, no tuned "strong revision" threshold in round 1). Regime bins, the magnitude-threshold rule, confidence mapping and No Trade conditions remain open | P4.4 / P7；对应测试前 | Development-only 预登记规格、理由和版本 |
+| I07 | **PARTIALLY RESOLVED by D027 + D033:** H2 round-1 buckets pre-registered (D027); P4.4 declared regime bins; P7 (D033) fixed the transparent-rule thresholds (`h2_strong_cut` 222.6 MWh, `low_wind_cut` 861.4 MWh, `rl_tight_cut` 1855.7 MWh) and the Low/Medium/High → No Trade mapping, all from decision-eligible distributions. A probabilistic confidence scale and any regime-specific tuning remain for P10 | P10；对应测试前 | Development-only 预登记规格、理由和版本 |
 | I08 | Logistic Regression、时间训练/验证、校准和 Brier / undefined metric conventions？ | P10.1；解锁前 | 固定时间切分、模型与校准参数、评估与敏感性计划 |
 
 ## 后续决策模板 / Template for the next entry

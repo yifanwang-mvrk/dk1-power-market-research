@@ -1,0 +1,17 @@
+{
+  "step": "P7",
+  "status": "PASS",
+  "created_at_utc": "2026-09-06T19:42:15.543738+00:00",
+  "critical_checks": {
+    "rows_equal_expected": true,
+    "no_holdout_rows": true,
+    "signal_values_are_frozen_set": true,
+    "no_trade_when_inputs_missing": true,
+    "thresholds_pre_declared": true,
+    "both_baselines_reported": true,
+    "coverage_disclosed": true,
+    "cards_written": true,
+    "chart_written": true
+  },
+  "holdout": "LOCKED_AND_UNUSED"
+}

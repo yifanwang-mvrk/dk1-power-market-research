@@ -470,6 +470,33 @@ cross-border regimes, so H3 does not currently downgrade H2. If a future
 border-level or countertrade model finds decision-eligible conditioning, this
 preliminary null is revisited.
 
+## Signal Engine (P7) — combining the hypotheses
+
+**Run:** 2026-09-06. Evidence: `research/evidence/p7_signal_engine/`,
+`journal/market_journal.md` (J001). In-sample / descriptive (E002); research
+judgment, not executable P&L (D016). Decision D033.
+
+A transparent decision table over decision-eligible inputs only. Each hypothesis
+speaks only where it has evidence:
+
+- **H2 → `DOWN PRESSURE` (MEDIUM)** when `wind_revision` is in the top 20% by
+  magnitude (> 222.6 MWh) and the 5h wind forecast is above the low-wind blind
+  spot (> 861.4 MWh). H2 never emits `UP` (P4.3: the UP side has no skill).
+- **H1-B → `UP PRESSURE` (LOW)** when `residual_load_known` is in the top 20%
+  (> 1855.7 MWh). H1 never emits `DOWN` (P5.1 supported only the tight side).
+- **`NO TRADE`** on conflict (H2 DOWN vs H1 tight), on silence, or on a missing
+  input. **No case supports High confidence.**
+
+Result on development: active view in 32.7% of hours. `DOWN PRESSURE` hours
+realize `DOWN` 40.0% of the time (vs 32.9% base rate, +7 pp); `UP PRESSURE` hours
+realize `UP` 21.2% (vs 19.9%, negligible). The signal marginally beats the
+availability-safe baselines on balanced accuracy (0.347 vs 0.333 / 0.344) but not
+plain accuracy, and MEDIUM views (0.40 three-class hit) clearly beat LOW (0.21).
+
+**Conclusion:** a modest, DOWN-side, in-sample edge that correctly abstains two
+thirds of the time. Not a deployable signal. P10 adds a probabilistic model and
+the locked-holdout test.
+
 ## Research Rule
 
 Each hypothesis must retain:

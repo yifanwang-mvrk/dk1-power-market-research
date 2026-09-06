@@ -8,25 +8,25 @@
 
 | Item | Current Status |
 |---|---|
-| Completed phase | P6 — H3 preliminary (diagnostic conditioning only) |
-| Current phase | P7 — Signal engine |
-| Current step | P7.1 — build the transparent rule-based signal |
-| Next step | P7.2 — confidence, No Trade, risk and invalidation |
+| Completed phase | P7 — Signal engine (rule, confidence, cards, journal) |
+| Current phase | P9 — Level B research memo and audit |
+| Current step | P9.1 — compile `research/r01_research_memo.md` |
+| Next step | P9.2 — audit Level B and practise explaining the findings |
 | Current milestone | Level B — Interview Ready |
-| Milestone status | IN PROGRESS (Level A done; B1 H2, B2 H1, B3 H3 done) |
+| Milestone status | IN PROGRESS (Level A done; B1–B8 done; P9 memo remains) |
 | Holdout | LOCKED and unused |
 | Blocker | None |
 
 ## One Current Action / 当前唯一动作
 
-Start P7.1: build a transparent, rule-based signal that outputs UP PRESSURE /
-DOWN PRESSURE / NO TRADE from decision-eligible inputs only — the H2 wind
-revision and the H1-B residual-load proxy, with the H2 low-wind failure region
-handled explicitly. State every rule and threshold.
+Start P9.1: compile `research/r01_research_memo.md` — the H1 / H2 / H3 results and
+their limitations, the transparent signal and its baseline comparison, the risk
+and invalidation framing, and what Level C (the logistic model and the
+locked-holdout test) will decide. Publish it as a shareable memo.
 
-开始 P7.1：构造透明的规则信号，只用 decision-eligible 输入（H2 风电修正 +
-H1-B 净负荷代理），显式处理 H2 低风失效区间，输出 UP PRESSURE / DOWN PRESSURE /
-NO TRADE。写清每条规则和阈值。
+开始 P9.1：撰写 `research/r01_research_memo.md` —— H1/H2/H3 的结果与局限、透明信号
+及其基准对比、风险与失效条件、以及 Level C（逻辑回归 + 解锁 holdout 检验）要判定
+什么。产出一份可分享的备忘录。
 
 ## P1.1 Completion / Forecasts_Hour 核验结论
 
@@ -304,6 +304,29 @@ tercile scheme declared before crossing outcomes
 - Chart `p6_h3_gradient_by_crossborder_2026-09-06.png`
 - Evidence: `research/evidence/p6_h3_cross_border/`
 
+## P7 Completion / Signal Engine 完成结论
+
+**Status:** COMPLETE — 2026-09-06 — Level B B4–B8 done
+
+- **P7.1** transparent decision table, decision-eligible inputs only, thresholds
+  pre-declared: H2 → `DOWN PRESSURE` for large positive revisions outside the
+  low-wind blind spot (never `UP`, P4.3); H1-B → `UP PRESSURE` for the top-20%
+  tight hours (never `DOWN`, P5.1); `NO TRADE` on conflict / silence / missing
+- **P7.2** confidence Low/Medium/High with basis; **no case supports High**; No
+  Trade and per-view risk / invalidation stated
+- **P7.3** scored vs majority, hour-of-week and persistence with full
+  denominators. Active view in 32.7% of hours (7,154 active, 14,732 No Trade).
+  `DOWN PRESSURE` realizes `DOWN` 40.0% vs 32.9% base rate (+7 pp);
+  `UP PRESSURE` realizes `UP` 21.2% vs 19.9% (negligible). Balanced accuracy
+  0.347 vs majority 0.333 / hour-of-week 0.344; loses on plain accuracy; MEDIUM
+  views hit 0.40 vs LOW 0.21
+- 4 Market State Cards (`market_state_card_1..4`); first Market Journal entry
+  (`journal/market_journal.md` J001)
+- `src/p7_signal_engine.py` + `tests/test_p7_signal_engine.py` (3 tests; 40/40);
+  quality gate 9/9; Decision D033; config `signal_engine` block
+- Chart `p7_signal_vs_label_chart_2026-09-06.png`
+- Evidence: `research/evidence/p7_signal_engine/`
+
 ## P8 Completion / Level A Packaging 完成结论
 
 **Status:** PASS — Level A (CV-safe) ACHIEVED 2026-09-06
@@ -365,15 +388,15 @@ tercile scheme declared before crossing outcomes
 | B1 | H2 complete first round | DONE — P4.1 pre-registration, P4.3 test, P4.4 conditioning; conditionally supported |
 | B2 | H1 mechanism research (H1-A) + H1-B eligibility | DONE — P5: H1-A weak threshold-like (diagnostic); H1-B interim proxy registered (D031) |
 | B3 | H3 preliminary cross-border conditioning (eligible vs diagnostic) | DONE — P6: diagnostic conditioning only, no decision-eligible signal (D032) |
-| B4 | Transparent rule-based signal (UP/DOWN/NO TRADE) | NOT STARTED — P7 |
-| B5 | Confidence levels with basis | NOT STARTED — P7 |
-| B6 | Risk / invalidation per view | NOT STARTED — P7 |
-| B7 | Market State Card (>= 1 real development example) | NOT STARTED — P7 |
-| B8 | First Market Journal entry | NOT STARTED — P7 |
+| B4 | Transparent rule-based signal (UP/DOWN/NO TRADE) | DONE — P7.1 (D033) |
+| B5 | Confidence levels with basis | DONE — P7.2; Low/Medium, no High |
+| B6 | Risk / invalidation per view | DONE — P7.2 |
+| B7 | Market State Card (>= 1 real development example) | DONE — 4 cards, P7.3 |
+| B8 | First Market Journal entry | DONE — `journal/market_journal.md` J001 |
 | B9 | Short research memo (`research/r01_research_memo.md`) | NOT STARTED — P9 |
-| B10 | Majority + persistence baseline comparison in scorecard form | PARTIAL — computed in P3/P4; needs the memo scorecard |
+| B10 | Majority + persistence baseline comparison in scorecard form | DONE — P7.3 scorecard; memo will collate |
 
-**Level B: IN PROGRESS — B1 done; P5 → P6 → P7 → P9 remain**
+**Level B: IN PROGRESS — B1–B8 done; P9 memo (B9) is the last item**
 
 ## Frozen Research Controls / 冻结研究规则
 
@@ -408,5 +431,6 @@ Earlier assistant-prepared P1.1 files remain outside the formal repository as re
 | 2026-09-06 | P4.4 H2 conditioning: CONDITIONALLY SUPPORTED — permutation p~0 (real), robust to season/hour, fails at low wind, no out-of-time reproduction. D030. H2 first round complete | Current: P5.1; Next: P5.2 |
 | 2026-09-06 | P5.1–P5.2 H1: H1-A weak threshold-like mechanism (diagnostic), concentrated where H2 fails; H1-B interim climatology proxy registered (tracks actual RL +0.92, weak spread association). D031. Level B B2 done | Current: P6.1; Next: P6.2 |
 | 2026-09-06 | P6.1–P6.2 H3: decision-eligible day-ahead cross-border capacity/schedule does not condition the H2 gradient; realized net-import flow shows weak diagnostic steepening. D032. Level B B3 done | Current: P7.1; Next: P7.2 |
+| 2026-09-06 | P7.1–P7.3 transparent signal engine: DOWN PRESSURE realizes DOWN 40% vs 33% base (+7pp), UP side negligible, active 33%, marginally beats availability-safe baselines; 4 State Cards + Journal J001. D033. Level B B4–B8 done | Current: P9.1; Next: P9.2 |
 
 Update this file after every completed work session. Every DONE status requires reviewed evidence.

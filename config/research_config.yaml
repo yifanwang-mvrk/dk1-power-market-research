@@ -161,7 +161,24 @@ hypotheses:
   H3: cross_border_and_system_conditions
   primary_mvp_hypothesis: H2
 
+signal_engine:  # P7 / D033 — transparent rule, research judgment only (D016)
+  status: round_1_frozen
+  inputs: [wind_revision_mwh, wind_forecast_5h_mwh, residual_load_known_mwh]
+  thresholds_pre_declared:
+    h2_strong_abs_revision_cut_mwh: 222.6  # top 20% of abs(wind_revision), development
+    low_wind_cut_mwh: 861.430541           # P4.4 wind_forecast_5h bottom tercile (H2 blind spot)
+    rl_tight_cut_mwh: 1855.7               # top 20% of residual_load_known, development
+  rules:
+    h2_view: DOWN if wind_revision > h2_strong_cut and wind_forecast_5h > low_wind_cut; else none (never UP)
+    h1_view: UP if residual_load_known > rl_tight_cut; else none (never DOWN)
+    combination: DOWN PRESSURE/MEDIUM if h2 DOWN and h1 not tight; UP PRESSURE/LOW if h1 tight and h2 silent; NO TRADE on conflict, silence or missing input
+  confidence_scale: [Low, Medium, High]
+  high_confidence_available: false
+  coverage_active_share_development: 0.327
+  down_pressure_realized_down_rate: 0.400  # vs 0.329 base rate
+
 claims:
   executable_intraday_pnl: false
   causal_effects: false
   complete_tick_by_tick_vintages: false
+  deployable_signal_edge: false

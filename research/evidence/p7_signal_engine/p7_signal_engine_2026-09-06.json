@@ -1,0 +1,111 @@
+{
+  "step": "P7",
+  "status": "PASS",
+  "created_at_utc": "2026-09-06T19:42:15.521310+00:00",
+  "git_head_before_run": "68487a77b13952edde3f6dc902c547f1699a8dff",
+  "scope": "development only; in-sample / descriptive (E002); research judgment, not executable P&L (D016)",
+  "rules": {
+    "inputs": {
+      "h2_wind_revision_mwh": "decision-eligible (D025), from P4.2",
+      "wind_forecast_5h_mwh": "decision-eligible; used for the H2 low-wind blind spot",
+      "residual_load_known_mwh": "decision-eligible H1-B interim proxy (D031)"
+    },
+    "thresholds_pre_declared": {
+      "h2_strong_abs_revision_cut_mwh": 222.58339840000008,
+      "h2_strong_abs_revision_quantile": 0.8,
+      "low_wind_cut_mwh": 861.430541,
+      "rl_tight_cut_mwh": 1855.662059648052,
+      "rl_tight_quantile": 0.8
+    },
+    "h2_view_rule": "DOWN if wind_revision > h2_strong_cut (top 20% |revision|) and wind_forecast_5h > low_wind_cut; else none. H2 does not emit UP (P4.3: the UP side has no skill).",
+    "h1_view_rule": "UP if residual_load_known > rl_tight_cut (top 20%); else none. H1 does not emit DOWN (P5.1 supported only the tight, UP side).",
+    "combination": {
+      "DOWN PRESSURE / MEDIUM": "H2 DOWN, H1 not tight",
+      "UP PRESSURE / LOW": "H1 very tight, H2 not on the DOWN side",
+      "NO TRADE": "H2 DOWN vs H1 tight conflict; neither view fires; or a missing input"
+    },
+    "confidence_note": "Low / Medium / High; nothing in this round supports High."
+  },
+  "scoring": {
+    "denominators": {
+      "development_hours": 21887,
+      "valid_label_hours": 21886,
+      "active_view_hours": 7154,
+      "no_trade_hours": 14732,
+      "coverage_active_share": 0.3268756282555058
+    },
+    "full_sample_no_trade_as_neutral": {
+      "signal": {
+        "n": 21886,
+        "balanced_accuracy": 0.3472768314344692,
+        "macro_f1": 0.3319661461938505,
+        "accuracy": 0.4125925249017637
+      },
+      "majority_neutral": {
+        "n": 21886,
+        "balanced_accuracy": 0.3333333333333333,
+        "macro_f1": 0.21393405320425304,
+        "accuracy": 0.47253952298272867
+      },
+      "hour_of_week_training_majority": {
+        "n": 21886,
+        "balanced_accuracy": 0.344201565612295,
+        "macro_f1": 0.2611663542578894,
+        "accuracy": 0.4750068536964269
+      },
+      "persistence_ex_post_reference": {
+        "n": 21884,
+        "balanced_accuracy": 0.6993511224763305,
+        "macro_f1": 0.6993562934548775,
+        "accuracy": 0.7144946079327362
+      }
+    },
+    "active_view": {
+      "n": 7154,
+      "three_class_hit_rate": 0.289208834218619,
+      "hit_rate_by_confidence": {
+        "MEDIUM": 0.40020435967302453,
+        "LOW": 0.2119487908961593
+      }
+    },
+    "signal_by_class": {
+      "UP PRESSURE": {
+        "n": 4218,
+        "share_of_valid": 0.19272594352554145,
+        "realized_label_shares": {
+          "UP": 0.2119487908961593,
+          "DOWN": 0.2852062588904694,
+          "NEUTRAL": 0.5028449502133713
+        }
+      },
+      "DOWN PRESSURE": {
+        "n": 2936,
+        "share_of_valid": 0.13414968472996436,
+        "realized_label_shares": {
+          "UP": 0.17064032697547685,
+          "DOWN": 0.40020435967302453,
+          "NEUTRAL": 0.42915531335149865
+        }
+      },
+      "NO TRADE": {
+        "n": 14732,
+        "share_of_valid": 0.6731243717444942,
+        "realized_label_shares": {
+          "UP": 0.20085528102090686,
+          "DOWN": 0.32663589465109966,
+          "NEUTRAL": 0.47250882432799346
+        }
+      }
+    },
+    "interpretation": "Development-wide, in-sample / descriptive (E002). The signal has no outcome-fitted parameters. Not executable trading P&L (D016)."
+  },
+  "market_state_cards": [
+    "market_state_card_1_2026-09-06.md",
+    "market_state_card_2_2026-09-06.md",
+    "market_state_card_3_2026-09-06.md",
+    "market_state_card_4_2026-09-06.md"
+  ],
+  "market_journal_entry": "journal/market_journal.md J001",
+  "confidence_scale": "Low / Medium / High; nothing in this round supports High",
+  "holdout": "LOCKED_AND_UNUSED"
+}
