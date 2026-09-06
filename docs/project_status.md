@@ -8,26 +8,25 @@
 
 | Item | Current Status |
 |---|---|
-| Completed phase | P10.2 — spec frozen, unlock template filled, prior non-use verified |
+| Completed phase | P10.3 — locked-holdout evaluated once (D037) |
 | Current phase | P10 — Level C |
-| Current step | P10.3 — run the single locked-holdout evaluation |
-| Next step | P10.4 — finalise memo / README, label MVP v1 |
+| Current step | P10.4 — finalise the memo, limitations and README; label MVP v1 |
+| Next step | — (MVP v1 Complete on P10.4) |
 | Current milestone | Level C — MVP Complete |
-| Milestone status | IN PROGRESS (P10.1 + P10.2 done) |
-| Holdout | LOCKED — unlock template filled (D036); `fetch_allowed` still false |
-| Blocker | **P10.3 is held for the project owner's explicit unlock approval** |
+| Milestone status | IN PROGRESS (P10.1–P10.3 done; P10.4 documentation remains) |
+| Holdout | EVALUATED ONCE (D037) — `state: evaluated`, `fetch_allowed: false`, closed |
+| Blocker | None |
 
 ## One Current Action / 当前唯一动作
 
-**Hold.** P10.2 is complete: the spec is frozen (commit 47577b1), the unlock
-template is filled (D036), and prior non-use is machine-verified. P10.3 — flip
-`config` `holdout.fetch_allowed`, request 2024-07-01..2024-12-31, evaluate the
-frozen model — runs **only after the project owner reviews the unlock template
-and explicitly approves the unlock**.
+Do P10.4: add the P10.3 holdout result and its limitations to
+`research/r01_research_memo.md` and the README, do a final limitations pass, and
+label the project **MVP v1 Complete**. The holdout is closed; no further model or
+spec changes.
 
-**暂停。** P10.2 已完成：规格已冻结（commit 47577b1），解锁模板已填（D036），此前
-未使用已机器核验。P10.3——翻转 `config` 的 `holdout.fetch_allowed`、请求
-2024-07-01..2024-12-31、评估冻结模型——**只在所有者审阅解锁模板并明确批准后运行**。
+做 P10.4：把 P10.3 的 holdout 结果和局限写进 `research/r01_research_memo.md` 和
+README，做最后一轮局限梳理，把项目标为 **MVP v1 Complete**。holdout 已关闭，不再
+改模型或规格。
 
 ## P1.1 Completion / Forecasts_Hour 核验结论
 
@@ -388,6 +387,31 @@ locked and unread**
 - `src/p10_unlock_gate.py` + `tests/test_p10_unlock_gate.py` (2 tests; 46/46);
   Decision D036
 
+## P10.3 Completion / Locked-Holdout Evaluation 完成结论
+
+**Status:** COMPLETE — 2026-09-06 — **holdout evaluated once (D037)**; the
+mechanism attenuated but did not vanish out of sample
+
+- Owner approved the unlock 2026-09-06. `src/p10_holdout_eval.py` fit the frozen
+  spec on development `< 2024-01-01`, calibrated on 2024 H1, fetched DK1
+  2024-07-01..2024-12-31 (4 datasets), evaluated once, re-locked the config as
+  `state: evaluated`
+- 4,417 holdout hours, 4,331 scored; label mix UP 645 / DOWN 1,170 / NEUTRAL 2,602
+- **Calibrated logistic balanced accuracy 0.352 vs majority 0.333 and hour-of-week
+  0.329** — a ~2-point edge over the availability-safe baselines (macro-F1 too),
+  within the range attributable to sampling
+- Predicts NEUTRAL 95% of hours; on the 212 DOWN calls the hour is DOWN 49% vs a
+  27% base rate — the signal is DOWN-side only
+- **No probability skill:** multiclass Brier 0.593 vs the 0.582 climatology
+  reference
+- By season: summer strongest (0.362), winter below majority (0.326) — matches
+  P4.4. Delta Q20 0.355 / Q25 0.352 / Q30 0.349 — Q25 primary stands
+- The P7 transparent rule performs comparably (0.348)
+- **Not a deployable or profitable edge.** Decision D037; the holdout is closed
+- `src/p10_holdout_eval.py` + `tests/test_p10_holdout_eval.py` (4 tests; 50/50);
+  chart `p10_3_holdout_calibration_2026-09-06.png`
+- Evidence: `research/evidence/p10_holdout/`
+
 ## P8 Completion / Level A Packaging 完成结论
 
 **Status:** PASS — Level A (CV-safe) ACHIEVED 2026-09-06
@@ -447,12 +471,12 @@ locked and unread**
 | # | Criterion | Status |
 |---|---|---|
 | C1 | Logistic Regression baseline | DONE — P10.1 (D035): frozen; right signs, no 2024 H1 dev-validation edge |
-| C2 | Locked holdout unlocked under the protocol | GATE FILLED — P10.2 (D036): spec frozen, prior non-use verified; **awaiting owner approval to unlock** |
-| C3 | Out-of-sample evaluation on 2024 H2 | NOT STARTED — P10.3 |
-| C4 | Comparison vs majority baseline (holdout) | NOT STARTED — P10.3 |
-| C5 | Comparison vs persistence (holdout) | NOT STARTED — P10.3 |
-| C6 | Probability calibration + assessment | PARTIAL — calibrator frozen (P10.1); holdout assessment in P10.3 |
-| C7 | Regime performance (holdout) | NOT STARTED — P10.3 |
+| C2 | Locked holdout unlocked under the protocol | DONE — D036 record + D037 owner-approved unlock and one-shot evaluation |
+| C3 | Out-of-sample evaluation on 2024 H2 | DONE — P10.3 (D037): 4,331 scored hours |
+| C4 | Comparison vs majority baseline (holdout) | DONE — calibrated 0.352 vs majority 0.333 balanced accuracy |
+| C5 | Comparison vs persistence (holdout) | DONE — persistence 0.635 (ex-post reference), reported |
+| C6 | Probability calibration + assessment | DONE — multiclass Brier 0.593 vs 0.582 climatology; calibration chart |
+| C7 | Regime performance (holdout) | DONE — by season and by wind level in P10.3 |
 | C8 | Limitations | PARTIAL — throughout; final pass in P10.4 |
 | C9 | Full research memo | PARTIAL — r01 v1.0 exists; holdout section in P10.4 |
 | C10 | Polished README | PARTIAL — final pass in P10.4 |
@@ -511,5 +535,6 @@ Earlier assistant-prepared P1.1 files remain outside the formal repository as re
 | 2026-09-06 | P9.1 research memo r01 v1.0 written; P9.2 audited all ten Level B criteria (10/10) — **Level B (Interview Ready) ACHIEVED**. D034 | Current: P10.1; Next: P10.2 |
 | 2026-09-06 | P10.1 logistic regression + Platt calibration frozen (development split at 2023-07-01 / 2024-01-01): coefficient signs correct on all 5 H1/H2 checks, but no edge on the 2024 H1 validation slice. I08 resolved. D035. Holdout still locked | Current: P10.2; Next: P10.3 (owner sign-off) |
 | 2026-09-06 | P10.2 spec frozen (commit 47577b1), holdout-unlock template filled (D036), prior non-use machine-verified (6/6). Holdout still locked; `fetch_allowed: false`. **P10.3 held for owner approval** | Current: P10.3 (blocked on approval); Next: P10.4 |
+| 2026-09-06 | **P10.3 — owner-approved locked-holdout evaluation, run once (D037).** Calibrated logistic balanced accuracy 0.352 vs majority 0.333 / hour-of-week 0.329 — a small edge, no probability skill, DOWN-side only, not deployable. Holdout closed (`state: evaluated`). Level C C2–C7 done | Current: P10.4; Next: MVP v1 Complete |
 
 Update this file after every completed work session. Every DONE status requires reviewed evidence.

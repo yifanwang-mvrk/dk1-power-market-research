@@ -1,0 +1,209 @@
+{
+  "step": "P10.3",
+  "status": "COMPLETE",
+  "created_at_utc": "2026-09-06T20:22:23.509682+00:00",
+  "git_head": "78e44d96009a100288380191b2acba3eebf738e2",
+  "holdout_window_local": "2024-07-01 .. 2025-01-01 (exclusive)",
+  "coverage": {
+    "holdout_hours": 4417,
+    "valid_label_hours": 4417,
+    "feature_complete_and_labelled": 4331,
+    "missing_balancing_hours": 0
+  },
+  "model_refit": {
+    "fit_rows": 16883,
+    "calibration_rows": 4207,
+    "fit_rule": "development < 2024-01-01; Platt calibration on [2024-01-01, 2024-07-01); C=1.0 as selected in P10.1",
+    "train_majority": "NEUTRAL",
+    "delta_q20": 3.1699979999999996,
+    "delta_q30": 8.653001400000003
+  },
+  "label_counts_holdout": {
+    "UP": 645,
+    "DOWN": 1170,
+    "NEUTRAL": 2602
+  },
+  "primary_metrics": {
+    "logistic_calibrated": {
+      "n": 4331,
+      "balanced_accuracy": 0.35169621251918604,
+      "macro_f1": 0.2973616847786806,
+      "accuracy": 0.593165550681136
+    },
+    "logistic_raw": {
+      "n": 4331,
+      "balanced_accuracy": 0.3832915756752169,
+      "macro_f1": 0.2887375201100691,
+      "accuracy": 0.2798429923805126
+    },
+    "majority_from_development": {
+      "n": 4331,
+      "balanced_accuracy": 0.3333333333333333,
+      "macro_f1": 0.24748354626403404,
+      "accuracy": 0.5903948279842992
+    },
+    "hour_of_week_from_development": {
+      "n": 4331,
+      "balanced_accuracy": 0.32878952983477017,
+      "macro_f1": 0.27977743902197844,
+      "accuracy": 0.5534518586931425
+    },
+    "persistence_ex_post": {
+      "n": 4330,
+      "balanced_accuracy": 0.6347800682460802,
+      "macro_f1": 0.634689746305658,
+      "accuracy": 0.6988452655889146
+    },
+    "p7_transparent_rule": {
+      "n": 4331,
+      "balanced_accuracy": 0.3484201533088038,
+      "macro_f1": 0.34933323668812183,
+      "accuracy": 0.4710228584622489
+    }
+  },
+  "probability_quality": {
+    "brier_convention": "mean sum_k (p_k - y_k)^2, range [0, 2]",
+    "multiclass_brier_calibrated": 0.5928806856342839,
+    "reference_brier_development_class_frequencies": 0.5815172672422095
+  },
+  "calibrated_prediction_distribution": {
+    "UP": {
+      "n": 0,
+      "realized_shares": {
+        "UP": null,
+        "DOWN": null,
+        "NEUTRAL": null
+      }
+    },
+    "DOWN": {
+      "n": 212,
+      "realized_shares": {
+        "UP": 0.07547169811320754,
+        "DOWN": 0.49056603773584906,
+        "NEUTRAL": 0.4339622641509434
+      }
+    },
+    "NEUTRAL": {
+      "n": 4119,
+      "realized_shares": {
+        "UP": 0.14955086185967467,
+        "DOWN": 0.2520029133284778,
+        "NEUTRAL": 0.5984462248118475
+      }
+    }
+  },
+  "by_season": {
+    "autumn": {
+      "n": 2161,
+      "calibrated": {
+        "n": 2161,
+        "balanced_accuracy": 0.3514699057014625,
+        "macro_f1": 0.29957292321655543,
+        "accuracy": 0.6140675613142064
+      },
+      "majority": {
+        "n": 2161,
+        "balanced_accuracy": 0.3333333333333333,
+        "macro_f1": 0.25291977790541836,
+        "accuracy": 0.6112910689495604
+      }
+    },
+    "summer": {
+      "n": 1428,
+      "calibrated": {
+        "n": 1428,
+        "balanced_accuracy": 0.36241139648347603,
+        "macro_f1": 0.31394456956081823,
+        "accuracy": 0.584733893557423
+      },
+      "majority": {
+        "n": 1428,
+        "balanced_accuracy": 0.3333333333333333,
+        "macro_f1": 0.24242424242424243,
+        "accuracy": 0.5714285714285714
+      }
+    },
+    "winter": {
+      "n": 742,
+      "calibrated": {
+        "n": 742,
+        "balanced_accuracy": 0.32598251421780833,
+        "macro_f1": 0.24534594987924244,
+        "accuracy": 0.5485175202156334
+      },
+      "majority": {
+        "n": 742,
+        "balanced_accuracy": 0.3333333333333333,
+        "macro_f1": 0.24096385542168675,
+        "accuracy": 0.5660377358490566
+      }
+    }
+  },
+  "by_wind_level": {
+    "high_wind": {
+      "n": 1139,
+      "calibrated": {
+        "n": 1139,
+        "balanced_accuracy": 0.34341999710682397,
+        "macro_f1": 0.2794347845051846,
+        "accuracy": 0.48990342405618964
+      },
+      "majority": {
+        "n": 1139,
+        "balanced_accuracy": 0.3333333333333333,
+        "macro_f1": 0.22183167350126928,
+        "accuracy": 0.4986830553116769
+      }
+    },
+    "low_wind": {
+      "n": 1634,
+      "calibrated": {
+        "n": 1634,
+        "balanced_accuracy": 0.3474087623029353,
+        "macro_f1": 0.29845278871899067,
+        "accuracy": 0.6609547123623011
+      },
+      "majority": {
+        "n": 1634,
+        "balanced_accuracy": 0.3333333333333333,
+        "macro_f1": 0.26455026455026454,
+        "accuracy": 0.6578947368421053
+      }
+    },
+    "mid_wind": {
+      "n": 1558,
+      "calibrated": {
+        "n": 1558,
+        "balanced_accuracy": 0.3552007195333235,
+        "macro_f1": 0.29861621552523093,
+        "accuracy": 0.5975609756097561
+      },
+      "majority": {
+        "n": 1558,
+        "balanced_accuracy": 0.3333333333333333,
+        "macro_f1": 0.2464940668824164,
+        "accuracy": 0.5866495507060334
+      }
+    }
+  },
+  "delta_sensitivity": {
+    "Q20": {
+      "delta": 3.1699979999999996,
+      "calibrated_balanced_accuracy": 0.3547190229227004,
+      "majority_balanced_accuracy": 0.3333333333333333
+    },
+    "Q25_primary": {
+      "delta": 5.9956075,
+      "calibrated_balanced_accuracy": 0.35169621251918604,
+      "majority_balanced_accuracy": 0.3333333333333333
+    },
+    "Q30": {
+      "delta": 8.653001400000003,
+      "calibrated_balanced_accuracy": 0.3487780081548608,
+      "majority_balanced_accuracy": 0.3333333333333333
+    }
+  },
+  "interpretation": "On the locked 2024 H2 holdout (4,331 scored hours) the frozen calibrated logistic reaches balanced accuracy 0.352 vs majority 0.333 and hour-of-week 0.329. It beats both availability-safe baselines. Multiclass Brier 0.593 vs the development-class-frequency reference 0.582 (not better). The primary Q25 result stands as reported.",
+  "protocol_reminder": "Any change informed by this holdout is exploratory and needs fresh unseen data.",
+  "holdout": "EVALUATED_ONCE"
+}

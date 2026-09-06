@@ -1,9 +1,11 @@
 # Hypothesis Registry
 
 **Project:** DK1 Short-Term Power Market Research
-**Status:** Level B achieved — H2 conditionally supported, H1 weak
-threshold-like, H3 diagnostic-only; transparent signal engine built. Level C
-(logistic model + locked holdout) next. See `research/r01_research_memo.md`.
+**Status:** Level C holdout evaluated (D037) — the frozen model edges the
+availability-safe baselines by ~2 points out of sample but has no probability
+skill and is not deployable. H2 conditionally supported, H1 weak, H3
+diagnostic-only. P10.4 (final docs) then MVP v1 Complete. See
+`research/r01_research_memo.md`.
 **Last updated:** 2026-09-06
 
 ## H1 — Residual Load and System Tightness
@@ -514,8 +516,24 @@ time-ordered development split (train `< 2023-07-01`, calibration to
 - **No edge on the 2024 H1 validation slice:** class-weighted argmax balanced
   accuracy 0.354 (vs 0.333 chance); the calibrated argmax collapses to the
   majority class. Calibrated Brier 0.642 vs a 0.637 train-frequency reference.
-- This matches P4.4 — 2024 H1 is the window where the H2 gradient did not
-  reproduce. The Level C locked-holdout evaluation (2024 H2) is the real test.
+
+### P10.3 — locked-holdout result (2024 H2)
+
+**Run once, owner-approved, 2026-09-06 (D037).** Evidence:
+`research/evidence/p10_holdout/`. The holdout is now closed.
+
+4,331 scored hours. The frozen calibrated logistic reaches balanced accuracy
+**0.352 vs majority 0.333 and hour-of-week 0.329** — it **beats both
+availability-safe baselines** by ~2 points (macro-F1 too), which is real but
+within sampling range. It predicts `NEUTRAL` 95% of the time; on its 212 `DOWN`
+calls the hour is `DOWN` 49% vs a 27% base rate. **No probability skill**
+(multiclass Brier 0.593 vs 0.582 climatology). Strongest in summer, below
+majority in winter (matching P4.4). Q25 primary stands (Q20 0.355, Q30 0.349).
+The P7 transparent rule performs comparably (0.348).
+
+**Final verdict: the H2 wind-revision mechanism attenuated but did not vanish
+out of sample. It is not a deployable or profitable edge.** The MVP is complete
+regardless — the value is the honest, reproducible process.
 
 ## Research Rule
 

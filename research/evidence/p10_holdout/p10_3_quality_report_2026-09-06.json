@@ -1,0 +1,12 @@
+{
+  "step": "P10.3",
+  "status": "PASS",
+  "created_at_utc": "2026-09-06T20:22:23.712913+00:00",
+  "checks": {
+    "holdout_window_is_2024_h2": true,
+    "delta_not_re_estimated": true,
+    "evaluated_once": true,
+    "config_re_locked_as_evaluated": true
+  },
+  "holdout": "EVALUATED_ONCE"
+}

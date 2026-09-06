@@ -11,8 +11,11 @@ periods:
   holdout:
     start_date: "2024-07-01"
     end_date_inclusive: "2024-12-31"
-    state: locked
+    state: "evaluated"
     fetch_allowed: false
+    unlocked_at_utc: "2026-09-06T20:20:52.223351+00:00"
+    evaluated_at_utc: "2026-09-06T20:22:23.712659+00:00"
+    unlock_decision: "D036"
   boundary_timezone: Europe/Copenhagen
 
 target:

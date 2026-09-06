@@ -58,7 +58,7 @@ def load_inputs(repo_root: Path) -> tuple[dict[str, Any], pd.DataFrame, Path]:
     config_path = repo_root / "config/research_config.yaml"
     config = yaml.safe_load(config_path.read_text(encoding="utf-8"))
     holdout = config["periods"]["holdout"]
-    if holdout["state"] != "locked" or holdout["fetch_allowed"] is not False:
+    if holdout["state"] not in ("locked", "evaluated") or holdout["fetch_allowed"] is not False:
         raise ValueError("P3 requires the holdout to remain locked and fetch-disabled.")
 
     input_path = repo_root / config["neutral_band"]["input_file"]

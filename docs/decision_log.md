@@ -59,7 +59,8 @@ Source: the complete 31-section final Blueprint response and the owner's subsequ
 | D033 | P7 transparent signal engine: modest DOWN-side edge, negligible UP side | RESEARCH FINDING |
 | D034 | P9 Level B (Interview Ready) acceptance | MILESTONE |
 | D035 | P10.1 logistic regression + calibration frozen; right signs, no dev-validation edge | IMPLEMENTATION NOTE |
-| D036 | P10.2 holdout-unlock record: spec frozen, prior non-use verified; awaiting owner approval | FROZEN — UNLOCK PENDING |
+| D036 | P10.2 holdout-unlock record: spec frozen, prior non-use verified; awaiting owner approval | FROZEN — UNLOCKED at D037 |
+| D037 | P10.3 locked-holdout result: a small out-of-sample edge over the availability-safe baselines, no probability skill | RESEARCH FINDING — FINAL |
 | E001–E003 | 执行说明 / Execution clarifications | IMPLEMENTATION NOTE |
 | I01–I08 | 字段、参数和可用性 / Fields, parameters and availability | TRACKED — see current table |
 
@@ -994,6 +995,79 @@ record is the trail that must exist before it is touched.
 
 **Supersedes / 替代:** None. Fills the unlock template; implements D005 / D017.
 
+## D037 · P10.3 locked-holdout evaluation — final result
+
+**日期 / Date:** 2026-09-06
+**状态 / Status:** RESEARCH FINDING — FINAL (the one owner-approved evaluation)
+**Related step / 对应步骤:** P10.3
+**Related decision / 对应决策:** executes D036; the holdout is now `state: evaluated`
+
+**Unlock:** The project owner approved the unlock on 2026-09-06. `src/p10_holdout_eval.py`
+fitted the frozen P10.1 specification on all development data before 2024-01-01
+(16,883 rows), calibrated it with Platt scaling on the 2024 H1 development slice
+(4,207 rows), fetched DK1 `2024-07-01 .. 2024-12-31` from Energi Data Service for
+`Forecasts_Hour`, `Elspotprices`, `RegulatingBalancePowerdata` and
+`ProductionConsumptionSettlement`, built the holdout feature table with the frozen
+delta and thresholds, evaluated once, and re-locked the config as
+`state: evaluated`, `fetch_allowed: false`. Raw provenance and SHA-256 in
+`research/evidence/p10_holdout/`.
+
+**结论 / Finding — a small out-of-sample edge, not a deployable one.**
+
+Holdout: 4,417 hours, 4,331 scored (feature-complete and labelled); label mix
+UP 645 / DOWN 1,170 / NEUTRAL 2,602.
+
+| Method | Balanced acc. | Macro-F1 | Accuracy |
+|---|---:|---:|---:|
+| Logistic (calibrated) | **0.352** | **0.297** | 0.593 |
+| Logistic (raw) | 0.383 | 0.289 | 0.280 |
+| Majority (development) | 0.333 | 0.247 | 0.590 |
+| Hour-of-week (development) | 0.329 | 0.280 | 0.553 |
+| Persistence (ex-post) | 0.635 | 0.635 | 0.699 |
+| P7 transparent rule | 0.348 | 0.349 | 0.471 |
+
+- The calibrated model **beats both availability-safe baselines** on balanced
+  accuracy (0.352 vs 0.333 / 0.329) and macro-F1 — a ~2-point edge that is real
+  but within the range attributable to sampling on 4,331 hours.
+- It predicts `NEUTRAL` for 95% of hours. When it does call `DOWN` (212 times) the
+  hour is `DOWN` 49% of the time vs a 27% base rate — the tiny signal lives on the
+  `DOWN` side, exactly as P4.3 / P7 found.
+- **No probability skill:** multiclass Brier 0.593 vs the development-class-
+  frequency reference 0.582.
+- By season: strongest in summer (balanced accuracy 0.362), below majority in
+  winter (0.326) — consistent with P4.4.
+- By wind level: all three terciles edge majority by ~1-2 points; no strong
+  pattern.
+- Delta sensitivity (pre-declared secondary): Q20 0.355, Q25 (primary) 0.352,
+  Q30 0.349 — the primary Q25 specification stands.
+- The P7 transparent rule performs comparably (0.348) — the simple rule held up.
+
+**理由 / Rationale:** The Blueprint requires the frozen primary specification and
+both baselines to be reported on the locked holdout, positive or null (§5, §27).
+The result is reported exactly as produced. The H2 wind-revision mechanism
+attenuated but did not vanish out of sample; it is not an edge worth acting on.
+
+**未采用 / Not done:** No retuning after seeing the result. No claim of a
+deployable or profitable model (D016). The raw (class-weighted) logistic's
+higher balanced accuracy (0.383) is reported but not promoted — its plain
+accuracy (0.280) shows it trades correctness for spread.
+
+**Evidence / 证据:**
+`research/evidence/p10_holdout/p10_3_holdout_result_2026-09-06.json` and `.md`,
+`p10_3_holdout_calibration_2026-09-06.png`, `holdout_raw_provenance_2026-09-06.json`,
+`p10_3_quality_report_2026-09-06.json`; `src/p10_holdout_eval.py`;
+`tests/test_p10_holdout_eval.py`; `data/raw/p10_holdout/` (git-ignored, SHA-256 in
+the provenance file).
+
+**Impact / 影响:** Level C criteria C2–C7 are met. P10.4 finalises the research
+memo, the limitations and the README and labels the project **MVP v1 Complete**.
+The holdout must not be used again; any follow-up needs fresh, later data.
+
+**Holdout implications / 留出期:** The holdout has been evaluated once, per
+protocol. `config` `state: evaluated`, `fetch_allowed: false`. It is closed.
+
+**Supersedes / 替代:** None. Completes D005 / D017.
+
 ## 本次执行说明 / Operational clarifications
 
 ### E001 · Preserve both persistence and point-in-time integrity
@@ -1058,15 +1132,15 @@ Owner direction if scope changes / 若改范围，对应所有者指示:
 <a id="holdout-unlock"></a>
 ## Level C 解锁记录模板 / Holdout unlock template
 
-**当前状态：P10.2 完成，模板已填；`fetch_allowed` 仍为 `false`。等待所有者批准后
-才执行 P10.3（翻转 `fetch_allowed`、请求数据、评估）。/ Current state: P10.2
-complete, template filled; `fetch_allowed` is still `false`. P10.3 (flip
-`fetch_allowed`, request data, evaluate) runs only on the owner's approval.**
+**当前状态：EVALUATED。所有者于 2026-09-06 批准解锁；P10.3 已执行一次；`config`
+`state: evaluated`, `fetch_allowed: false`。holdout 已关闭，不得再用。/ Current
+state: EVALUATED. Owner approved the unlock on 2026-09-06; P10.3 ran once; the
+config is `state: evaluated`, `fetch_allowed: false`. The holdout is closed.**
 
 ```text
-Decision ID:                     D036
-Unlock date/time:                NOT YET UNLOCKED — pending owner approval (P10.3)
-Related step:                    P10.2 (this record); P10.3 (execution)
+Decision ID:                     D036 (record) / D037 (result)
+Unlock date/time:                2026-09-06 ~20:20 UTC — owner-approved; evaluated once (D037)
+Related step:                    P10.2 (this record); P10.3 (executed)
 Level B evidence:                research/evidence/p9_level_b/level_b_audit_2026-09-06.md — 10/10 criteria
 Development data/version:        data/processed/p3/target_development.parquet + p4/revision_development.parquet;
                                  21,887 hours, hash-checked against the P3/P4 quality reports
@@ -1102,12 +1176,16 @@ Evidence of no prior holdout use: research/evidence/p10_holdout_unlock/unlock_re
                                  P1.4 source metadata
 Planned holdout request:         local 2024-07-01 00:00 inclusive to 2025-01-01 00:00 exclusive, DK1, the same six
                                  sources and the same P2 -> P3 -> P4.2 pipeline
-Results destination:             research/evidence/p10_holdout/ (P10.3); research/r01_research_memo.md and
+Results destination:             research/evidence/p10_holdout/ (done); research/r01_research_memo.md and
                                  README (P10.4)
 Protocol for changes after       Any specification change informed by the holdout is exploratory and requires
-inspection:                      fresh, later, unseen data. The primary Q25 result stands as reported, positive
-                                 or null.
-Owner approval:                  PENDING — P10.3 does not run until the project owner explicitly approves the unlock.
+inspection:                      fresh, later, unseen data. The primary Q25 result stands as reported.
+Owner approval:                  GRANTED 2026-09-06 ("approved, run P10.3").
+Result (D037):                   4,331 scored hours; calibrated logistic balanced accuracy 0.352 vs majority
+                                 0.333 and hour-of-week 0.329 (a small edge on the availability-safe baselines,
+                                 macro-F1 too); multiclass Brier 0.593 vs 0.582 climatology reference (no
+                                 probability skill); DOWN-side only; strongest in summer, below majority in
+                                 winter. Not a deployable edge. Q25 primary stands (Q20 0.355, Q30 0.349).
 ```
 
 完成模板并满足 [Handbook 的解锁门槛](project_handbook.md#s03) 后，才更新 Status 的 holdout 状态。填写一个日期本身不代表门槛通过。

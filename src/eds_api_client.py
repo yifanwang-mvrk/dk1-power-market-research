@@ -104,6 +104,7 @@ class BoundedEnergiDataClient:
         max_attempts: int = 4,
         max_retry_wait_seconds: float = 60.0,
         sleep: Callable[[float], None] = time.sleep,
+        unlock_holdout: bool = False,
     ) -> None:
         self.config_path = Path(config_path).resolve()
         self.repo_root = self.config_path.resolve().parents[1]
@@ -113,12 +114,24 @@ class BoundedEnergiDataClient:
         self.development_start = date.fromisoformat(
             config["periods"]["development"]["start_date"]
         )
-        self.development_end_exclusive = date.fromisoformat(
-            config["periods"]["holdout"]["start_date"]
-        )
         holdout = config["periods"]["holdout"]
-        if holdout["state"] != "locked" or holdout["fetch_allowed"] is not False:
-            raise ScopeViolation("The research config must keep the holdout locked.")
+        if unlock_holdout:
+            # P10.3 only: the owner-approved locked-holdout evaluation. The config
+            # must have been deliberately unlocked (D036 / D037).
+            if holdout["state"] == "locked" or holdout["fetch_allowed"] is not True:
+                raise ScopeViolation(
+                    "unlock_holdout requires the config holdout to be explicitly unlocked "
+                    "(state != 'locked' and fetch_allowed: true)."
+                )
+            self.development_end_exclusive = date.fromisoformat("2025-01-01")
+        else:
+            self.development_end_exclusive = date.fromisoformat(
+                config["periods"]["holdout"]["start_date"]
+            )
+            if holdout["state"] not in ("locked", "evaluated") or holdout["fetch_allowed"] is not False:
+                raise ScopeViolation(
+                    "The research config must keep the holdout locked (or 'evaluated' after the one-shot P10.3)."
+                )
 
         self.session = session or requests.Session()
         self.session.headers.update(

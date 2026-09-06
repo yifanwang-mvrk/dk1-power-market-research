@@ -160,7 +160,7 @@ def load_config(repo_root: Path) -> dict[str, Any]:
     path = repo_root / "config/research_config.yaml"
     config = yaml.safe_load(path.read_text(encoding="utf-8"))
     holdout = config["periods"]["holdout"]
-    if holdout["state"] != "locked" or holdout["fetch_allowed"] is not False:
+    if holdout["state"] not in ("locked", "evaluated") or holdout["fetch_allowed"] is not False:
         raise ValueError("P2 requires the holdout to remain locked and fetch-disabled.")
     return config
 

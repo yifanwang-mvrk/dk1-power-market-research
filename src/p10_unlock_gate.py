@@ -67,6 +67,8 @@ def verify_prior_non_use(repo_root: Path) -> dict[str, Any]:
 
     raw_files = []
     for p in sorted(glob.glob(str(repo_root / "data/raw/**/*.json"), recursive=True)):
+        if "p10_holdout" in p:  # the owner-approved holdout fetch (P10.3), not development
+            continue
         path = Path(p)
         data = json.loads(path.read_text(encoding="utf-8"))
         records = data.get("records", data if isinstance(data, list) else data.get("data", []))
@@ -86,6 +88,8 @@ def verify_prior_non_use(repo_root: Path) -> dict[str, Any]:
 
     processed_files = []
     for p in sorted(glob.glob(str(repo_root / "data/processed/**/*.parquet"), recursive=True)):
+        if "p10_holdout" in p:  # the owner-approved holdout table (P10.3), not development
+            continue
         path = Path(p)
         df = pd.read_parquet(path, columns=["delivery_start_utc"])
         mx = df["delivery_start_utc"].max()

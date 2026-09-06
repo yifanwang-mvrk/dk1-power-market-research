@@ -1,0 +1,31 @@
+{
+  "step": "P10.3",
+  "source_organization": "Energinet",
+  "note": "raw files already present",
+  "files": [
+    {
+      "dataset": "Forecasts_Hour",
+      "records": 13251,
+      "sha256": "0d9024a8ff673306082f654d39ed5bf00f708fcf2a5a25ad297d40916afd4c1b",
+      "source": "local (already fetched)"
+    },
+    {
+      "dataset": "Elspotprices",
+      "records": 4417,
+      "sha256": "bbd325d9b1b8714e19cd5de3cdc848ee250ef701ffe440d1496e01d250b474cd",
+      "source": "local (already fetched)"
+    },
+    {
+      "dataset": "RegulatingBalancePowerdata",
+      "records": 4417,
+      "sha256": "5b5b98ecf79a6f24d23fd558ba6045b2d6dd82846c0f2ccfa89fff976e963fa2",
+      "source": "local (already fetched)"
+    },
+    {
+      "dataset": "ProductionConsumptionSettlement",
+      "records": 4417,
+      "sha256": "a07cf1af56c4b558c28f099156a72d5f2124b442c2fc755431c6d38fbd0a91af",
+      "source": "local (already fetched)"
+    }
+  ]
+}

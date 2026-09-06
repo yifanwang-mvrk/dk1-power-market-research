@@ -102,7 +102,7 @@ def load_p2_base(repo_root: Path) -> tuple[dict[str, Any], pd.DataFrame, Path]:
         (repo_root / "config/research_config.yaml").read_text(encoding="utf-8")
     )
     holdout = config["periods"]["holdout"]
-    if holdout["state"] != "locked" or holdout["fetch_allowed"] is not False:
+    if holdout["state"] not in ("locked", "evaluated") or holdout["fetch_allowed"] is not False:
         raise ValueError("P4 requires the holdout to remain locked and fetch-disabled.")
 
     input_path = repo_root / "data/processed/p2/hourly_base_development.parquet"

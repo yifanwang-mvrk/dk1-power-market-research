@@ -95,7 +95,7 @@ def load(repo_root: Path) -> tuple[dict[str, Any], pd.DataFrame]:
         (repo_root / "config/research_config.yaml").read_text(encoding="utf-8")
     )
     holdout = config["periods"]["holdout"]
-    if holdout["state"] != "locked" or holdout["fetch_allowed"] is not False:
+    if holdout["state"] not in ("locked", "evaluated") or holdout["fetch_allowed"] is not False:
         raise ValueError("P10 requires the holdout to remain locked and fetch-disabled.")
     p3_quality = _load_json(
         repo_root / "research/evidence/p3_target_construction" / f"quality_report_{RUN_DATE}.json"

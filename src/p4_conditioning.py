@@ -83,7 +83,7 @@ def load_inputs(repo_root: Path) -> tuple[dict[str, Any], pd.DataFrame]:
         (repo_root / "config/research_config.yaml").read_text(encoding="utf-8")
     )
     holdout = config["periods"]["holdout"]
-    if holdout["state"] != "locked" or holdout["fetch_allowed"] is not False:
+    if holdout["state"] not in ("locked", "evaluated") or holdout["fetch_allowed"] is not False:
         raise ValueError("P4.4 requires the holdout to remain locked and fetch-disabled.")
 
     evidence_dir = repo_root / "research/evidence/p4_h2_revision"
