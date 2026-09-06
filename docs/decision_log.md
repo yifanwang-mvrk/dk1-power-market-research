@@ -5,9 +5,9 @@
 **Design baseline:** Frozen MVP Blueprint v1.1
 [Handbook / 项目地图](project_handbook.md) · [Status / 当前进度](project_status.md)
 
-本文件回答“为什么这样决定”。D001–D018 记录完整最终 Blueprint 中已冻结的设计；D019 记录随后确定的项目控制体系；E001–E003 是本次将冻结设计落地时补充的执行说明，**不冒充原 Blueprint 的逐字决定**。I01–I08 是仍待核实的实施细节。
+本文件回答“为什么这样决定”。D001–D018 记录完整最终 Blueprint 中已冻结的设计；D019 记录随后确定的项目控制体系；D020 起记录正式核验产生的实施决定；E001–E003 是将冻结设计落地时补充的执行说明，**不冒充原 Blueprint 的逐字决定**。I01–I08 是持续追踪的实施事项，当前状态以表格为准。
 
-D001–D018 capture frozen Blueprint decisions. D019 records the subsequently agreed control system. E001–E003 are operational clarifications added for execution, **not claims of verbatim decisions in the Blueprint**. I01–I08 remain open implementation items.
+D001–D018 capture frozen Blueprint decisions. D019 records the subsequently agreed control system. D020 onward records implementation decisions established by formal validation. E001–E003 are operational clarifications added for execution, **not claims of verbatim decisions in the Blueprint**. I01–I08 are tracked implementation items whose current states appear in the table.
 
 冻结来源：对话 [Trader 岗位状态监控](chatgpt-conversation://6a999e10-6328-83eb-8525-f79e924ffd7d)，完整 31 节 `MVP Project Blueprint — Freeze Candidate v1.1`，回复标识 `d88638cb-9d9b-4932-8663-0690f547caa4`，随后项目所有者明确回复“冻结”。日期均为 **2026-09-03**。本次整理没有重新验证 live API。
 
@@ -43,8 +43,11 @@ Source: the complete 31-section final Blueprint response and the owner's subsequ
 | D017 | Evidence-based Level A / B / C | FROZEN |
 | D018 | Repo structure, ten principles and public wording | FROZEN |
 | D019 | Three documents and session closing protocol | AGREED CONTROL SYSTEM |
+| D020 | Forecasts_Hour fixed-horizon H2 eligibility | IMPLEMENTATION NOTE |
+| D021 | Forecast gaps, values and DST handling | FROZEN |
+| D022 | Elspotprices SpotPriceEUR as day-ahead reference | FROZEN |
 | E001–E003 | 执行说明 / Execution clarifications | IMPLEMENTATION NOTE |
-| I01–I08 | 字段、参数和可用性 / Fields, parameters and availability | OPEN |
+| I01–I08 | 字段、参数和可用性 / Fields, parameters and availability | TRACKED — see current table |
 
 ## D001 · Use balancing spread as the primary target
 
@@ -266,6 +269,20 @@ Source: the complete 31-section final Blueprint response and the owner's subsequ
 
 **影响 / Impact:** P2 must retain raw values and generate missing, zero, negative and DST flags. P4 must disclose the primary sample denominator and Solar sensitivity denominator. **Evidence:** `research/evidence/p1_1_forecasts_hour/development_validation_2026-09-06.md`. **Holdout:** remained locked and unused.
 
+## D022 · Use Elspotprices SpotPriceEUR as the DK1 day-ahead reference
+
+**日期 / Date:** 2026-09-06
+
+**状态 / Status:** FROZEN
+
+**决定 / Decision:** For the declared hourly development period, use DK1 `Elspotprices.SpotPriceEUR` as `P_DayAhead,t` in EUR/MWh. Join on `HourUTC + PriceArea`, use `HourDK` only for interpretation and DST checks, and preserve zero and negative prices as market observations. Retain `SpotPriceDKK` as an audit field without mixing it into the EUR spread.
+
+**理由 / Rationale:** Official metadata defines `SpotPriceEUR` as the day-ahead spot price in the price area and gives the official key as `HourUTC + PriceArea`. The full local-date development boundary contains all 21,887 expected DK1 hours, no null price, no duplicate key and no holdout row. The selected field matches the target's frozen EUR/MWh unit.
+
+**未采用 / Alternative:** `SpotPriceDKK` would require currency conversion before constructing the spread; `SYSTEM` is not the DK1 area price; the successor `DayAheadPrices` dataset is required only for extensions after the legacy dataset's 2025-09-30 discontinuation boundary.
+
+**影响 / Impact:** The day-ahead side of D001 is now implemented and registered. P2 must preserve both currencies, select EUR for the target, join by UTC, retain DST-aware local time and respect API `Retry-After` limits. Exact row-level publication timestamps are not stored and the availability mapping remains under I03/P2.3. **Evidence:** `research/evidence/p1_2_elspotprices/development_validation_2026-09-06.md`. **Holdout:** remained locked and unused.
+
 ## 本次执行说明 / Operational clarifications
 
 ### E001 · Preserve both persistence and point-in-time integrity
@@ -302,7 +319,7 @@ All items begin **OPEN**. There is no confirmed external blocker, and lack of ve
 | I01 | 哪个历史 DK1 balancing/regulating 字段构成单一目标价格？/ Which exact historical price field? | P1.3，P3 前 | 字段定义、规则适用日期、单位、hour mapping；不能结果导向挑选 / Definition, dates, units and mapping |
 | I02 | **RESOLVED by D020/D021:** 5h/1h are fixed-horizon snapshots; `TimestampUTC` belongs to Current; no row-level tick history; coverage is conditionally sufficient | P1.1 complete; exact cutoff continues in I03 | Official metadata + full development coverage/pairing report |
 | I03 | 决策 cutoff、预报可得时刻、outcome 发布延迟与 `y_t-1` 可用性？ | P2.3 / P3.4；信号前 | 有证据的时间线、as-of 规则、基准处理；未定数值不补猜 / Evidenced timeline and benchmark handling |
-| I04 | 日期按 UTC 还是当地交割日？DST 和 API endpoints 是否包含边界？ | P1；P2 抓取前 | 明确日期语义、UTC 映射、范围测试，不改变冻结日历日期 / Boundary contract and checks |
+| I04 | **PARTIALLY RESOLVED by D021/D022:** use local-date request boundaries, `HourUTC` as canonical join key and `HourDK` for DST interpretation; confirm the same contract for remaining sources | P1.3/P1.4; P2 抓取前 | Remaining-source boundary checks without changing frozen calendar dates |
 | I05 | δ 的实际值、quantile interpolation、有效样本与 missing policy？ | P3.2 | Development-only 非零绝对 spread、样本数、算法、配置值和版本 |
 | I06 | H1-B load proxy、H3 exchange / capacity / flow 哪些可用？ | P1.4 / P5.2 / P6.1 | 逐字段资格；缺失时明确 conditional / diagnostic / unavailable |
 | I07 | Regime bins、strong revision、rule thresholds、confidence / No Trade 如何定义？ | P4 / P7；对应测试前 | Development-only 预登记规格、理由和版本 |
@@ -311,7 +328,7 @@ All items begin **OPEN**. There is no confirmed external blocker, and lack of ve
 ## 后续决策模板 / Template for the next entry
 
 ```text
-Decision ID / 决策编号: D020 (or next unused ID)
+Decision ID / 决策编号: D023 (or next unused ID)
 Date / 日期:
 Status / 状态: FROZEN / IMPLEMENTATION NOTE / OPEN / SUPERSEDED
 Related step / 对应步骤:

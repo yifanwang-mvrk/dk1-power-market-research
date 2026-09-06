@@ -19,6 +19,8 @@ target:
   name: balancing_spread
   formula: balancing_price_eur_mwh - day_ahead_price_eur_mwh
   unit: EUR/MWh
+  day_ahead_source_dataset: Elspotprices
+  day_ahead_source_field: SpotPriceEUR
   balancing_source_field: null
   labels:
     up: spread > delta

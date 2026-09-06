@@ -1,7 +1,7 @@
 # Data Dictionary
 
 **Project:** DK1 Short-Term Power Market Research
-**Status:** P1.1 completed; `Forecasts_Hour` conditionally validated
+**Status:** P1.1 and P1.2 completed; forecast and day-ahead sources registered
 **Last updated:** 2026-09-06
 
 ## Field Registry
@@ -19,6 +19,11 @@
 | Forecasts_Hour | ForecastCurrent | Renewable-production forecast valid for the current delivery time | MWh per hour | Current-time forecast associated with TimestampUTC | diagnostic_only | Excluded from pre-delivery H2 signal |
 | Forecasts_Hour | TimestampUTC | UTC generation timestamp for ForecastCurrent | — | Current-forecast generation time; not the 5h or 1h publication time | diagnostic_only | Validated P1.1 |
 | Forecasts_Hour | TimestampDK | Danish-local generation timestamp for ForecastCurrent | — | Local equivalent of TimestampUTC | diagnostic_only | Validated P1.1; DST interpretation only |
+| Elspotprices | HourUTC | Start of the price delivery hour in UTC | — | Delivery interval; canonical join time | decision_eligible (key) | Validated P1.2 |
+| Elspotprices | HourDK | Start of the price delivery hour in Danish local time | — | Delivery interval; DST interpretation only | decision_eligible (key) | Validated P1.2; not sole join key |
+| Elspotprices | PriceArea | Bidding zone for the area price | text | Static area selector | decision_eligible (key) | Validated P1.2; use DK1 |
+| Elspotprices | SpotPriceDKK | Day-ahead spot price in the price area | DKK/MWh | Price for the delivery hour, formed in the preceding day-ahead market | decision_eligible (reference audit) | Validated P1.2; not selected for spread |
+| Elspotprices | SpotPriceEUR | Day-ahead spot price in the price area | EUR/MWh | Price for the delivery hour, formed in the preceding day-ahead market | decision_eligible (reference) | Validated P1.2; selected as P_DayAhead,t |
 
 ## Point-in-Time Classes
 
@@ -30,11 +35,16 @@
 candidate, but the exact simulated decision cutoff must be locked in P2.3
 before signal evaluation.
 
+`decision_eligible (reference)` means the field is an already-established
+pre-delivery benchmark used in the target definition. Exact availability
+mapping remains part of the P2.3 timestamp contract.
+
 ## P1.1 Dataset Contract
 
 - Dataset ID: `40`
 - Dataset name: `Forecasts_Hour`
 - Source: Energinet Energi Data Service
+- License: CC BY 4.0; attribute published use to Energinet
 - Resolution: one hour (`PT1H`)
 - Official primary key: `HourUTC`, `PriceArea`, `ForecastType`
 - DK1 forecast types: `Offshore Wind`, `Onshore Wind`, `Solar`
@@ -62,6 +72,39 @@ before signal evaluation.
 
 The complete evidence and handling rules are recorded in
 `research/evidence/p1_1_forecasts_hour/development_validation_2026-09-06.md`.
+
+## P1.2 Dataset Contract
+
+- Dataset ID: `30`
+- Dataset name: `Elspotprices`
+- Source: Energinet Energi Data Service
+- License: CC BY 4.0; attribute published use to Energinet
+- Resolution: one hour (`PT1H`)
+- Official primary key: `HourUTC`, `PriceArea`
+- Area selector: `DK1`
+- Selected field: `SpotPriceEUR`
+- Selected unit: `EUR per MWh`
+- Target role: `P_DayAhead,t` in
+  `Spread_t = P_Balancing,t - P_DayAhead,t`
+- Canonical time key: `HourUTC`
+- Interpretation timezone: `Europe/Copenhagen`
+- Missing policy: preserve missingness; never impute a missing price as zero
+- Value policy: preserve zero and negative prices as market observations
+- Currency policy: retain `SpotPriceDKK` for audit, but do not mix DKK and EUR
+  in the spread
+- Source lifecycle: this legacy dataset is discontinued after 2025-09-30;
+  later extensions must separately validate its `DayAheadPrices` successor
+
+## P1.2 Coverage Evidence
+
+| Expected hours | Returned rows | Missing | Duplicate key rows | Holdout rows |
+|---:|---:|---:|---:|---:|
+| 21,887 | 21,887 | 0 | 0 | 0 |
+
+The development period contains 76 zero and 503 negative EUR prices. They are
+retained as valid observations rather than treated as missing or errors. The
+complete evidence and handling rules are recorded in
+`research/evidence/p1_2_elspotprices/development_validation_2026-09-06.md`.
 
 ## Registration Rules
 

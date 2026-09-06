@@ -1,0 +1,179 @@
+{
+  "validation_status": "PASS",
+  "day_ahead_reference_feasibility": "FEASIBLE FOR THE DECLARED DEVELOPMENT PERIOD",
+  "raw_source_file": "data/raw/p1_2_validation/Elspotprices_DK1_development_2022-01-01_2024-06-30.json",
+  "metadata_source_file": "research/evidence/p1_2_elspotprices/metadata_2026-09-06.json",
+  "dataset": {
+    "dataset_id": 30,
+    "dataset_name": "Elspotprices",
+    "title": "Elspot Prices (Discontinued – see description)",
+    "description": "This dataset is no longer updated. For data after 2025-09-30 see [Day-Ahead Prices](https://energidataservice.dk/tso-electricity/DayAheadPrices).\n\n---\n\nDay ahead spotprices in Denmark (DK) and neighbouring countries.",
+    "author": "Energinet",
+    "active_api_flag": true,
+    "tags": [
+      "Discontinued",
+      "Hour",
+      "Price Area"
+    ],
+    "resolution": "1 hour (PT1H)",
+    "data_from": "1999-07-01T00:00:00",
+    "last_metadata_update": "2026-01-08T11:23:36",
+    "primary_key": [
+      "HourUTC",
+      "PriceArea"
+    ],
+    "fields": [
+      {
+        "field": "HourUTC",
+        "unit": "",
+        "description": "A date and time (interval), shown in _UTC time zone_, where the values are valid. 00:00 o’clock is the first hour of a given day interval  00:00 - 00:59 and 01:00 covers the second hour (interval) of the day and so forth. Please note: The naming is based on the length of the interval of the finest grain of the resolution.",
+        "primary_key_index": 1
+      },
+      {
+        "field": "HourDK",
+        "unit": "",
+        "description": "A date and time (interval), shown in _Danish time zone_, where the values are valid. 00:00 o’clock is the first hour of a given day, interval 00:00 - 00:59, and 01:00 covers the second hour period (interval) of the day and so forth. ",
+        "primary_key_index": null
+      },
+      {
+        "field": "PriceArea",
+        "unit": "",
+        "description": "Same as bidding zone. Denmark is divided in two price areas (bidding zones) divided by the Great Belt. DK1 is west of the Great Belt and DK2 is east of the Great Belt.",
+        "primary_key_index": 2
+      },
+      {
+        "field": "SpotPriceDKK",
+        "unit": "DKK per MWh",
+        "description": "Day ahead spot price in the price area.",
+        "primary_key_index": null
+      },
+      {
+        "field": "SpotPriceEUR",
+        "unit": "EUR per MWh",
+        "description": "Day ahead spot price in the price area.",
+        "primary_key_index": null
+      }
+    ]
+  },
+  "scope": {
+    "development_start_local_inclusive": "2022-01-01",
+    "development_end_local_inclusive": "2024-06-30",
+    "request_end_local_exclusive": "2024-07-01",
+    "boundary_timezone": "Europe/Copenhagen",
+    "expected_delivery_hours": 21887,
+    "api_reported_total": 21887,
+    "records_returned": 21887,
+    "distinct_delivery_hours": 21887,
+    "first_hour_utc": "2021-12-31T23:00:00+00:00",
+    "last_hour_utc": "2024-06-30T21:00:00+00:00",
+    "first_hour_local": "2022-01-01T00:00:00+01:00",
+    "last_hour_local": "2024-06-30T23:00:00+02:00",
+    "missing_delivery_hours": 0,
+    "missing_intervals": [],
+    "extra_delivery_hours": 0,
+    "holdout_start_utc": "2024-06-30T22:00:00+00:00",
+    "records_at_or_after_holdout_start": 0,
+    "price_areas": [
+      "DK1"
+    ]
+  },
+  "key_quality": {
+    "official_primary_key": [
+      "HourUTC",
+      "PriceArea"
+    ],
+    "duplicate_primary_key_rows": 0,
+    "maximum_rows_per_primary_key": 1,
+    "hour_dk_mismatch_rows": 0,
+    "hour_utc_full_hour_rows": 21887
+  },
+  "price_quality": {
+    "SpotPriceDKK": {
+      "unit": "DKK per MWh",
+      "null_count": 0,
+      "zero_count": 76,
+      "negative_count": 503,
+      "minimum": -3277.389893,
+      "maximum": 6478.240234,
+      "median": 745.929993
+    },
+    "SpotPriceEUR": {
+      "unit": "EUR per MWh",
+      "null_count": 0,
+      "zero_count": 76,
+      "negative_count": 503,
+      "minimum": -440.100006,
+      "maximum": 871.0,
+      "median": 100.099998
+    }
+  },
+  "dkk_per_eur_nonzero_diagnostic": {
+    "observations": 21811,
+    "minimum": 7.000000000000001,
+    "maximum": 7.666666666666667,
+    "median": 7.44703613693432,
+    "purpose": "Cross-field diagnostic only; SpotPriceEUR is the selected reference field."
+  },
+  "dst_checks": [
+    {
+      "local_date": "2022-03-27",
+      "expected_hours": 23,
+      "rows": 23,
+      "unique_hour_utc": 23,
+      "unique_hour_dk": 23
+    },
+    {
+      "local_date": "2022-10-30",
+      "expected_hours": 25,
+      "rows": 25,
+      "unique_hour_utc": 25,
+      "unique_hour_dk": 24
+    },
+    {
+      "local_date": "2023-03-26",
+      "expected_hours": 23,
+      "rows": 23,
+      "unique_hour_utc": 23,
+      "unique_hour_dk": 23
+    },
+    {
+      "local_date": "2023-10-29",
+      "expected_hours": 25,
+      "rows": 25,
+      "unique_hour_utc": 25,
+      "unique_hour_dk": 24
+    },
+    {
+      "local_date": "2024-03-31",
+      "expected_hours": 23,
+      "rows": 23,
+      "unique_hour_utc": 23,
+      "unique_hour_dk": 23
+    }
+  ],
+  "selected_reference": {
+    "field": "SpotPriceEUR",
+    "unit": "EUR per MWh",
+    "role": "P_DayAhead,t in Spread_t = P_Balancing,t - P_DayAhead,t",
+    "reason": "It is the official DK1 day-ahead area price and matches the project's frozen EUR/MWh target unit.",
+    "point_in_time_class": "decision_eligible (reference)"
+  },
+  "p1_2_rules": [
+    "Filter PriceArea to DK1.",
+    "Use HourUTC and PriceArea as the canonical primary key.",
+    "Use HourDK for interpretation and DST checks, not as the sole join key.",
+    "Use SpotPriceEUR as P_DayAhead,t in EUR/MWh.",
+    "Retain SpotPriceDKK as an audit field but do not mix currencies in the spread.",
+    "Preserve zero and negative day-ahead prices as valid market observations.",
+    "Do not impute missing price rows or null prices as zero.",
+    "Treat the price as a pre-delivery reference, not as the realized balancing outcome.",
+    "Lock the exact simulated decision cutoff and availability mapping in P2.3.",
+    "Use the successor DayAheadPrices dataset for any extension after 2025-09-30.",
+    "Respect API rate limits and Retry-After headers in the P2 client."
+  ],
+  "open_limits": [
+    "The legacy Elspotprices dataset is discontinued after 2025-09-30, outside the declared development and holdout periods.",
+    "The dataset stores delivery-hour prices but no row-level publication timestamp.",
+    "Any future extension across the 2025 market-time-unit change requires a separately validated migration to DayAheadPrices."
+  ]
+}

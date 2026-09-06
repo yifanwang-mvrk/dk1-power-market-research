@@ -10,8 +10,8 @@
 |---|---|
 | Completed phase | P0 — Project Control & Environment |
 | Current phase | P1 — Data Source Validation |
-| Current step | P1.2 — Validate DK1 day-ahead price |
-| Next step | P1.3 — Validate DK1 balancing price |
+| Current step | P1.3 — Validate DK1 balancing price |
+| Next step | P1.4 — Validate fundamentals and system sources |
 | Current milestone | Level A — CV-safe |
 | Milestone status | NOT ACHIEVED |
 | Holdout | LOCKED and unused |
@@ -19,9 +19,10 @@
 
 ## One Current Action / 当前唯一动作
 
-Validate the official DK1 day-ahead price dataset, field meaning, currency, delivery-hour key and development-period coverage.
+Validate the official historical DK1 balancing-price dataset, target field,
+unit, delivery-hour mapping and publication limitations.
 
-核验 DK1 day-ahead price 的官方数据集、价格字段、币种、交付小时键和开发期覆盖率。
+核验 DK1 历史 balancing price 的官方数据集、目标字段、单位、交付小时映射和发布时间限制。
 
 ## P1.1 Completion / Forecasts_Hour 核验结论
 
@@ -38,6 +39,21 @@ Validate the official DK1 day-ahead price dataset, field meaning, currency, deli
 - `TimestampUTC` belongs to `ForecastCurrent`, not the 5h/1h publication times
 - Fixed-horizon research is supported; complete tick-by-tick vintage claims are prohibited
 - Exact simulated decision cutoff remains an explicit P2.3 item
+
+## P1.2 Completion / DK1 Day-Ahead Price 核验结论
+
+**Status:** PASS — completed 2026-09-06
+
+- Official legacy dataset `Elspotprices` (ID 30) registered for the declared period
+- `SpotPriceEUR` selected as `P_DayAhead,t` in EUR/MWh
+- Full local-date development boundary contains all 21,887 expected hours
+- Zero missing hours, zero duplicate primary-key rows and zero holdout rows
+- `HourUTC + PriceArea` validated as the canonical key; filter area to DK1
+- `HourDK` retained for interpretation and DST checks only
+- Zero and negative day-ahead prices preserved as market observations
+- `SpotPriceDKK` retained for audit but excluded from the EUR spread
+- Exact row-level publication timestamps are unavailable and remain in P2.3
+- Future data after 2025-09-30 requires the successor `DayAheadPrices` dataset
 
 ## Completed Setup / 已完成搭建
 
@@ -67,8 +83,8 @@ Validate the official DK1 day-ahead price dataset, field meaning, currency, deli
 | A2 | Professional README | DONE |
 | A3 | Project Charter | DONE |
 | A4 | Target, development and holdout config | DONE |
-| A5 | Forecast, day-ahead and balancing data | IN PROGRESS — forecast source validated |
-| A6 | Data Dictionary and PIT classification | IN PROGRESS — Forecasts_Hour registered |
+| A5 | Forecast, day-ahead and balancing data | IN PROGRESS — forecast and day-ahead sources validated |
+| A6 | Data Dictionary and PIT classification | IN PROGRESS — forecast and day-ahead fields registered |
 | A7 | H2 revision variables | NOT STARTED |
 | A8 | At least one completed hypothesis test | NOT STARTED |
 | A9 | At least one meaningful chart | NOT STARTED |
@@ -99,5 +115,6 @@ Earlier assistant-prepared P1.1 files remain outside the formal repository as re
 |---|---|---|
 | 2026-09-05 | P0 repository and environment setup completed | Current: P1.1; Next: P1.2 |
 | 2026-09-06 | P1.1 `Forecasts_Hour` completed with a conditional pass | Current: P1.2; Next: P1.3 |
+| 2026-09-06 | P1.2 `Elspotprices` completed with a pass | Current: P1.3; Next: P1.4 |
 
 Update this file after every completed work session. Every DONE status requires reviewed evidence.

@@ -2,7 +2,7 @@
 
 **Project:** DK1 Short-Term Power Market Research
 **Version:** MVP v1
-**Status:** Frozen design; setup in progress
+**Status:** Frozen design; P1 source validation in progress
 **Owner:** Yifan Wang
 
 ## Mission
@@ -19,7 +19,8 @@ For each hourly DK1 delivery period:
 
 `Spread_t = P_Balancing,t - P_DayAhead,t`
 
-The final historical price fields must be selected through official source validation.
+P1.2 fixed `P_DayAhead,t` as DK1 `Elspotprices.SpotPriceEUR` in EUR/MWh.
+The final historical balancing-price field remains pending P1.3 validation.
 
 The outcome classes are:
 

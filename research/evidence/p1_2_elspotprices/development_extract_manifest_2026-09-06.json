@@ -1,0 +1,27 @@
+{
+  "retrieved_at_utc": "2026-09-06T10:17:32.032690+00:00",
+  "source_organization": "Energinet",
+  "dataset": "Elspotprices",
+  "source_url": "https://api.energidataservice.dk/dataset/Elspotprices?start=2022-01-01&end=2024-07-01&filter={\"PriceArea\":[\"DK1\"]}&sort=HourUTC&limit=0&timezone=DK",
+  "request": {
+    "start": "2022-01-01",
+    "end_exclusive": "2024-07-01",
+    "timezone": "DK",
+    "filter": {
+      "PriceArea": [
+        "DK1"
+      ]
+    },
+    "sort": "HourUTC",
+    "limit": 0
+  },
+  "local_file": "data/raw/p1_2_validation/Elspotprices_DK1_development_2022-01-01_2024-06-30.json",
+  "git_ignored": true,
+  "bytes": 2948721,
+  "sha256": "44893828275b74434d1a5ab9d259c73285be8fd7b101af0acac8887868444fc7",
+  "records": 21887,
+  "first_local_delivery_hour": "2022-01-01T00:00:00+01:00",
+  "last_local_delivery_hour": "2024-06-30T23:00:00+02:00",
+  "holdout_records": 0,
+  "retrieval_note": "Initial requests received HTTP 429 responses with Retry-After headers; the final bounded request succeeded after the rate-limit window elapsed."
+}

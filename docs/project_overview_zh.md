@@ -148,8 +148,8 @@ UP / DOWN / NEUTRAL 是结果分类；Bullish / Bearish / No Trade 是研究决�
 
 ### 我们现在在哪？
 
-**P0 仓库、环境与控制文档已经完成；P1.1 `Forecasts_Hour` 已获得有条件通过。当前执行 P1.2：核验 DK1 day-ahead price。** 数据测试尚未开始，Level A/B/C 均未达到。
+**P0 已完成；P1.1 `Forecasts_Hour` 有条件通过，P1.2 `Elspotprices` 正式通过。当前执行 P1.3：核验 DK1 balancing price。** 数据测试尚未开始，Level A/B/C 均未达到。
 
-P1.1 已确认同一交割小时的 5h→1h revision 在结构上可实施，同时保留缺失、零值、DST、精确发布时间与版本历史限制。当前继续确认 day-ahead reference price 的官方字段和小时映射。核心原则仍是：**先确认历史上当时能知道什么，再进入正式分析。**
+P1.1 已确认同一交割小时的 5h→1h revision 在结构上可实施；P1.2 已把同小时 DK1 `SpotPriceEUR` 锁定为 EUR/MWh 日前参考价，并确认完整开发期覆盖。当前继续确认哪一个 balancing 字段是真正的事后目标。核心原则仍是：**先确认每个字段的市场含义、时间与单位，再构造 spread。**
 
 阅读自检：你能用自己的话解释为什么比较同一小时的新旧预报、为什么 actual 不自动等于可用信息、为什么要保留 holdout 吗？这三点讲清楚，就可以开始第一步了。

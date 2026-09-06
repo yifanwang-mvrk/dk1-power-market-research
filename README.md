@@ -8,7 +8,7 @@ Project foundation is complete. Official-source validation is in progress.
 
 - Repository structure and GitHub remote: created
 - Python environment: created and verified
-- Data validation: P1.1 `Forecasts_Hour` conditionally passed; P1.2 current
+- Data validation: P1.1 conditionally passed; P1.2 `Elspotprices` passed; P1.3 current
 - Hypothesis testing: not started
 - Level A (CV-safe): not achieved
 - Locked holdout: unused
@@ -21,9 +21,10 @@ Project foundation is complete. Official-source validation is in progress.
 
 For each hourly DK1 delivery period:
 
-`Spread_t = P_Balancing,t - P_DayAhead,t`
+`Spread_t = P_Balancing,t - Elspotprices.SpotPriceEUR_t`
 
-The exact historical price fields will be selected only after official source validation.
+The DK1 day-ahead reference is fixed as `SpotPriceEUR` in EUR/MWh. The exact
+historical balancing-price field remains pending P1.3 official-source validation.
 
 ## Research Periods
 

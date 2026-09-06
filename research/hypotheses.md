@@ -23,7 +23,7 @@ Actual demand and actual renewable production may explain past outcomes but cann
 
 ## H2 — Renewable Forecast Revision
 
-**Status:** Data basis conditionally validated; testing not started
+**Status:** Forecast and day-ahead reference validated; balancing source pending; testing not started
 **Role:** Primary MVP hypothesis
 
 ### Question
@@ -42,6 +42,9 @@ P1.1 established same-hour fixed-horizon fields with approximately 99% numeric
 pair coverage in the development period. Use them only with the documented
 missingness, zero-value and DST rules. The exact simulated decision cutoff
 remains to be locked in P2.3; no complete tick-by-tick vintage claim is allowed.
+P1.2 fixed the same-hour DK1 day-ahead reference as
+`Elspotprices.SpotPriceEUR` in EUR/MWh with complete development-period
+coverage. The balancing outcome field remains pending P1.3.
 
 ## H3 — Cross-Border and System Conditions
 

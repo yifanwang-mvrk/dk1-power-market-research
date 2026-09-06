@@ -1,0 +1,22 @@
+{
+  "retrieved_at_utc": "2026-09-06T10:15:46.617876+00:00",
+  "source_organization": "Energinet",
+  "dataset": "Elspotprices",
+  "scope": "official metadata and one bounded DK1 development sample; no holdout data",
+  "files": [
+    {
+      "file": "metadata_2026-09-06.json",
+      "source_url": "https://api.energidataservice.dk/meta/Dataset/Elspotprices",
+      "sha256": "a8f661ac0d71d70d9767f89ccfce13747936600a8ed8cf2866f5aab7464ce37b",
+      "bytes": 5736,
+      "holdout_accessed": false
+    },
+    {
+      "file": "sample_dk1_2024-01-15_2024-01-16_utc.json",
+      "source_url": "https://api.energidataservice.dk/dataset/Elspotprices?start=2024-01-15&end=2024-01-16&filter={\"PriceArea\":[\"DK1\"]}&sort=HourUTC&limit=0&timezone=UTC",
+      "sha256": "700985824e0d919ed138f7c5b4026e05ef32762d770704522d04eb68832c1190",
+      "bytes": 3335,
+      "holdout_accessed": false
+    }
+  ]
+}
