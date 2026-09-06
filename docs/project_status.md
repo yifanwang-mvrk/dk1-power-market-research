@@ -8,26 +8,26 @@
 
 | Item | Current Status |
 |---|---|
-| Completed phase | P10.1 — logistic model + calibration frozen (development) |
+| Completed phase | P10.2 — spec frozen, unlock template filled, prior non-use verified |
 | Current phase | P10 — Level C |
-| Current step | P10.2 — freeze the spec and complete the holdout-unlock gate |
-| Next step | P10.3 — run the single locked-holdout evaluation (needs owner sign-off) |
+| Current step | P10.3 — run the single locked-holdout evaluation |
+| Next step | P10.4 — finalise memo / README, label MVP v1 |
 | Current milestone | Level C — MVP Complete |
-| Milestone status | IN PROGRESS (Level B achieved; P10.1 done) |
-| Holdout | LOCKED and unused |
-| Blocker | None — P10.3 requires the owner's explicit unlock approval |
+| Milestone status | IN PROGRESS (P10.1 + P10.2 done) |
+| Holdout | LOCKED — unlock template filled (D036); `fetch_allowed` still false |
+| Blocker | **P10.3 is held for the project owner's explicit unlock approval** |
 
 ## One Current Action / 当前唯一动作
 
-Start P10.2: freeze the P10.1 specification (features, `C`, calibration, split
-dates, frozen labels and delta) and fill in the decision-log holdout-unlock
-template — unlock date, frozen code/config version, prior-non-use evidence,
-planned request boundaries. **P10.3 (the actual holdout evaluation) does not run
-until the owner explicitly approves the unlock.**
+**Hold.** P10.2 is complete: the spec is frozen (commit 47577b1), the unlock
+template is filled (D036), and prior non-use is machine-verified. P10.3 — flip
+`config` `holdout.fetch_allowed`, request 2024-07-01..2024-12-31, evaluate the
+frozen model — runs **only after the project owner reviews the unlock template
+and explicitly approves the unlock**.
 
-开始 P10.2：冻结 P10.1 规格（特征、`C`、校准、切分日期、冻结标签和 delta），并填写
-decision log 的 holdout 解锁模板——解锁日期、冻结的代码/配置版本、此前未使用证据、
-计划的请求边界。**P10.3（真正的 holdout 评估）在所有者明确批准解锁前不运行。**
+**暂停。** P10.2 已完成：规格已冻结（commit 47577b1），解锁模板已填（D036），此前
+未使用已机器核验。P10.3——翻转 `config` 的 `holdout.fetch_allowed`、请求
+2024-07-01..2024-12-31、评估冻结模型——**只在所有者审阅解锁模板并明确批准后运行**。
 
 ## P1.1 Completion / Forecasts_Hour 核验结论
 
@@ -367,6 +367,27 @@ locked and unread**
   8/8; chart `p10_1_calibration_chart_2026-09-06.png`
 - Evidence: `research/evidence/p10_model/`
 
+## P10.2 Completion / Holdout Unlock Gate 完成结论
+
+**Status:** COMPLETE — 2026-09-06 — spec frozen, unlock template filled;
+**holdout still locked, `fetch_allowed: false`, awaiting owner approval**
+
+- `src/p10_unlock_gate.py` freezes the P10.1 spec (commit 47577b1) and verifies
+  prior non-use; `research/evidence/p10_holdout_unlock/` (gate 6/6)
+- Prior non-use: config holdout locked & fetch-disabled; all 6 raw JSON files
+  max at 2024-06-30; all 9 processed tables max at 2024-06-30 21:00 UTC; every
+  loader aborts unless the holdout is locked
+- The unlock template (D036) is completed in `docs/decision_log.md` — target,
+  delta, features, model, calibration, split, baselines, primary metrics, regime
+  definitions, secondary sensitivities, prior-non-use evidence, planned request
+  boundaries, results destination, post-inspection protocol
+- **P10.3 does not run until the owner reviews the template and approves the
+  unlock.** On approval: log the date in D036, set `fetch_allowed: true`,
+  request 2024-07-01..2024-12-31, evaluate, write to
+  `research/evidence/p10_holdout/`
+- `src/p10_unlock_gate.py` + `tests/test_p10_unlock_gate.py` (2 tests; 46/46);
+  Decision D036
+
 ## P8 Completion / Level A Packaging 完成结论
 
 **Status:** PASS — Level A (CV-safe) ACHIEVED 2026-09-06
@@ -426,7 +447,7 @@ locked and unread**
 | # | Criterion | Status |
 |---|---|---|
 | C1 | Logistic Regression baseline | DONE — P10.1 (D035): frozen; right signs, no 2024 H1 dev-validation edge |
-| C2 | Locked holdout unlocked under the protocol | NOT STARTED — P10.2 gate; needs owner approval |
+| C2 | Locked holdout unlocked under the protocol | GATE FILLED — P10.2 (D036): spec frozen, prior non-use verified; **awaiting owner approval to unlock** |
 | C3 | Out-of-sample evaluation on 2024 H2 | NOT STARTED — P10.3 |
 | C4 | Comparison vs majority baseline (holdout) | NOT STARTED — P10.3 |
 | C5 | Comparison vs persistence (holdout) | NOT STARTED — P10.3 |
@@ -489,5 +510,6 @@ Earlier assistant-prepared P1.1 files remain outside the formal repository as re
 | 2026-09-06 | P7.1–P7.3 transparent signal engine: DOWN PRESSURE realizes DOWN 40% vs 33% base (+7pp), UP side negligible, active 33%, marginally beats availability-safe baselines; 4 State Cards + Journal J001. D033. Level B B4–B8 done | Current: P9.1; Next: P9.2 |
 | 2026-09-06 | P9.1 research memo r01 v1.0 written; P9.2 audited all ten Level B criteria (10/10) — **Level B (Interview Ready) ACHIEVED**. D034 | Current: P10.1; Next: P10.2 |
 | 2026-09-06 | P10.1 logistic regression + Platt calibration frozen (development split at 2023-07-01 / 2024-01-01): coefficient signs correct on all 5 H1/H2 checks, but no edge on the 2024 H1 validation slice. I08 resolved. D035. Holdout still locked | Current: P10.2; Next: P10.3 (owner sign-off) |
+| 2026-09-06 | P10.2 spec frozen (commit 47577b1), holdout-unlock template filled (D036), prior non-use machine-verified (6/6). Holdout still locked; `fetch_allowed: false`. **P10.3 held for owner approval** | Current: P10.3 (blocked on approval); Next: P10.4 |
 
 Update this file after every completed work session. Every DONE status requires reviewed evidence.

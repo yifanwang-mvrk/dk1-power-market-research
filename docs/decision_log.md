@@ -59,6 +59,7 @@ Source: the complete 31-section final Blueprint response and the owner's subsequ
 | D033 | P7 transparent signal engine: modest DOWN-side edge, negligible UP side | RESEARCH FINDING |
 | D034 | P9 Level B (Interview Ready) acceptance | MILESTONE |
 | D035 | P10.1 logistic regression + calibration frozen; right signs, no dev-validation edge | IMPLEMENTATION NOTE |
+| D036 | P10.2 holdout-unlock record: spec frozen, prior non-use verified; awaiting owner approval | FROZEN — UNLOCK PENDING |
 | E001–E003 | 执行说明 / Execution clarifications | IMPLEMENTATION NOTE |
 | I01–I08 | 字段、参数和可用性 / Fields, parameters and availability | TRACKED — see current table |
 
@@ -940,6 +941,59 @@ locked. **The holdout is not unlocked by this step** — that is P10.2 / P10.3.
 
 **Supersedes / 替代:** None. Resolves I08.
 
+## D036 · P10.2 holdout-unlock record
+
+**日期 / Date:** 2026-09-06
+**状态 / Status:** FROZEN — UNLOCK PENDING OWNER APPROVAL
+**Related step / 对应步骤:** P10.2 (this record); P10.3 (execution)
+
+**决定 / Decision:** Freeze the Level C specification (P10.1 / D035, at commit
+`47577b1`) and complete the holdout-unlock template above. `src/p10_unlock_gate.py`
+verifies prior non-use and writes
+`research/evidence/p10_holdout_unlock/unlock_record_2026-09-06.json`
+(gate 6/6). **This step does not unlock the holdout.** `config` keeps
+`holdout.state: locked` and `holdout.fetch_allowed: false`.
+
+**Prior-non-use verification (machine-checked):**
+
+- `config` holdout `state: locked`, `fetch_allowed: false`.
+- All 6 raw JSON files max at `2024-06-30` (`CountertradeIntraday` at
+  `2024-06-28`, its own coverage); SHA-256 recorded.
+- All 9 processed parquet tables max at `2024-06-30 21:00:00Z`.
+- Every data loader (`p2`..`p10_1`, the P1 validators, the API client) aborts
+  unless the holdout is `locked` and filters strictly before the holdout start.
+- The only holdout-window dates anywhere in the repo are the exclusive request
+  boundary `2024-07-01`, the declared end `2024-12-31` in config/docs, and
+  `2024-11-01`/`2024-11-07` inside a third-party ENTSO-E documentation URL
+  captured in P1.4 source metadata. No holdout observation was requested,
+  fetched or read.
+
+**理由 / Rationale:** The Blueprint's Level C gate (§5, §27) requires a logged
+unlock trail — frozen versions, test plan and evidence of prior non-use — before
+any holdout access, and requires that the primary specification be reported
+whether the result is positive or null. Separating the record (P10.2) from the
+execution (P10.3) keeps the single irreversible action behind an explicit
+owner decision.
+
+**未采用 / Alternative considered:** Unlocking and evaluating in one step (removes
+the owner checkpoint before the one-shot test); re-tuning the model or delta at
+this stage (prohibited — the spec is frozen); treating the P10.1 development
+validation weakness as a reason not to run the holdout (the holdout evaluates the
+frozen spec regardless; a null is a valid completion).
+
+**Impact / 影响:** P10.3 may run **only after the project owner explicitly
+approves the unlock**. On approval: log the unlock date/time here, set
+`config` `holdout.fetch_allowed: true` (and later `state: unlocked` with the
+evaluation complete), request `local 2024-07-01 00:00 .. 2025-01-01 00:00`
+(exclusive) for DK1 through the same pipeline, and write the results to
+`research/evidence/p10_holdout/`. P10.4 finalises the memo and README and labels
+the MVP.
+
+**Holdout implications / 留出期:** The holdout is still locked and unread. This
+record is the trail that must exist before it is touched.
+
+**Supersedes / 替代:** None. Fills the unlock template; implements D005 / D017.
+
 ## 本次执行说明 / Operational clarifications
 
 ### E001 · Preserve both persistence and point-in-time integrity
@@ -1004,25 +1058,56 @@ Owner direction if scope changes / 若改范围，对应所有者指示:
 <a id="holdout-unlock"></a>
 ## Level C 解锁记录模板 / Holdout unlock template
 
-**当前状态：未解锁；以下为空模板。/ Current state: locked; the following is a blank template.**
+**当前状态：P10.2 完成，模板已填；`fetch_allowed` 仍为 `false`。等待所有者批准后
+才执行 P10.3（翻转 `fetch_allowed`、请求数据、评估）。/ Current state: P10.2
+complete, template filled; `fetch_allowed` is still `false`. P10.3 (flip
+`fetch_allowed`, request data, evaluate) runs only on the owner's approval.**
 
 ```text
-Decision ID:
-Unlock date/time:
-Related step: P10.2
-Level B evidence:
-Development data/version:
-Frozen code/config version:
-Target field, Q25 delta and label rules:
-Feature eligibility and decision cutoff:
-Model selection and development-only calibration:
-Majority and persistence definitions / availability:
-Primary metrics, sample filters and regime definitions:
-Predeclared secondary sensitivities, if any:
-Evidence of no prior holdout use:
-Planned holdout request boundaries:
-Results destination:
-Protocol for changes after inspection:
+Decision ID:                     D036
+Unlock date/time:                NOT YET UNLOCKED — pending owner approval (P10.3)
+Related step:                    P10.2 (this record); P10.3 (execution)
+Level B evidence:                research/evidence/p9_level_b/level_b_audit_2026-09-06.md — 10/10 criteria
+Development data/version:        data/processed/p3/target_development.parquet + p4/revision_development.parquet;
+                                 21,887 hours, hash-checked against the P3/P4 quality reports
+Frozen code/config version:      spec frozen at commit 47577b1 (P10.1); config `level_c_model`, `neutral_band`,
+                                 `signal_engine`; this unlock record adds no spec change
+Target field, Q25 delta, labels: Spread = RegulatingBalancePowerdata.ImbalancePriceEUR - Elspotprices.SpotPriceEUR
+                                 (EUR/MWh); delta = 5.9956075 (frozen Q25, D026), NOT re-estimated;
+                                 UP if spread > +delta, DOWN if < -delta, NEUTRAL on/inside the band
+Feature eligibility & cutoff:    10 decision-eligible features (wind_revision_mwh, wind_forecast_5h_mwh,
+                                 wind_revision_when_low_wind_mwh, solar_revision_mwh, residual_load_known_mwh,
+                                 hour_sin/cos, doy_sin/cos, is_weekend); decision cutoff = delivery_start_utc,
+                                 strictly-before availability (D025)
+Model selection & calibration:   multinomial LogisticRegression, class_weight=balanced, C=1.0 from
+                                 [0.05,0.1,0.25,0.5,1.0] by calibration-slice macro-F1; StandardScaler on train
+                                 only; Platt (sigmoid) calibration on the calibration slice only; time-ordered
+                                 development split train <2023-07-01 / calibration <2024-01-01 / validation <2024-07-01
+Majority & persistence:          majority = training-label majority from all development, always predicted;
+                                 hour-of-week = training-majority label per Danish local weekday-hour;
+                                 persistence y_hat_t = y_(t-1), ex-post reference only (D023/E001)
+Primary metrics & filters:       balanced accuracy, macro-F1, multiclass Brier (mean sum_k (p_k - y_k)^2, range [0,2]);
+                                 rows = holdout hours with a valid label and a complete feature row;
+                                 report calibrated logistic vs majority and hour-of-week; raw logistic and the P7
+                                 transparent rule for comparison; persistence as ex-post reference
+Regime definitions:              by meteorological season (DJF/MAM/JJA/SON) and by wind_forecast_5h tercile
+                                 (edges from development, P4.4)
+Predeclared secondary sens.:     Q20 and Q30 delta sensitivity, reported separately; Q25 remains primary
+Evidence of no prior holdout use: research/evidence/p10_holdout_unlock/unlock_record_2026-09-06.json —
+                                 config holdout state=locked & fetch_allowed=false; all 6 raw JSON files max at
+                                 2024-06-30 (Countertrade 2024-06-28); all 9 processed tables max at
+                                 2024-06-30 21:00 UTC; every data loader aborts unless the holdout is locked;
+                                 the only holdout-window dates in the repo are the exclusive boundary 2024-07-01,
+                                 the declared end 2024-12-31, and 2024-11-01/07 inside a third-party doc URL in
+                                 P1.4 source metadata
+Planned holdout request:         local 2024-07-01 00:00 inclusive to 2025-01-01 00:00 exclusive, DK1, the same six
+                                 sources and the same P2 -> P3 -> P4.2 pipeline
+Results destination:             research/evidence/p10_holdout/ (P10.3); research/r01_research_memo.md and
+                                 README (P10.4)
+Protocol for changes after       Any specification change informed by the holdout is exploratory and requires
+inspection:                      fresh, later, unseen data. The primary Q25 result stands as reported, positive
+                                 or null.
+Owner approval:                  PENDING — P10.3 does not run until the project owner explicitly approves the unlock.
 ```
 
 完成模板并满足 [Handbook 的解锁门槛](project_handbook.md#s03) 后，才更新 Status 的 holdout 状态。填写一个日期本身不代表门槛通过。
