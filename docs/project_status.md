@@ -8,27 +8,23 @@
 
 | Item | Current Status |
 |---|---|
-| Completed phase | P3 — Target Construction |
-| Current phase | P4 — H2 Renewable Forecast Revision |
-| Current step | P4.3 — Run the pre-registered round-1 test and chart |
-| Next step | P4.4 — First-round conditioning and failure analysis |
+| Completed phase | P4.1–P4.3 — H2 round-1 test complete (SUPPORTED, weak) |
+| Current phase | P8 — Level A packaging |
+| Current step | P8.1 — Audit all ten Level A criteria |
+| Next step | P8.2 — Finalise factual README / charter wording, then P4.4 |
 | Current milestone | Level A — CV-safe |
-| Milestone status | NOT ACHIEVED |
+| Milestone status | NOT ACHIEVED — all ten criteria now have evidence; P8 audit pending |
 | Holdout | LOCKED and unused |
 | Blocker | None |
 
 ## One Current Action / 当前唯一动作
 
-Run the pre-registered P4.1 round-1 test: join the frozen P4.2 revisions to the
-P3 labels and signed spread, build the bucket-by-label contingency table, the
-Spearman association with a bootstrap CI, and the transparent rule scored against
-the majority and hour-of-week baselines, plus one chart. Then write the
-supported / conditionally supported / null conclusion.
+Audit the ten Level A criteria against committed evidence (P8.1): confirm each is
+met, then finalise the README and charter so their wording matches completed work
+(P8.2). Only after the audit passes does the milestone move to ACHIEVED.
 
-跑预登记的 P4.1 round-1 检验：把冻结的 P4.2 revision 与 P3 标签和带符号 spread 连接，
-做 桶 × 标签 列联表、带 bootstrap 置信区间的 Spearman 关联、以及对照 majority 和
-hour-of-week 基准评分的透明规则，加一张图。然后写 supported / conditionally
-supported / null 结论。
+按已提交证据逐项核对 Level A 十条（P8.1）：确认每条都满足，然后校订 README 和
+charter 使措辞与实际完成的工作一致（P8.2）。审核通过后里程碑才改为 ACHIEVED。
 
 ## P1.1 Completion / Forecasts_Hour 核验结论
 
@@ -213,6 +209,30 @@ outcome joined
 - Output table carries no outcome column; no revision-outcome statistic computed
 - Evidence: `research/evidence/p4_h2_revision/` (`p4_2_*` files)
 
+## P4.3 Completion / H2 Round-1 Result 完成结论
+
+**Status:** COMPLETE — 2026-09-06 — **H2 SUPPORTED (weak, asymmetric effect)**,
+in-sample / descriptive; ran exactly as pre-registered (D027)
+
+- `src/p4_test.py` joins the frozen P4.2 revisions to the P3 labels and signed
+  spread and runs the pre-registered contingency table, Spearman association and
+  transparent rule; `p4_3_quality_report_2026-09-06.json` 9/9
+- Primary `wind_revision` (n = 21,614): `P(DOWN)` rises 27.3% → 38.7% and `P(UP)`
+  falls 24.7% → 17.2% across the five signed-revision quintiles (gradient
+  Spearman +1.00). Association Spearman −0.096, 95% bootstrap CI [−0.109, −0.083]
+- Transparent rule (`c` = 128.083 MWh) balanced accuracy 0.365 vs majority 0.333
+  and hour-of-week 0.345 (meets the pre-registered bar) but plain accuracy 0.422
+  vs ~0.47 and far below the ex-post persistence reference 0.699; directional
+  skill is real on `DOWN`, essentially absent on `UP`
+- Secondary `solar_revision`: conditionally supported — solar only, needs
+  replication (Spearman −0.060 all pairs, −0.075 daytime)
+- Conclusion recorded per D013 / E002: supported within its limitations; not a
+  deployable or profitable rule (D016). Carried to P4.4: chronological OOS check,
+  a stricter baseline gate, regime and cross-border conditioning
+- Decision D028; chart `p4_3_revision_label_chart_2026-09-06.png`
+- Evidence: `research/evidence/p4_h2_revision/` (`p4_3_*` files);
+  `research/hypotheses.md` (H2 section)
+
 ## Completed Setup / 已完成搭建
 
 - [x] Formal local Git repository created
@@ -244,11 +264,11 @@ outcome joined
 | A5 | Forecast, day-ahead and balancing data | DONE — all three core sources validated with documented conditions |
 | A6 | Data Dictionary and PIT classification | DONE — core and P1.4 source fields registered by eligibility class |
 | A7 | H2 revision variables | DONE — wind and solar 5h-to-1h revisions built and diagnosed on the P2 base (P4.2); buckets frozen |
-| A8 | At least one completed hypothesis test | NOT STARTED |
-| A9 | At least one meaningful chart | NOT STARTED |
+| A8 | At least one completed hypothesis test | DONE — H2 round-1 (P4.3): SUPPORTED (weak, asymmetric), pre-registered, with a written conclusion and limitations |
+| A9 | At least one meaningful chart | DONE — `p4_3_revision_label_chart_2026-09-06.png` (label share by wind-revision quintile) |
 | A10 | Holdout completely unused | MAINTAINED |
 
-**Level A: NOT ACHIEVED**
+**Level A: NOT ACHIEVED — all ten criteria now have committed evidence; the P8.1 audit is the remaining gate**
 **Level B: NOT ACHIEVED**
 **Level C: NOT ACHIEVED**
 
@@ -280,5 +300,6 @@ Earlier assistant-prepared P1.1 files remain outside the formal repository as re
 | 2026-09-06 | P3.1–P3.4 balancing spread built, Q25 delta frozen at 5.9956075 EUR/MWh, three labels assigned, baseline contracts fixed (D026) | Current: P4.1; Next: P4.2 |
 | 2026-09-06 | P4.1 H2 round-1 test pre-registered (wind primary, solar secondary; signed-quantile buckets; Spearman + transparent rule; gate = majority + hour-of-week) | Current: P4.2; Next: P4.3 |
 | 2026-09-06 | P4.2 wind/solar 5h-to-1h revisions built on the P2 base; forecast moves every hour (0 wind hours with 5h==1h); quintile edges and rule threshold frozen; no outcome joined | Current: P4.3; Next: P4.4 |
+| 2026-09-06 | P4.3 H2 round-1 test run as pre-registered: SUPPORTED (weak, asymmetric) — monotone contingency gradient, Spearman -0.096 (CI excludes 0), rule marginally beats availability-safe baselines. D028. Level A A8 + A9 met | Current: P8.1; Next: P8.2 then P4.4 |
 
 Update this file after every completed work session. Every DONE status requires reviewed evidence.

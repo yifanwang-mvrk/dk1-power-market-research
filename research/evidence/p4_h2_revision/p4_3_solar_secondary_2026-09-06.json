@@ -1,0 +1,706 @@
+{
+  "all_numeric_pairs": {
+    "variable": "solar_revision_mwh",
+    "rule_threshold_c_mwh": 5.493420399999993,
+    "contingency_quintile": {
+      "bucket_column": "solar_revision_quintile",
+      "n": 21663,
+      "group_sizes": {
+        "1": 4333,
+        "2": 8027,
+        "3": 692,
+        "4": 4278,
+        "5": 4333
+      },
+      "counts": {
+        "1": {
+          "UP": 1022,
+          "DOWN": 1216,
+          "NEUTRAL": 2095
+        },
+        "2": {
+          "UP": 1585,
+          "DOWN": 2657,
+          "NEUTRAL": 3785
+        },
+        "3": {
+          "UP": 126,
+          "DOWN": 245,
+          "NEUTRAL": 321
+        },
+        "4": {
+          "UP": 761,
+          "DOWN": 1413,
+          "NEUTRAL": 2104
+        },
+        "5": {
+          "UP": 808,
+          "DOWN": 1592,
+          "NEUTRAL": 1933
+        }
+      },
+      "row_shares_p_label_given_bucket": {
+        "1": {
+          "UP": 0.2358642972536349,
+          "DOWN": 0.280636972074775,
+          "NEUTRAL": 0.4834987306715901
+        },
+        "2": {
+          "UP": 0.19745857730160707,
+          "DOWN": 0.33100784851127446,
+          "NEUTRAL": 0.4715335741871185
+        },
+        "3": {
+          "UP": 0.18208092485549132,
+          "DOWN": 0.3540462427745665,
+          "NEUTRAL": 0.4638728323699422
+        },
+        "4": {
+          "UP": 0.17788686302010284,
+          "DOWN": 0.3302945301542777,
+          "NEUTRAL": 0.49181860682561945
+        },
+        "5": {
+          "UP": 0.18647588276021232,
+          "DOWN": 0.36741287791368565,
+          "NEUTRAL": 0.446111239326102
+        }
+      },
+      "down_share_minus_up_share": {
+        "1": 0.04477267482114011,
+        "2": 0.1335492712096674,
+        "3": 0.17196531791907516,
+        "4": 0.15240766713417483,
+        "5": 0.18093699515347333
+      },
+      "gradient_bucket_index_spearman": 0.8999999999999998,
+      "endpoints_bucket5_gt_bucket1": true,
+      "gradient_directionally_consistent": true
+    },
+    "contingency_decile": {
+      "bucket_column": "solar_revision_decile",
+      "n": 21663,
+      "group_sizes": {
+        "1": 2167,
+        "2": 2166,
+        "3": 2166,
+        "4": 5861,
+        "5": 692,
+        "6": 2112,
+        "7": 2166,
+        "8": 2166,
+        "9": 2167
+      },
+      "counts": {
+        "1": {
+          "UP": 548,
+          "DOWN": 622,
+          "NEUTRAL": 997
+        },
+        "2": {
+          "UP": 474,
+          "DOWN": 594,
+          "NEUTRAL": 1098
+        },
+        "3": {
+          "UP": 445,
+          "DOWN": 723,
+          "NEUTRAL": 998
+        },
+        "4": {
+          "UP": 1140,
+          "DOWN": 1934,
+          "NEUTRAL": 2787
+        },
+        "5": {
+          "UP": 126,
+          "DOWN": 245,
+          "NEUTRAL": 321
+        },
+        "6": {
+          "UP": 342,
+          "DOWN": 728,
+          "NEUTRAL": 1042
+        },
+        "7": {
+          "UP": 419,
+          "DOWN": 685,
+          "NEUTRAL": 1062
+        },
+        "8": {
+          "UP": 408,
+          "DOWN": 735,
+          "NEUTRAL": 1023
+        },
+        "9": {
+          "UP": 400,
+          "DOWN": 857,
+          "NEUTRAL": 910
+        }
+      },
+      "row_shares_p_label_given_bucket": {
+        "1": {
+          "UP": 0.25288417166589755,
+          "DOWN": 0.2870327641901246,
+          "NEUTRAL": 0.46008306414397787
+        },
+        "2": {
+          "UP": 0.2188365650969529,
+          "DOWN": 0.2742382271468144,
+          "NEUTRAL": 0.5069252077562327
+        },
+        "3": {
+          "UP": 0.20544783010156972,
+          "DOWN": 0.3337950138504155,
+          "NEUTRAL": 0.46075715604801476
+        },
+        "4": {
+          "UP": 0.1945060569868623,
+          "DOWN": 0.3299778194847296,
+          "NEUTRAL": 0.4755161235284081
+        },
+        "5": {
+          "UP": 0.18208092485549132,
+          "DOWN": 0.3540462427745665,
+          "NEUTRAL": 0.4638728323699422
+        },
+        "6": {
+          "UP": 0.16193181818181818,
+          "DOWN": 0.3446969696969697,
+          "NEUTRAL": 0.4933712121212121
+        },
+        "7": {
+          "UP": 0.19344413665743307,
+          "DOWN": 0.3162511542012927,
+          "NEUTRAL": 0.4903047091412742
+        },
+        "8": {
+          "UP": 0.1883656509695291,
+          "DOWN": 0.33933518005540164,
+          "NEUTRAL": 0.47229916897506924
+        },
+        "9": {
+          "UP": 0.18458698661744347,
+          "DOWN": 0.39547761882787263,
+          "NEUTRAL": 0.41993539455468387
+        }
+      },
+      "down_share_minus_up_share": {
+        "1": 0.03414859252422703,
+        "2": 0.055401662049861494,
+        "3": 0.12834718374884577,
+        "4": 0.1354717624978673,
+        "5": 0.17196531791907516,
+        "6": 0.18276515151515155,
+        "7": 0.12280701754385961,
+        "8": 0.15096952908587255,
+        "9": 0.21089063221042917
+      },
+      "gradient_bucket_index_spearman": 0.75,
+      "endpoints_bucket5_gt_bucket1": true,
+      "gradient_directionally_consistent": false
+    },
+    "association_primary_signed_spread": {
+      "pair": "solar_revision_mwh vs signed_spread",
+      "n": 21663,
+      "spearman_rho": -0.06042952711321977,
+      "bootstrap_draws": 2000,
+      "bootstrap_seed": 20260906,
+      "ci_percentiles": [
+        2.5,
+        97.5
+      ],
+      "ci_low": -0.07326274419164029,
+      "ci_high": -0.04699939508034465,
+      "ci_excludes_zero": true,
+      "observed_sign": -1,
+      "predicted_sign": -1,
+      "sign_matches_prediction": true,
+      "association_supported": true
+    },
+    "association_secondary_label_score": {
+      "pair": "solar_revision_mwh vs label_score",
+      "n": 21663,
+      "spearman_rho": -0.05986775345393967,
+      "bootstrap_draws": 2000,
+      "bootstrap_seed": 20260906,
+      "ci_percentiles": [
+        2.5,
+        97.5
+      ],
+      "ci_low": -0.07309828856222556,
+      "ci_high": -0.04650298817631004,
+      "ci_excludes_zero": true,
+      "observed_sign": -1,
+      "predicted_sign": -1,
+      "sign_matches_prediction": true,
+      "association_supported": true
+    },
+    "transparent_rule": {
+      "definition": "DOWN if solar_revision_mwh > 5.493420; UP if < -5.493420; else NEUTRAL",
+      "scores": {
+        "n": 21663,
+        "balanced_accuracy": 0.35572023364583066,
+        "macro_f1": 0.350907448595329,
+        "accuracy": 0.4094077459262337,
+        "confusion_actual_rows_pred_cols": {
+          "UP": {
+            "UP": 952,
+            "DOWN": 860,
+            "NEUTRAL": 2490
+          },
+          "DOWN": {
+            "UP": 1135,
+            "DOWN": 1699,
+            "NEUTRAL": 4289
+          },
+          "NEUTRAL": {
+            "UP": 1940,
+            "DOWN": 2080,
+            "NEUTRAL": 6218
+          }
+        }
+      }
+    },
+    "baselines": {
+      "majority_neutral_in_sample": {
+        "n": 21663,
+        "balanced_accuracy": 0.3333333333333333,
+        "macro_f1": 0.21395358557203015,
+        "accuracy": 0.472603055901768,
+        "confusion_actual_rows_pred_cols": {
+          "UP": {
+            "UP": 0,
+            "DOWN": 0,
+            "NEUTRAL": 4302
+          },
+          "DOWN": {
+            "UP": 0,
+            "DOWN": 0,
+            "NEUTRAL": 7123
+          },
+          "NEUTRAL": {
+            "UP": 0,
+            "DOWN": 0,
+            "NEUTRAL": 10238
+          }
+        }
+      },
+      "hour_of_week_training_majority_in_sample": {
+        "n": 21663,
+        "balanced_accuracy": 0.3450746399206765,
+        "macro_f1": 0.2642668294610791,
+        "accuracy": 0.47528043207312004,
+        "confusion_actual_rows_pred_cols": {
+          "UP": {
+            "UP": 0,
+            "DOWN": 353,
+            "NEUTRAL": 3949
+          },
+          "DOWN": {
+            "UP": 0,
+            "DOWN": 692,
+            "NEUTRAL": 6431
+          },
+          "NEUTRAL": {
+            "UP": 0,
+            "DOWN": 634,
+            "NEUTRAL": 9604
+          }
+        }
+      },
+      "persistence_ex_post_reference": {
+        "n": 21661,
+        "balanced_accuracy": 0.6987226429322547,
+        "macro_f1": 0.6987208971729095,
+        "accuracy": 0.7140482895526522,
+        "confusion_actual_rows_pred_cols": {
+          "UP": {
+            "UP": 2682,
+            "DOWN": 428,
+            "NEUTRAL": 1191
+          },
+          "DOWN": {
+            "UP": 385,
+            "DOWN": 5238,
+            "NEUTRAL": 1500
+          },
+          "NEUTRAL": {
+            "UP": 1235,
+            "DOWN": 1455,
+            "NEUTRAL": 7547
+          }
+        }
+      }
+    },
+    "criteria_evaluation": {
+      "gradient_directionally_consistent": true,
+      "primary_association_supported": true,
+      "rule_beats_majority": true,
+      "rule_beats_hour_of_week": true,
+      "rule_beats_availability_safe_baselines": true,
+      "rule_beats_persistence_reported_not_gated": false
+    },
+    "conclusion": "conditionally supported - solar only, needs replication",
+    "interpretation": "Development-wide, in-sample / descriptive (E002). The transparent rule has no outcome-fitted parameters; a chronological out-of-sample evaluation belongs to later stages.",
+    "holdout": "LOCKED_AND_UNUSED"
+  },
+  "both_horizons_positive": {
+    "variable": "solar_revision_mwh_both_positive",
+    "rule_threshold_c_mwh": 21.733324800000087,
+    "contingency_quintile": {
+      "bucket_column": "solar_revision_bothpos_quintile",
+      "n": 14837,
+      "group_sizes": {
+        "1": 2968,
+        "2": 2967,
+        "3": 2967,
+        "4": 2967,
+        "5": 2968
+      },
+      "counts": {
+        "1": {
+          "UP": 721,
+          "DOWN": 849,
+          "NEUTRAL": 1398
+        },
+        "2": {
+          "UP": 625,
+          "DOWN": 925,
+          "NEUTRAL": 1417
+        },
+        "3": {
+          "UP": 567,
+          "DOWN": 1012,
+          "NEUTRAL": 1388
+        },
+        "4": {
+          "UP": 560,
+          "DOWN": 974,
+          "NEUTRAL": 1433
+        },
+        "5": {
+          "UP": 554,
+          "DOWN": 1131,
+          "NEUTRAL": 1283
+        }
+      },
+      "row_shares_p_label_given_bucket": {
+        "1": {
+          "UP": 0.2429245283018868,
+          "DOWN": 0.2860512129380054,
+          "NEUTRAL": 0.47102425876010784
+        },
+        "2": {
+          "UP": 0.2106504887091338,
+          "DOWN": 0.31176272328951804,
+          "NEUTRAL": 0.4775867880013482
+        },
+        "3": {
+          "UP": 0.1911021233569262,
+          "DOWN": 0.34108527131782945,
+          "NEUTRAL": 0.4678126053252444
+        },
+        "4": {
+          "UP": 0.1887428378833839,
+          "DOWN": 0.3282777216043141,
+          "NEUTRAL": 0.482979440512302
+        },
+        "5": {
+          "UP": 0.18665768194070081,
+          "DOWN": 0.3810646900269542,
+          "NEUTRAL": 0.43227762803234504
+        }
+      },
+      "down_share_minus_up_share": {
+        "1": 0.0431266846361186,
+        "2": 0.10111223458038424,
+        "3": 0.14998314796090326,
+        "4": 0.13953488372093023,
+        "5": 0.19440700808625339
+      },
+      "gradient_bucket_index_spearman": 0.8999999999999998,
+      "endpoints_bucket5_gt_bucket1": true,
+      "gradient_directionally_consistent": true
+    },
+    "contingency_decile": {
+      "bucket_column": "solar_revision_bothpos_decile",
+      "n": 14837,
+      "group_sizes": {
+        "1": 1484,
+        "2": 1484,
+        "3": 1483,
+        "4": 1484,
+        "5": 1811,
+        "6": 1156,
+        "7": 1484,
+        "8": 1483,
+        "9": 1484,
+        "10": 1484
+      },
+      "counts": {
+        "1": {
+          "UP": 398,
+          "DOWN": 413,
+          "NEUTRAL": 673
+        },
+        "2": {
+          "UP": 323,
+          "DOWN": 436,
+          "NEUTRAL": 725
+        },
+        "3": {
+          "UP": 327,
+          "DOWN": 406,
+          "NEUTRAL": 750
+        },
+        "4": {
+          "UP": 298,
+          "DOWN": 519,
+          "NEUTRAL": 667
+        },
+        "5": {
+          "UP": 340,
+          "DOWN": 615,
+          "NEUTRAL": 856
+        },
+        "6": {
+          "UP": 227,
+          "DOWN": 397,
+          "NEUTRAL": 532
+        },
+        "7": {
+          "UP": 290,
+          "DOWN": 468,
+          "NEUTRAL": 726
+        },
+        "8": {
+          "UP": 270,
+          "DOWN": 506,
+          "NEUTRAL": 707
+        },
+        "9": {
+          "UP": 289,
+          "DOWN": 519,
+          "NEUTRAL": 676
+        },
+        "10": {
+          "UP": 265,
+          "DOWN": 612,
+          "NEUTRAL": 607
+        }
+      },
+      "row_shares_p_label_given_bucket": {
+        "1": {
+          "UP": 0.26819407008086255,
+          "DOWN": 0.2783018867924528,
+          "NEUTRAL": 0.45350404312668463
+        },
+        "2": {
+          "UP": 0.21765498652291104,
+          "DOWN": 0.29380053908355797,
+          "NEUTRAL": 0.488544474393531
+        },
+        "3": {
+          "UP": 0.22049898853674982,
+          "DOWN": 0.2737693863789616,
+          "NEUTRAL": 0.5057316250842886
+        },
+        "4": {
+          "UP": 0.20080862533692723,
+          "DOWN": 0.3497304582210243,
+          "NEUTRAL": 0.4494609164420485
+        },
+        "5": {
+          "UP": 0.18774157923799006,
+          "DOWN": 0.33959138597459965,
+          "NEUTRAL": 0.4726670347874103
+        },
+        "6": {
+          "UP": 0.19636678200692043,
+          "DOWN": 0.34342560553633217,
+          "NEUTRAL": 0.4602076124567474
+        },
+        "7": {
+          "UP": 0.1954177897574124,
+          "DOWN": 0.31536388140161725,
+          "NEUTRAL": 0.48921832884097033
+        },
+        "8": {
+          "UP": 0.1820633850303439,
+          "DOWN": 0.3412002697235334,
+          "NEUTRAL": 0.47673634524612274
+        },
+        "9": {
+          "UP": 0.19474393530997305,
+          "DOWN": 0.3497304582210243,
+          "NEUTRAL": 0.4555256064690027
+        },
+        "10": {
+          "UP": 0.17857142857142858,
+          "DOWN": 0.4123989218328841,
+          "NEUTRAL": 0.40902964959568733
+        }
+      },
+      "down_share_minus_up_share": {
+        "1": 0.010107816711590278,
+        "2": 0.07614555256064692,
+        "3": 0.05327039784221177,
+        "4": 0.14892183288409705,
+        "5": 0.15184980673660958,
+        "6": 0.14705882352941174,
+        "7": 0.11994609164420486,
+        "8": 0.1591368846931895,
+        "9": 0.15498652291105122,
+        "10": 0.23382749326145555
+      },
+      "gradient_bucket_index_spearman": 0.8666666666666665,
+      "endpoints_bucket5_gt_bucket1": true,
+      "gradient_directionally_consistent": true
+    },
+    "association_primary_signed_spread": {
+      "pair": "solar_revision_mwh_both_positive vs signed_spread",
+      "n": 14837,
+      "spearman_rho": -0.07485757036771813,
+      "bootstrap_draws": 2000,
+      "bootstrap_seed": 20260906,
+      "ci_percentiles": [
+        2.5,
+        97.5
+      ],
+      "ci_low": -0.09200213189185519,
+      "ci_high": -0.058604955132409625,
+      "ci_excludes_zero": true,
+      "observed_sign": -1,
+      "predicted_sign": -1,
+      "sign_matches_prediction": true,
+      "association_supported": true
+    },
+    "association_secondary_label_score": {
+      "pair": "solar_revision_mwh_both_positive vs label_score",
+      "n": 14837,
+      "spearman_rho": -0.07455227242472022,
+      "bootstrap_draws": 2000,
+      "bootstrap_seed": 20260906,
+      "ci_percentiles": [
+        2.5,
+        97.5
+      ],
+      "ci_low": -0.09097606950325157,
+      "ci_high": -0.05863918163559819,
+      "ci_excludes_zero": true,
+      "observed_sign": -1,
+      "predicted_sign": -1,
+      "sign_matches_prediction": true,
+      "association_supported": true
+    },
+    "transparent_rule": {
+      "definition": "DOWN if solar_revision_mwh_both_positive > 21.733325; UP if < -21.733325; else NEUTRAL",
+      "scores": {
+        "n": 14837,
+        "balanced_accuracy": 0.3621070696247104,
+        "macro_f1": 0.3577936633033634,
+        "accuracy": 0.41538046774954507,
+        "confusion_actual_rows_pred_cols": {
+          "UP": {
+            "UP": 651,
+            "DOWN": 634,
+            "NEUTRAL": 1742
+          },
+          "DOWN": {
+            "UP": 753,
+            "DOWN": 1245,
+            "NEUTRAL": 2893
+          },
+          "NEUTRAL": {
+            "UP": 1224,
+            "DOWN": 1428,
+            "NEUTRAL": 4267
+          }
+        }
+      }
+    },
+    "baselines": {
+      "majority_neutral_in_sample": {
+        "n": 14837,
+        "balanced_accuracy": 0.3333333333333333,
+        "macro_f1": 0.21201814058956917,
+        "accuracy": 0.46633416458852867,
+        "confusion_actual_rows_pred_cols": {
+          "UP": {
+            "UP": 0,
+            "DOWN": 0,
+            "NEUTRAL": 3027
+          },
+          "DOWN": {
+            "UP": 0,
+            "DOWN": 0,
+            "NEUTRAL": 4891
+          },
+          "NEUTRAL": {
+            "UP": 0,
+            "DOWN": 0,
+            "NEUTRAL": 6919
+          }
+        }
+      },
+      "hour_of_week_training_majority_in_sample": {
+        "n": 14837,
+        "balanced_accuracy": 0.35750072767815694,
+        "macro_f1": 0.2976441863944364,
+        "accuracy": 0.4728044752982409,
+        "confusion_actual_rows_pred_cols": {
+          "UP": {
+            "UP": 3,
+            "DOWN": 458,
+            "NEUTRAL": 2566
+          },
+          "DOWN": {
+            "UP": 2,
+            "DOWN": 969,
+            "NEUTRAL": 3920
+          },
+          "NEUTRAL": {
+            "UP": 3,
+            "DOWN": 873,
+            "NEUTRAL": 6043
+          }
+        }
+      },
+      "persistence_ex_post_reference": {
+        "n": 14837,
+        "balanced_accuracy": 0.6931529401052047,
+        "macro_f1": 0.6927576776739017,
+        "accuracy": 0.7063422524769158,
+        "confusion_actual_rows_pred_cols": {
+          "UP": {
+            "UP": 1878,
+            "DOWN": 315,
+            "NEUTRAL": 834
+          },
+          "DOWN": {
+            "UP": 268,
+            "DOWN": 3601,
+            "NEUTRAL": 1022
+          },
+          "NEUTRAL": {
+            "UP": 874,
+            "DOWN": 1044,
+            "NEUTRAL": 5001
+          }
+        }
+      }
+    },
+    "criteria_evaluation": {
+      "gradient_directionally_consistent": true,
+      "primary_association_supported": true,
+      "rule_beats_majority": true,
+      "rule_beats_hour_of_week": true,
+      "rule_beats_availability_safe_baselines": true,
+      "rule_beats_persistence_reported_not_gated": false
+    },
+    "conclusion": "conditionally supported - solar only, needs replication",
+    "interpretation": "Development-wide, in-sample / descriptive (E002). The transparent rule has no outcome-fitted parameters; a chronological out-of-sample evaluation belongs to later stages.",
+    "holdout": "LOCKED_AND_UNUSED"
+  }
+}

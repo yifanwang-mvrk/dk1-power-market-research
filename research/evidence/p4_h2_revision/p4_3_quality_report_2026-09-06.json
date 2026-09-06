@@ -1,0 +1,18 @@
+{
+  "step": "P4.3",
+  "status": "PASS",
+  "created_at_utc": "2026-09-06T18:37:45.217424+00:00",
+  "git_head_before_run": "836caf49e531827c62cc8036ad894ae91d9980b0",
+  "critical_checks": {
+    "join_rows_equal_expected": true,
+    "join_key_unique": true,
+    "no_holdout_rows": true,
+    "rule_threshold_matches_frozen": true,
+    "quintile_edges_are_frozen": true,
+    "primary_is_wind": true,
+    "bootstrap_seed_recorded": true,
+    "chart_written": true,
+    "conclusion_in_frozen_set": true
+  },
+  "holdout": "LOCKED_AND_UNUSED"
+}

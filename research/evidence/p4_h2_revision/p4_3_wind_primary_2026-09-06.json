@@ -1,0 +1,358 @@
+{
+  "variable": "wind_revision_mwh",
+  "rule_threshold_c_mwh": 128.08339840000008,
+  "contingency_quintile": {
+    "bucket_column": "wind_revision_quintile",
+    "n": 21614,
+    "group_sizes": {
+      "1": 4322,
+      "2": 4323,
+      "3": 4323,
+      "4": 4323,
+      "5": 4323
+    },
+    "counts": {
+      "1": {
+        "UP": 1066,
+        "DOWN": 1179,
+        "NEUTRAL": 2077
+      },
+      "2": {
+        "UP": 900,
+        "DOWN": 1253,
+        "NEUTRAL": 2170
+      },
+      "3": {
+        "UP": 821,
+        "DOWN": 1453,
+        "NEUTRAL": 2049
+      },
+      "4": {
+        "UP": 773,
+        "DOWN": 1549,
+        "NEUTRAL": 2001
+      },
+      "5": {
+        "UP": 743,
+        "DOWN": 1672,
+        "NEUTRAL": 1908
+      }
+    },
+    "row_shares_p_label_given_bucket": {
+      "1": {
+        "UP": 0.24664507172605277,
+        "DOWN": 0.27279037482646923,
+        "NEUTRAL": 0.480564553447478
+      },
+      "2": {
+        "UP": 0.2081887578070784,
+        "DOWN": 0.28984501503585475,
+        "NEUTRAL": 0.5019662271570668
+      },
+      "3": {
+        "UP": 0.1899144112884571,
+        "DOWN": 0.33610918343742774,
+        "NEUTRAL": 0.4739764052741152
+      },
+      "4": {
+        "UP": 0.17881101087207957,
+        "DOWN": 0.35831598427018274,
+        "NEUTRAL": 0.4628730048577377
+      },
+      "5": {
+        "UP": 0.17187138561184362,
+        "DOWN": 0.38676844783715014,
+        "NEUTRAL": 0.44136016655100624
+      }
+    },
+    "down_share_minus_up_share": {
+      "1": 0.02614530310041646,
+      "2": 0.08165625722877634,
+      "3": 0.14619477214897064,
+      "4": 0.17950497339810317,
+      "5": 0.21489706222530652
+    },
+    "gradient_bucket_index_spearman": 0.9999999999999999,
+    "endpoints_bucket5_gt_bucket1": true,
+    "gradient_directionally_consistent": true
+  },
+  "contingency_decile": {
+    "bucket_column": "wind_revision_decile",
+    "n": 21614,
+    "group_sizes": {
+      "1": 2162,
+      "2": 2160,
+      "3": 2162,
+      "4": 2161,
+      "5": 2161,
+      "6": 2162,
+      "7": 2161,
+      "8": 2162,
+      "9": 2161,
+      "10": 2162
+    },
+    "counts": {
+      "1": {
+        "UP": 556,
+        "DOWN": 573,
+        "NEUTRAL": 1033
+      },
+      "2": {
+        "UP": 510,
+        "DOWN": 606,
+        "NEUTRAL": 1044
+      },
+      "3": {
+        "UP": 469,
+        "DOWN": 604,
+        "NEUTRAL": 1089
+      },
+      "4": {
+        "UP": 431,
+        "DOWN": 649,
+        "NEUTRAL": 1081
+      },
+      "5": {
+        "UP": 410,
+        "DOWN": 720,
+        "NEUTRAL": 1031
+      },
+      "6": {
+        "UP": 411,
+        "DOWN": 733,
+        "NEUTRAL": 1018
+      },
+      "7": {
+        "UP": 411,
+        "DOWN": 761,
+        "NEUTRAL": 989
+      },
+      "8": {
+        "UP": 362,
+        "DOWN": 788,
+        "NEUTRAL": 1012
+      },
+      "9": {
+        "UP": 350,
+        "DOWN": 810,
+        "NEUTRAL": 1001
+      },
+      "10": {
+        "UP": 393,
+        "DOWN": 862,
+        "NEUTRAL": 907
+      }
+    },
+    "row_shares_p_label_given_bucket": {
+      "1": {
+        "UP": 0.25716928769657726,
+        "DOWN": 0.2650323774283071,
+        "NEUTRAL": 0.47779833487511564
+      },
+      "2": {
+        "UP": 0.2361111111111111,
+        "DOWN": 0.28055555555555556,
+        "NEUTRAL": 0.48333333333333334
+      },
+      "3": {
+        "UP": 0.21692876965772434,
+        "DOWN": 0.2793709528214616,
+        "NEUTRAL": 0.503700277520814
+      },
+      "4": {
+        "UP": 0.1994447015270708,
+        "DOWN": 0.3003239241092087,
+        "NEUTRAL": 0.5002313743637204
+      },
+      "5": {
+        "UP": 0.1897269782508098,
+        "DOWN": 0.33317908375751965,
+        "NEUTRAL": 0.47709393799167055
+      },
+      "6": {
+        "UP": 0.19010175763182238,
+        "DOWN": 0.33903792784458836,
+        "NEUTRAL": 0.4708603145235893
+      },
+      "7": {
+        "UP": 0.19018972697825082,
+        "DOWN": 0.35215178158260063,
+        "NEUTRAL": 0.45765849143914855
+      },
+      "8": {
+        "UP": 0.16743755781683625,
+        "DOWN": 0.364477335800185,
+        "NEUTRAL": 0.46808510638297873
+      },
+      "9": {
+        "UP": 0.16196205460434984,
+        "DOWN": 0.37482646922720964,
+        "NEUTRAL": 0.46321147616844055
+      },
+      "10": {
+        "UP": 0.18177613320999075,
+        "DOWN": 0.3987049028677151,
+        "NEUTRAL": 0.41951896392229415
+      }
+    },
+    "down_share_minus_up_share": {
+      "1": 0.007863089731729833,
+      "2": 0.04444444444444445,
+      "3": 0.062442183163737286,
+      "4": 0.10087922258213791,
+      "5": 0.14345210550670984,
+      "6": 0.14893617021276598,
+      "7": 0.16196205460434981,
+      "8": 0.19703977798334874,
+      "9": 0.2128644146228598,
+      "10": 0.21692876965772434
+    },
+    "gradient_bucket_index_spearman": 0.9999999999999999,
+    "endpoints_bucket5_gt_bucket1": true,
+    "gradient_directionally_consistent": true
+  },
+  "association_primary_signed_spread": {
+    "pair": "wind_revision_mwh vs signed_spread",
+    "n": 21614,
+    "spearman_rho": -0.09632561344172808,
+    "bootstrap_draws": 2000,
+    "bootstrap_seed": 20260906,
+    "ci_percentiles": [
+      2.5,
+      97.5
+    ],
+    "ci_low": -0.10920251255703815,
+    "ci_high": -0.0833921926463026,
+    "ci_excludes_zero": true,
+    "observed_sign": -1,
+    "predicted_sign": -1,
+    "sign_matches_prediction": true,
+    "association_supported": true
+  },
+  "association_secondary_label_score": {
+    "pair": "wind_revision_mwh vs label_score",
+    "n": 21614,
+    "spearman_rho": -0.09856101456110183,
+    "bootstrap_draws": 2000,
+    "bootstrap_seed": 20260906,
+    "ci_percentiles": [
+      2.5,
+      97.5
+    ],
+    "ci_low": -0.1119587274968447,
+    "ci_high": -0.08528031905681227,
+    "ci_excludes_zero": true,
+    "observed_sign": -1,
+    "predicted_sign": -1,
+    "sign_matches_prediction": true,
+    "association_supported": true
+  },
+  "transparent_rule": {
+    "definition": "DOWN if wind_revision_mwh > 128.083398; UP if < -128.083398; else NEUTRAL",
+    "scores": {
+      "n": 21614,
+      "balanced_accuracy": 0.36472902859003686,
+      "macro_f1": 0.3624735164677377,
+      "accuracy": 0.42199500323864164,
+      "confusion_actual_rows_pred_cols": {
+        "UP": {
+          "UP": 845,
+          "DOWN": 907,
+          "NEUTRAL": 2551
+        },
+        "DOWN": {
+          "UP": 901,
+          "DOWN": 2032,
+          "NEUTRAL": 4173
+        },
+        "NEUTRAL": {
+          "UP": 1604,
+          "DOWN": 2357,
+          "NEUTRAL": 6244
+        }
+      }
+    }
+  },
+  "baselines": {
+    "majority_neutral_in_sample": {
+      "n": 21614,
+      "balanced_accuracy": 0.3333333333333333,
+      "macro_f1": 0.21381354955634477,
+      "accuracy": 0.4721476820579254,
+      "confusion_actual_rows_pred_cols": {
+        "UP": {
+          "UP": 0,
+          "DOWN": 0,
+          "NEUTRAL": 4303
+        },
+        "DOWN": {
+          "UP": 0,
+          "DOWN": 0,
+          "NEUTRAL": 7106
+        },
+        "NEUTRAL": {
+          "UP": 0,
+          "DOWN": 0,
+          "NEUTRAL": 10205
+        }
+      }
+    },
+    "hour_of_week_training_majority_in_sample": {
+      "n": 21614,
+      "balanced_accuracy": 0.3450141367378259,
+      "macro_f1": 0.2639361015615757,
+      "accuracy": 0.47483112797261035,
+      "confusion_actual_rows_pred_cols": {
+        "UP": {
+          "UP": 0,
+          "DOWN": 354,
+          "NEUTRAL": 3949
+        },
+        "DOWN": {
+          "UP": 0,
+          "DOWN": 687,
+          "NEUTRAL": 6419
+        },
+        "NEUTRAL": {
+          "UP": 0,
+          "DOWN": 629,
+          "NEUTRAL": 9576
+        }
+      }
+    },
+    "persistence_ex_post_reference": {
+      "n": 21612,
+      "balanced_accuracy": 0.6991898022087729,
+      "macro_f1": 0.6991759342506708,
+      "accuracy": 0.7143253747917824,
+      "confusion_actual_rows_pred_cols": {
+        "UP": {
+          "UP": 2687,
+          "DOWN": 428,
+          "NEUTRAL": 1187
+        },
+        "DOWN": {
+          "UP": 384,
+          "DOWN": 5228,
+          "NEUTRAL": 1494
+        },
+        "NEUTRAL": {
+          "UP": 1233,
+          "DOWN": 1448,
+          "NEUTRAL": 7523
+        }
+      }
+    }
+  },
+  "criteria_evaluation": {
+    "gradient_directionally_consistent": true,
+    "primary_association_supported": true,
+    "rule_beats_majority": true,
+    "rule_beats_hour_of_week": true,
+    "rule_beats_availability_safe_baselines": true,
+    "rule_beats_persistence_reported_not_gated": false
+  },
+  "conclusion": "supported",
+  "interpretation": "Development-wide, in-sample / descriptive (E002). The transparent rule has no outcome-fitted parameters; a chronological out-of-sample evaluation belongs to later stages.",
+  "holdout": "LOCKED_AND_UNUSED"
+}

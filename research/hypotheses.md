@@ -32,8 +32,8 @@ candidate pending access and publication-timing evidence in P5.2.
 
 ## H2 — Renewable Forecast Revision
 
-**Status:** P4.1 test specification pre-registered 2026-09-06; revision variable
-not yet constructed; no revision-outcome relationship inspected
+**Status:** P4.3 round-1 test complete 2026-09-06 — **SUPPORTED (weak, asymmetric
+effect)** in-sample; regime and cross-border conditioning is P4.4
 **Role:** Primary MVP hypothesis
 
 ### Question
@@ -206,6 +206,84 @@ dropped for missing horizons; the single missing-target hour
 (tight / normal / loose, renewable level), cross-border conditioning, any
 magnitude-threshold rule tuning, logistic regression and probability
 calibration.
+
+### P4.3 Round-1 Result
+
+**Run:** 2026-09-06, exactly as pre-registered (P4.1 / D027); nothing chosen at
+run time. Evidence: `research/evidence/p4_h2_revision/p4_3_*`
+(`p4_3_wind_primary_2026-09-06.json`, `p4_3_solar_secondary_2026-09-06.json`,
+`p4_3_result_2026-09-06.md`, `p4_3_revision_label_chart_2026-09-06.png`,
+`p4_3_quality_report_2026-09-06.json` with 9/9 checks). Development only,
+in-sample / descriptive (E002).
+
+**Primary — `wind_revision` (raw MWh). Conclusion: SUPPORTED — weak, asymmetric
+effect.**
+
+Sample: 21,614 development hours with a non-null wind revision and a valid label.
+
+`P(label | signed wind_revision quintile)`:
+
+| Bucket | P(UP) | P(NEUTRAL) | P(DOWN) | DOWN-share − UP-share |
+|---|---:|---:|---:|---:|
+| Q1 (most negative) | 24.7% | 48.1% | 27.3% | +0.026 |
+| Q2 | 20.8% | 50.2% | 29.0% | +0.082 |
+| Q3 | 19.0% | 47.4% | 33.6% | +0.146 |
+| Q4 | 17.9% | 46.3% | 35.8% | +0.180 |
+| Q5 (most positive) | 17.2% | 44.1% | 38.7% | +0.215 |
+
+The `DOWN`-minus-`UP` share rises monotonically across all five buckets (gradient
+Spearman +1.00, endpoints Q5 > Q1). As the 5h-to-1h wind forecast is revised
+upward, the delivery hour becomes more likely to settle `DOWN` and less likely
+`UP` — the pre-registered mechanism direction. Between the extreme buckets the
+`DOWN` share moves ~11 points (27.3% → 38.7%) and the `UP` share ~7.5 points
+(24.7% → 17.2%).
+
+Association: Spearman(signed `wind_revision`, signed spread) = **−0.096**, 95%
+bootstrap CI [−0.109, −0.083] (2,000 draws, seed 20260906). The sign is negative
+as predicted and the CI excludes zero, but `|rho| ~ 0.1` is a weak association.
+Secondary Spearman vs the `+1/0/-1` label score = −0.099.
+
+Transparent rule (`DOWN` if `wind_revision > 128.083 MWh`, `UP` if
+`< -128.083`, else `NEUTRAL`):
+
+| Method | Balanced accuracy | Macro-F1 | Accuracy |
+|---|---:|---:|---:|
+| Revision rule | 0.365 | 0.362 | 0.422 |
+| Majority (`NEUTRAL`) | 0.333 | 0.214 | 0.472 |
+| Hour-of-week training majority | 0.345 | 0.264 | 0.475 |
+| Persistence (ex-post reference) | 0.699 | 0.699 | 0.714 |
+
+The rule beats both availability-safe baselines on balanced accuracy and macro-F1,
+so the pre-registered "supported" bar is met. The margin is small; the rule
+*loses* to those baselines on plain accuracy, and it is far below the ex-post
+persistence reference. Its directional skill is asymmetric: on the `DOWN` side it
+is real (2,032 correct vs 901 opposite-direction calls), on the `UP` side it is
+essentially absent (845 correct vs 907 opposite-direction). Much of the
+balanced-accuracy edge comes simply from attempting `UP`/`DOWN` calls, which the
+`NEUTRAL`-only baselines never do.
+
+**Secondary — `solar_revision`. Conclusion: conditionally supported — solar only,
+needs replication** (both the all-numeric-pairs and the both-horizons-positive
+daytime subsets). Same monotone gradient and same predicted-sign association, but
+weaker (Spearman −0.060 all pairs, −0.075 daytime). `c` for solar was derived by
+the frozen formula (Q60 of `abs(solar_revision)`) at run time because P4.2 only
+persisted the wind threshold. Not counted toward "H2 supported".
+
+**Counterargument and limitations.**
+
+- In-sample and descriptive; the frozen delta was estimated on the same period
+  (E002). A chronological out-of-sample check is P4.4 / P10.
+- The round-1 rule-vs-baseline gate rewards a method merely for attempting all
+  three classes. A stricter future test should require beating a directional
+  baseline or use a proper scoring rule. Carried to P4.4.
+- The effect may be confounded by season or hour-of-day regime, or offset by
+  cross-border capacity — P4.4 and H3 test this.
+- Balancing pressure is an ex-post proxy, not executable trading P&L (D016).
+
+**Invalidation status.** The 5h and 1h values are genuine distinct pre-delivery
+snapshots (P4.2: the wind forecast moved in every wind-aggregate hour), so the
+revision variable is valid. If P4.4 regime or cross-border conditioning removes
+the gradient, H2 is downgraded to conditional.
 
 ## H3 — Cross-Border and System Conditions
 

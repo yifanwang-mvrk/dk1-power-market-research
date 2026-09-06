@@ -1,7 +1,7 @@
 # P4 H2 Renewable Forecast Revision Evidence
 
-**Status:** P4.1 pre-registration and P4.2 revision build complete 2026-09-06;
-round-1 test (P4.3) not started
+**Status:** P4.1–P4.3 complete 2026-09-06 — H2 round-1 result: **SUPPORTED
+(weak, asymmetric)**, in-sample
 **Holdout:** LOCKED AND UNUSED
 
 ## P4.1 — Pre-registered test specification
@@ -61,9 +61,33 @@ Headline results:
   128.083 MWh. Normalization floor for `wind_forecast_5h` = 276.575 MWh.
 - Output table carries no outcome column; no revision-outcome statistic computed.
 
+## P4.3 — Round-1 result
+
+`src/p4_test.py` joins the frozen P4.2 revisions to the P3 labels/spread and runs
+exactly the pre-registered procedure. Files: `p4_3_wind_primary_2026-09-06.json`,
+`p4_3_solar_secondary_2026-09-06.json`, `p4_3_result_2026-09-06.md`,
+`p4_3_revision_label_chart_2026-09-06.png`, `p4_3_quality_report_2026-09-06.json`
+(9/9). Tests: `tests/test_p4_test.py`.
+
+**Primary `wind_revision`: SUPPORTED — weak, asymmetric.** `P(DOWN)` rises
+27.3% -> 38.7% and `P(UP)` falls 24.7% -> 17.2% across the five signed-revision
+quintiles (gradient Spearman +1.00). Association Spearman -0.096, 95% bootstrap CI
+[-0.109, -0.083]. The transparent rule (`c` = 128.083 MWh) beats the two
+availability-safe baselines on balanced accuracy (0.365 vs 0.333 / 0.345) but
+loses on plain accuracy and trails the ex-post persistence reference (0.699);
+directional skill is real on `DOWN`, essentially absent on `UP`.
+
+**Secondary `solar_revision`: conditionally supported - solar only, needs
+replication** (Spearman -0.060 all pairs, -0.075 daytime). `c` for solar was
+computed by the frozen formula (Q60 of `abs(solar_revision)`) at P4.3 run time
+because P4.2 only persisted the wind threshold.
+
+Recorded per D013 / E002: supported within its limitations; in-sample; not a
+deployable or profitable rule (D016). Decision D028.
+
 ## Next steps
 
 | Step | Action |
 |---|---|
-| P4.3 | Join the frozen revisions to the P3 labels/spread; run the pre-registered contingency table, Spearman association and transparent rule; produce the chart |
-| P4.4 | First-round conditioning and failure analysis |
+| P8.1 | Audit the ten Level A criteria (A8 and A9 now met) |
+| P4.4 | Chronological OOS check, a stricter baseline gate, and season / regime / cross-border conditioning of the gradient |

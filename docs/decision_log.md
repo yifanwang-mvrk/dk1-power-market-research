@@ -51,6 +51,7 @@ Source: the complete 31-section final Blueprint response and the owner's subsequ
 | D025 | Last-pre-delivery cutoff and P2 hourly-base contract | FROZEN |
 | D026 | P3 balancing spread, frozen Q25 delta and baseline contracts | FROZEN |
 | D027 | P4.1 H2 round-1 pre-registered test specification | IMPLEMENTATION NOTE |
+| D028 | P4.3 H2 round-1 result: supported, weak and asymmetric | RESEARCH FINDING |
 | E001–E003 | 执行说明 / Execution clarifications | IMPLEMENTATION NOTE |
 | I01–I08 | 字段、参数和可用性 / Fields, parameters and availability | TRACKED — see current table |
 
@@ -532,6 +533,57 @@ made with zero data inspection; the holdout stays locked.
 
 **Supersedes / 替代:** None. Implements D008, D009 and D013; partially addresses
 I07 (round-1 method and buckets).
+
+## D028 · P4.3 H2 round-1 result
+
+**日期 / Date:** 2026-09-06
+**状态 / Status:** RESEARCH FINDING (does not change any frozen design)
+**Related step / 对应步骤:** P4.3
+**Related decision / 对应决策:** executes D027; feeds P4.4
+
+**结论 / Finding:** The pre-registered H2 round-1 test ran exactly as specified in
+D027. Primary conclusion for `wind_revision`: **SUPPORTED — weak, asymmetric
+effect**, in-sample / descriptive on the development period.
+
+- Contingency gradient is clean and monotone: `P(DOWN | signed wind_revision
+  quintile)` rises 27.3% → 38.7% and `P(UP)` falls 24.7% → 17.2% from the most
+  negative to the most positive revision bucket (gradient Spearman +1.00).
+- Association is statistically clear but economically small: Spearman(signed
+  wind_revision, signed spread) = −0.096, 95% bootstrap CI [−0.109, −0.083]
+  (2,000 draws, seed 20260906), predicted negative sign.
+- The transparent rule (`c` = 128.083 MWh) beats the two availability-safe
+  baselines on balanced accuracy (0.365 vs 0.333 / 0.345) and macro-F1, meeting
+  the pre-registered bar, but *loses* on plain accuracy (0.422 vs ~0.47) and sits
+  far below the ex-post persistence reference (0.699). Directional skill is
+  asymmetric: real on `DOWN` (2,032 correct vs 901 opposite), essentially absent
+  on `UP` (845 correct vs 907 opposite).
+- Secondary `solar_revision`: conditionally supported — solar only, needs
+  replication (all-pairs Spearman −0.060, daytime −0.075). Not counted toward
+  "H2 supported".
+
+**理由 / Why this is the recorded conclusion:** All three pre-registered
+"supported" conditions were met, so the conclusion is not downgraded after seeing
+results (D013, D015). It is reported with its magnitude and asymmetry stated in
+full, per E002.
+
+**未采用 / Not done:** No retuning of `c`, buckets, direction or the success bar
+after seeing the result. No claim of a deployable or profitable rule (D016).
+
+**Impact / 影响:** Level A A8 (a completed hypothesis test with a written
+conclusion) and A9 (a meaningful chart) are satisfied. Carried to P4.4: (1) a
+chronological out-of-sample check, (2) a stricter rule-vs-baseline gate that also
+requires beating a directional baseline or a proper scoring rule, (3) season /
+hour-of-day regime and cross-border conditioning of the gradient.
+
+**Evidence / 证据:** `research/evidence/p4_h2_revision/p4_3_wind_primary_2026-09-06.json`,
+`p4_3_solar_secondary_2026-09-06.json`, `p4_3_result_2026-09-06.md`,
+`p4_3_revision_label_chart_2026-09-06.png`, `p4_3_quality_report_2026-09-06.json`
+(9/9); `src/p4_test.py`; `tests/test_p4_test.py`.
+
+**Holdout implications / 留出期:** None. In-sample development test; the loader
+aborts unless the holdout stays locked. Zero holdout rows read.
+
+**Supersedes / 替代:** None.
 
 ## 本次执行说明 / Operational clarifications
 
