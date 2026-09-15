@@ -26,9 +26,36 @@ result, not an edge.
   availability-safe baselines by ~2 points on balanced accuracy (0.352 vs
   0.333 / 0.329), with **no probability skill** and far below the ex-post
   persistence reference. Not a deployable edge.
+- 3-minute trader summary: [`docs/trader_summary.md`](docs/trader_summary.md)
 - Research memo: [`research/r01_research_memo.md`](research/r01_research_memo.md)
 - Final repository audit: [`docs/final_project_audit_2026-09-06.md`](docs/final_project_audit_2026-09-06.md)
 - Levels A, B and C all audited; holdout closed
+
+## Setup & Verify
+
+Requirements: Python 3.12 and [uv](https://docs.astral.sh/uv/).
+
+```bash
+git clone https://github.com/yifanwang-mvrk/dk1-power-market-research.git
+cd dk1-power-market-research
+uv sync
+```
+
+Verify the install with the test suite. It is self-contained — no network
+access and no local data required:
+
+```bash
+uv run python -m unittest discover -s tests -v
+```
+
+Expect `Ran 50 tests ... OK`.
+
+`data/raw/` and `data/processed/` are intentionally git-ignored (see
+[`docs/final_project_audit_2026-09-06.md`](docs/final_project_audit_2026-09-06.md)).
+Rebuilding them means running the pipeline scripts below, which fetch DK1
+historical data for the fixed development window from the public
+[Energi Data Service](https://www.energidataservice.dk/) API — no key
+required. The API client rejects any request into the locked holdout window.
 
 ## Research Question
 
